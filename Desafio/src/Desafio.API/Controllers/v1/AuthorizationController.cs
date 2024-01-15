@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Desafio.API;
-
+[ApiVersion("1.0")]
 public class AuthorizationController : DesafioControllerBase
 {
     private IUserService _userService;
@@ -16,6 +16,12 @@ public class AuthorizationController : DesafioControllerBase
     }
 
     #region Post
+    /// <summary>
+    /// Create User
+    /// </summary>
+    /// <remarks>Create a new User on database</remarks>
+    /// <param name="registerUserRequest"></param>
+    /// <returns></returns>
     [HttpPost("register-user")]
     public async Task<ActionResult<RegisterUserResponse>> RegisterUserAsync(RegisterUserRequest registerUserRequest)
     {
@@ -26,6 +32,12 @@ public class AuthorizationController : DesafioControllerBase
         return CustomResponse(result);
     }
 
+    /// <summary>
+    /// Login User 
+    /// </summary>
+    /// <remarks>Login using E-mail and Password</remarks>
+    /// <param name="loginUserRequest"></param>
+    /// <returns></returns>
     [HttpPost("login")]
     public async Task<ActionResult<LoginUserResponse>> LoginUserAsync(LoginUserRequest loginUserRequest)
     {
@@ -38,6 +50,11 @@ public class AuthorizationController : DesafioControllerBase
     #endregion
 
     #region Get 
+    /// <summary>
+    /// Select User Roles
+    /// </summary>
+    /// <remarks>Select every user on database, including their roles</remarks>
+    /// <returns></returns>
     [HttpGet("get-all-users-roles")]
     public async Task<ActionResult<UserResponse>> GetAllUsersRoles()
     {

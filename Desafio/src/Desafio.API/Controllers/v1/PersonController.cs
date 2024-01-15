@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Desafio.API;
-
+[ApiVersion("1.0")]
 public class PersonController : DesafioControllerBase
 {
     private readonly IPersonService _personService;
@@ -14,6 +14,12 @@ public class PersonController : DesafioControllerBase
     }
 
     #region Get
+    /// <summary>
+    /// Select Person By Id
+    /// </summary>
+    /// <remarks>Searchs an especific person on database, using their Id</remarks>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("get-person-by-id")]
     public async Task<ActionResult<PersonResponse>> GetPersonAsync(Guid id)
     {
@@ -22,6 +28,11 @@ public class PersonController : DesafioControllerBase
         return CustomResponse(result);
     }
 
+    /// <summary>
+    /// Select all People
+    /// </summary>
+    /// <remarks>Searchs all people registered in database</remarks>
+    /// <returns></returns>
     [HttpGet("get-all-person")]
     public async Task<ActionResult<PersonResponse>> GetAllPerson()
     {
@@ -30,7 +41,12 @@ public class PersonController : DesafioControllerBase
         return CustomResponseList(result);
 
     }
-
+    /// <summary>
+    /// Select Person by Short Id
+    /// </summary>
+    /// <remarks>Searchs an especific person on database, using their Short Id</remarks>
+    /// <param name="shortId"></param>
+    /// <returns></returns>
     [HttpGet("get-by-short-id")]
     public async Task<ActionResult<PersonResponse>> GetPersonByShortIdAsync(string shortId)
     {
@@ -39,6 +55,11 @@ public class PersonController : DesafioControllerBase
         return CustomResponse(result);
     }
 
+    /// <summary>
+    /// Select all Clients
+    /// </summary>
+    /// <remarks>Searchs all clients registered in database. Clients are the ones who has the propertie CanBuy sets as true</remarks>
+    /// <returns></returns>
     [HttpGet("get-all-clients")]
     public async Task<ActionResult<PersonResponse>> GetAllClients()
     {
@@ -48,6 +69,12 @@ public class PersonController : DesafioControllerBase
 
     }
 
+    /// <summary>
+    /// Select Client by Id
+    /// </summary>
+    /// <remarks>Searchs an especific client on database, using their Id. Clients are the ones who has the propertie CanBuy sets as true</remarks>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("get-client-by-id")]
     public async Task<ActionResult<PersonResponse>> GetClientAsync(Guid id)
     {
@@ -58,6 +85,12 @@ public class PersonController : DesafioControllerBase
     #endregion
 
     #region Post
+    /// <summary>
+    /// Insert Person
+    /// </summary>
+    /// <remarks>Inserts one person on database</remarks>
+    /// <param name="personRequest"></param>
+    /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPost("insert-person")]
     public async Task<ActionResult<PersonResponse>> InsertPersonAsync(InsertPersonRequest personRequest)
@@ -71,6 +104,13 @@ public class PersonController : DesafioControllerBase
     #endregion
 
     #region Put
+
+    /// <summary>
+    /// Update Person
+    /// </summary>
+    /// <remarks>Updates a person information</remarks>
+    /// <param name="personRequest"></param>
+    /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPut("update-person-information")]
     public async Task<ActionResult<PersonResponse>> UpdatePersonAsync(PersonRequest personRequest)
@@ -82,6 +122,12 @@ public class PersonController : DesafioControllerBase
         return CustomResponse(result);
     }
 
+    /// <summary>
+    /// Update Enable Property
+    /// </summary>
+    /// <remarks>Updates only the Enable property</remarks>
+    /// <param name="personRequest"></param>
+    /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPut("update-enabled-property")]
     public async Task<ActionResult<bool>> UpdatePersonEnabled(EnabledPersonRequest personRequest)
@@ -93,6 +139,12 @@ public class PersonController : DesafioControllerBase
         return CustomResponse(result);
     }
 
+    /// <summary>
+    /// Update CanBuy property
+    /// </summary>
+    /// <remarks>Updates only the CanBuy property. This property indicates that the person is a client</remarks>
+    /// <param name="personRequest"></param>
+    /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPut("update-canbuy-property")]
     public async Task<ActionResult<bool>> UpdatePersonSellable(CanBuyPersonRequest personRequest)
@@ -106,6 +158,12 @@ public class PersonController : DesafioControllerBase
     #endregion
 
     #region Delete
+    /// <summary>
+    /// Delete person
+    /// </summary>
+    /// <remarks>Removes an especific person from the database</remarks>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpDelete("delete-person")]
     public async Task<ActionResult<PersonResponse>> RemovePersonAsync(Guid id)

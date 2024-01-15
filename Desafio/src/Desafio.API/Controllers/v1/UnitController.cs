@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Desafio.API;
-
+[ApiVersion("1.0")]
 public class UnitController : DesafioControllerBase
 {
     private readonly IUnitService _unitService;
@@ -14,6 +14,12 @@ public class UnitController : DesafioControllerBase
     }
 
     #region Get
+    /// <summary>
+    /// Select Unit by Acronym
+    /// </summary>
+    /// <remarks>Searchs an especifc unit on database, using its acronym</remarks>
+    /// <param name="acronym"></param>
+    /// <returns></returns>
     [HttpGet("get-by-acronym")]
     public async Task<ActionResult<UnitResponse>> GetUnitAsync(string acronym)
     {
@@ -23,6 +29,12 @@ public class UnitController : DesafioControllerBase
 
     }
 
+    /// <summary>
+    /// Select Unit by Short Id
+    /// </summary>
+    /// <remarks>Searchs an especific unit on database, using its Short Id</remarks>
+    /// <param name="shortId"></param>
+    /// <returns></returns>
     [HttpGet("get-by-short-id")]
     public async Task<ActionResult<UnitResponse>> GetUnitByShortIdAsync(string shortId)
     {
@@ -32,6 +44,11 @@ public class UnitController : DesafioControllerBase
 
     }
 
+    /// <summary>
+    /// Select all Units
+    /// </summary>
+    /// <remarks>Searchs all units registered in database</remarks>
+    /// <returns></returns>
     [HttpGet("get-all")]
     public async Task<ActionResult<IEnumerable<UnitResponse>>> GetAllUnitSAsync()
     {
@@ -43,6 +60,12 @@ public class UnitController : DesafioControllerBase
     #endregion
 
     #region Post
+    /// <summary>
+    /// Insert Unit
+    /// </summary>
+    /// <remarks>Inserts one unit on database</remarks>
+    /// <param name="unitRequest"></param>
+    /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPost("insert-unit")]
     public async Task<ActionResult<UnitResponse>> InsertUnitAsync(UnitRequest unitRequest)
@@ -56,6 +79,12 @@ public class UnitController : DesafioControllerBase
     #endregion
 
     #region Put
+    /// <summary>
+    /// Update Unit
+    /// </summary>
+    /// <remarks>Updates an unit information</remarks>
+    /// <param name="unitRequest"></param>
+    /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPut("update-unit")]
     public async Task<ActionResult<UnitResponse>> UpdateUnitAsync(UnitRequest unitRequest)
@@ -70,6 +99,12 @@ public class UnitController : DesafioControllerBase
     #endregion
 
     #region Delete
+    /// <summary>
+    /// Delete Unit
+    /// </summary>
+    /// <remarks>Removes an especific unit from the database</remarks>
+    /// <param name="acronym"></param>
+    /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpDelete("delete-unit")]
     public async Task<ActionResult<UnitResponse>> DeleteUnitAsync(string acronym)

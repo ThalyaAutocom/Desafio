@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Desafio.API;
-
+[ApiVersion("1.0")]
 public class UserController : DesafioControllerBase
 {
     private IUserService _userService;
@@ -16,6 +16,11 @@ public class UserController : DesafioControllerBase
     }
 
     #region Get
+    /// <summary>
+    /// Select all Users
+    /// </summary>
+    /// <remarks>Searchs all users registered in database</remarks>
+    /// <returns></returns>
     [HttpGet("get-all-users")]
     public async Task<ActionResult<UserResponse>> GetAllUsers()
     {
@@ -26,6 +31,11 @@ public class UserController : DesafioControllerBase
         return CustomResponse(result);
     }
 
+    /// <summary>
+    /// Select all Administrator Users
+    /// </summary>
+    /// <remarks>Searchs all users registered in database that has an Administrator Role</remarks>
+    /// <returns></returns>
     [HttpGet("get-all-administrator-users")]
     public async Task<ActionResult<UserResponse>> GetAllAdministratorUsers()
     {
@@ -36,6 +46,11 @@ public class UserController : DesafioControllerBase
         return CustomResponse(result);
     }
 
+    /// <summary>
+    /// Select all Manager Users
+    /// </summary>
+    /// <remarks>Searchs all users registered in database that has a Manager Role</remarks>
+    /// <returns></returns>
     [HttpGet("get-all-manager-users")]
     public async Task<ActionResult<UserResponse>> GetAllManagerUsers()
     {
@@ -46,6 +61,11 @@ public class UserController : DesafioControllerBase
         return CustomResponse(result);
     }
 
+    /// <summary>
+    /// Select all Seller Users
+    /// </summary>
+    /// <remarks>Searchs all users registered in database that has a Seller Role</remarks>
+    /// <returns></returns>
     [HttpGet("get-all-seller-users")]
     public async Task<ActionResult<UserResponse>> GetAllSellerUsers()
     {
@@ -56,6 +76,12 @@ public class UserController : DesafioControllerBase
         return CustomResponse(result);
     }
 
+    /// <summary>
+    /// Select User by Short Id
+    /// </summary>
+    /// <remarks>Searchs an especific user on database, using their Short Id</remarks>
+    /// <param name="shortId"></param>
+    /// <returns></returns>
     [HttpGet("get-by-short-id")]
     public async Task<ActionResult<UserResponse>> GetUnitByShortIdAsync(string shortId)
     {
@@ -67,6 +93,12 @@ public class UserController : DesafioControllerBase
     #endregion
 
     #region Put
+    /// <summary>
+    /// Update User
+    /// </summary>
+    /// <remarks>Updates an user information</remarks>
+    /// <param name="userRequest"></param>
+    /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPut("update-user-informations")]
     public async Task<ActionResult<UserResponse>> UpdateUserAsync(UpdateUserRequest userRequest)
@@ -79,6 +111,12 @@ public class UserController : DesafioControllerBase
 
     }
 
+    /// <summary>
+    /// Update Login
+    /// </summary>
+    /// <remarks>Updates the password of an especific user</remarks>
+    /// <param name="userRequest"></param>
+    /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR")]
     [HttpPut("update-login")]
     public async Task<ActionResult<UserResponse>> UpdateLoginUserAsync(UpdateLoginUserRequest userRequest)
@@ -93,6 +131,12 @@ public class UserController : DesafioControllerBase
     #endregion
 
     #region Delete
+    /// <summary>
+    /// Delete User
+    /// </summary>
+    /// <remarks>Removes an especific user from the database</remarks>
+    /// <param name="email"></param>
+    /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpDelete("delete-user")]
     public async Task<ActionResult<UserResponse>> DeleteUserAsync(string email)
