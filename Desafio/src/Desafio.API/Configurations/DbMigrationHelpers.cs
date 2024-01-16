@@ -29,21 +29,24 @@ internal static class DbMigrationHelpers
 
         var identityContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
         var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        
+        if (env.IsDevelopment())
+        {
+            //Utilizar com Postgres e SQLite
+            await identityContext.Database.MigrateAsync();
+            await appDbContext.Database.MigrateAsync();
 
-        //Utilizar com Postgres e SQLite
-        await identityContext.Database.MigrateAsync();
-        await appDbContext.Database.MigrateAsync();
+            //Utilizar com InMemory
+            //identityContext.Database.EnsureCreated();
+            //appDbContext.Database.EnsureCreated();
 
-        //Utilizar com InMemory
-        //identityContext.Database.EnsureCreated();
-        //appDbContext.Database.EnsureCreated();
-
-        //Usar caso for necessário criar dados iniciais
-        await EnsureSeedUserLevel(identityContext, appDbContext);
+            //Usar caso for necessário criar dados iniciais
+            await EnsureSeedUserLevel(identityContext, appDbContext);
+        }
     }
 
     internal static async Task EnsureSeedUserLevel(IdentityContext identityContext, AppDbContext appDbContext)
-    {
+    { 
         EUserLevel[] roles = (EUserLevel[])Enum.GetValues(typeof(EUserLevel));
         foreach(var role in roles)
         {

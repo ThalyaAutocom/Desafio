@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace Desafio.API;
 
 [ApiController]
-[Route("[controller]")]
+[Route("v{version:apiVersion}/[controller]")]
 public abstract class DesafioControllerBase : ControllerBase
 {
     protected readonly IError _error;

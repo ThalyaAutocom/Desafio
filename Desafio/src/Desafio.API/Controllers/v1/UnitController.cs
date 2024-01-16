@@ -15,11 +15,12 @@ public class UnitController : DesafioControllerBase
 
     #region Get
     /// <summary>
-    /// Select Unit by Acronym
+    /// Retornar unidade por Símbolo de unidade de Medida
     /// </summary>
-    /// <remarks>Searchs an especifc unit on database, using its acronym</remarks>
+    /// <remarks>Retorna uma unidade específica, pesquisando por seu símbolo de unidade de medida</remarks>
     /// <param name="acronym"></param>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-acronym")]
     public async Task<ActionResult<UnitResponse>> GetUnitAsync(string acronym)
     {
@@ -30,11 +31,12 @@ public class UnitController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Select Unit by Short Id
+    /// Retornar unidade por Short Id
     /// </summary>
-    /// <remarks>Searchs an especific unit on database, using its Short Id</remarks>
+    /// <remarks>Retorna uma unidade específica, pesquisando por seu Short Id</remarks>
     /// <param name="shortId"></param>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-short-id")]
     public async Task<ActionResult<UnitResponse>> GetUnitByShortIdAsync(string shortId)
     {
@@ -45,10 +47,11 @@ public class UnitController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Select all Units
+    /// Retornar todas as unidades
     /// </summary>
-    /// <remarks>Searchs all units registered in database</remarks>
+    /// <remarks>Retorna todas as unidades cadastradas</remarks>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all")]
     public async Task<ActionResult<IEnumerable<UnitResponse>>> GetAllUnitSAsync()
     {
@@ -61,9 +64,9 @@ public class UnitController : DesafioControllerBase
 
     #region Post
     /// <summary>
-    /// Insert Unit
+    /// Cadastrar Unidade
     /// </summary>
-    /// <remarks>Inserts one unit on database</remarks>
+    /// <remarks>Cadastra uma unidade</remarks>
     /// <param name="unitRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -80,9 +83,9 @@ public class UnitController : DesafioControllerBase
 
     #region Put
     /// <summary>
-    /// Update Unit
+    /// Atualizar unidade
     /// </summary>
-    /// <remarks>Updates an unit information</remarks>
+    /// <remarks>Atualiza informações de uma unidade</remarks>
     /// <param name="unitRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -100,9 +103,9 @@ public class UnitController : DesafioControllerBase
 
     #region Delete
     /// <summary>
-    /// Delete Unit
+    /// Ecluir Unidade
     /// </summary>
-    /// <remarks>Removes an especific unit from the database</remarks>
+    /// <remarks>Exclui um cadastro de unidade</remarks>
     /// <param name="acronym"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]

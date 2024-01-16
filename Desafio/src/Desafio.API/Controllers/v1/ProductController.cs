@@ -15,11 +15,12 @@ public class ProductController : DesafioControllerBase
 
     #region Get
     /// <summary>
-    /// Select Product By Id
+    /// Retornar produto por Id
     /// </summary>
-    /// <remarks>Searchs an especific product on database, using its Id</remarks>
+    /// <remarks>Retorna um produto específico, pesquisando por seu Id</remarks>
     /// <param name="id"></param>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-id")]
     public async Task<ActionResult<ProductResponse>> GetProductAsync(Guid id)
     {
@@ -29,10 +30,11 @@ public class ProductController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Select all Products
+    /// Retornar todos os produtos
     /// </summary>
-    /// <remarks>Searchs all products registered in database</remarks>
+    /// <remarks>Retorna todos os produtos cadastrados</remarks>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all")]
     public async Task<ActionResult<IEnumerable<ProductResponse>>> GetAllProductsAsync()
     {
@@ -43,10 +45,11 @@ public class ProductController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Select all Sellable Products 
+    /// Retornar todos os produtos vendáveis 
     /// </summary>
-    /// <remarks>Searchs all products that are available for sale</remarks>
+    /// <remarks>Retorna todos os produtos que estão com a propriedade "sellable" setadas como "true"</remarks>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-sellable")]
     public async Task<ActionResult<IEnumerable<ProductResponse>>> GetAllSalabeProductsAsync()
     {
@@ -56,11 +59,12 @@ public class ProductController : DesafioControllerBase
         return CustomResponseList(result);
     }
     /// <summary>
-    /// Select Product by Short Id
+    /// Retornar produtos por Short Id
     /// </summary>
-    /// <remarks>Searchs an especific product on database, using its Short Id</remarks>
+    /// <remarks>Retorna um produto específico, pesquisando por seu Short Id</remarks>
     /// <param name="shortId"></param>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-short-id")]
     public async Task<ActionResult<ProductResponse>> GetProductByShortIdAsync(string shortId)
     {
@@ -72,9 +76,9 @@ public class ProductController : DesafioControllerBase
 
     #region Post
     /// <summary>
-    /// Insert Product
+    /// Cadastrar produto
     /// </summary>
-    /// <remarks>Inserts one product on database</remarks>
+    /// <remarks>Cadastra um produto</remarks>
     /// <param name="productRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -91,9 +95,9 @@ public class ProductController : DesafioControllerBase
 
     #region Put
     /// <summary>
-    /// Update Product
+    /// Atualizar produto
     /// </summary>
-    /// <remarks>Updates a product information</remarks>
+    /// <remarks>Atualiza informações de um produto</remarks>
     /// <param name="productRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -108,9 +112,9 @@ public class ProductController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Update Enable Property
+    /// Atualiza propriedade "Enable" (Ativo)
     /// </summary>
-    /// <remarks>Updates only the Enable property</remarks>
+    /// <remarks>Atualiza somente a propriedade "enable", indicando se o produto está ativo ou não</remarks>
     /// <param name="productRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -125,9 +129,9 @@ public class ProductController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Update Sellable property
+    /// Atualiza propriedade "Sellable" (Vendável)
     /// </summary>
-    /// <remarks>Updates only the Sellable property. This property indicates that the product is able to be selled</remarks>
+    /// <remarks>Atualiza somente a propriedade "sellable", indicando se o produto está disponível ou não para venda</remarks>
     /// <param name="productRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -144,9 +148,9 @@ public class ProductController : DesafioControllerBase
 
     #region Delete
     /// <summary>
-    /// Delete product
+    /// Excluir Produto
     /// </summary>
-    /// <remarks>Removes an especifc product prom the database</remarks>
+    /// <remarks>Exclui um cadastro de produto</remarks>
     /// <param name="id"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]

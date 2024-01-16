@@ -15,11 +15,12 @@ public class PersonController : DesafioControllerBase
 
     #region Get
     /// <summary>
-    /// Select Person By Id
+    /// Retornar pessoa por Id
     /// </summary>
-    /// <remarks>Searchs an especific person on database, using their Id</remarks>
+    /// <remarks>Retorna uma pessoa específica, pesquisando por seu Id</remarks>
     /// <param name="id"></param>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-person-by-id")]
     public async Task<ActionResult<PersonResponse>> GetPersonAsync(Guid id)
     {
@@ -29,10 +30,11 @@ public class PersonController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Select all People
+    /// Retornar todas as pessoas
     /// </summary>
-    /// <remarks>Searchs all people registered in database</remarks>
+    /// <remarks>Retorna todas as pessoas cadastradas</remarks>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-person")]
     public async Task<ActionResult<PersonResponse>> GetAllPerson()
     {
@@ -42,11 +44,12 @@ public class PersonController : DesafioControllerBase
 
     }
     /// <summary>
-    /// Select Person by Short Id
+    /// Retornar pessoa por Short Id
     /// </summary>
-    /// <remarks>Searchs an especific person on database, using their Short Id</remarks>
+    /// <remarks>Retorna uma pessoa específica, pesquisando por seu Short Id</remarks>
     /// <param name="shortId"></param>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-short-id")]
     public async Task<ActionResult<PersonResponse>> GetPersonByShortIdAsync(string shortId)
     {
@@ -56,10 +59,11 @@ public class PersonController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Select all Clients
+    /// Retornar todos os clientes
     /// </summary>
-    /// <remarks>Searchs all clients registered in database. Clients are the ones who has the propertie CanBuy sets as true</remarks>
+    /// <remarks>Retorna todas as pessoas cadastradas. Clientes são todas as pessoas que possuem a propriedade "CanBuy" setadas como "true"</remarks>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-clients")]
     public async Task<ActionResult<PersonResponse>> GetAllClients()
     {
@@ -70,11 +74,12 @@ public class PersonController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Select Client by Id
+    /// Retornar cliente por Id
     /// </summary>
-    /// <remarks>Searchs an especific client on database, using their Id. Clients are the ones who has the propertie CanBuy sets as true</remarks>
+    /// <remarks>Retorna uma pessoa específica, pesquisando por seu Id. Clientes são todas as pessoas que possuem a propriedade "CanBuy" setadas como "true"</remarks>
     /// <param name="id"></param>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-client-by-id")]
     public async Task<ActionResult<PersonResponse>> GetClientAsync(Guid id)
     {
@@ -86,9 +91,9 @@ public class PersonController : DesafioControllerBase
 
     #region Post
     /// <summary>
-    /// Insert Person
+    /// Cadastrar Pessoa
     /// </summary>
-    /// <remarks>Inserts one person on database</remarks>
+    /// <remarks>Cadastra uma pessoa</remarks>
     /// <param name="personRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -106,9 +111,9 @@ public class PersonController : DesafioControllerBase
     #region Put
 
     /// <summary>
-    /// Update Person
+    /// Atualizar pessoa
     /// </summary>
-    /// <remarks>Updates a person information</remarks>
+    /// <remarks>Atualiza informações de uma pessoa</remarks>
     /// <param name="personRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -123,9 +128,9 @@ public class PersonController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Update Enable Property
+    /// Atualizar propriedade "Enable" (Ativo)
     /// </summary>
-    /// <remarks>Updates only the Enable property</remarks>
+    /// <remarks>Atualiza somente a propriedade "enable", indicando se a pessoa está ativa ou não</remarks>
     /// <param name="personRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -140,9 +145,9 @@ public class PersonController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Update CanBuy property
+    /// Atualizar propriedade "CanBuy" (Cliente)
     /// </summary>
-    /// <remarks>Updates only the CanBuy property. This property indicates that the person is a client</remarks>
+    /// <remarks>Atualiza somente a propriedade "CanBuy", indicando que a pessoa é do tipo Cliente</remarks>
     /// <param name="personRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -159,9 +164,9 @@ public class PersonController : DesafioControllerBase
 
     #region Delete
     /// <summary>
-    /// Delete person
+    /// Excluir Pessoa
     /// </summary>
-    /// <remarks>Removes an especific person from the database</remarks>
+    /// <remarks>Exclui um cadastro de pessoa</remarks>
     /// <param name="id"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -175,17 +180,4 @@ public class PersonController : DesafioControllerBase
         return CustomResponse(result);
     }
     #endregion
-
-
-
-
-
-
-
-
-
-
-   
-
-    
 }

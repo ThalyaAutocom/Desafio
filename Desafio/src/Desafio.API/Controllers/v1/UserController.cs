@@ -17,10 +17,11 @@ public class UserController : DesafioControllerBase
 
     #region Get
     /// <summary>
-    /// Select all Users
+    /// Retorna todos os usuários
     /// </summary>
-    /// <remarks>Searchs all users registered in database</remarks>
+    /// <remarks>Retorna todos os usuários cadastrados</remarks>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-users")]
     public async Task<ActionResult<UserResponse>> GetAllUsers()
     {
@@ -32,10 +33,11 @@ public class UserController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Select all Administrator Users
+    /// Retorna todos os Administradores
     /// </summary>
-    /// <remarks>Searchs all users registered in database that has an Administrator Role</remarks>
+    /// <remarks>Retorna todos os usuários do tipo Administrador</remarks>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-administrator-users")]
     public async Task<ActionResult<UserResponse>> GetAllAdministratorUsers()
     {
@@ -47,10 +49,11 @@ public class UserController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Select all Manager Users
+    /// Retorna todos os Gerentes
     /// </summary>
-    /// <remarks>Searchs all users registered in database that has a Manager Role</remarks>
+    /// <remarks>Retorna todos os usuários do tipo Gerente</remarks>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-manager-users")]
     public async Task<ActionResult<UserResponse>> GetAllManagerUsers()
     {
@@ -62,10 +65,11 @@ public class UserController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Select all Seller Users
+    /// Retorna todos os Vendedores
     /// </summary>
-    /// <remarks>Searchs all users registered in database that has a Seller Role</remarks>
+    /// <remarks>Retorna todos os usuários do tipo Vendedor</remarks>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-seller-users")]
     public async Task<ActionResult<UserResponse>> GetAllSellerUsers()
     {
@@ -77,11 +81,12 @@ public class UserController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Select User by Short Id
+    /// Retornar usuário por Short Id
     /// </summary>
-    /// <remarks>Searchs an especific user on database, using their Short Id</remarks>
+    /// <remarks>Retorna um usuário específica, pesquisando por seu Short Id</remarks>
     /// <param name="shortId"></param>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-short-id")]
     public async Task<ActionResult<UserResponse>> GetUnitByShortIdAsync(string shortId)
     {
@@ -94,9 +99,9 @@ public class UserController : DesafioControllerBase
 
     #region Put
     /// <summary>
-    /// Update User
+    /// Atualizar usuário
     /// </summary>
-    /// <remarks>Updates an user information</remarks>
+    /// <remarks>Atualiza informações de um usuário</remarks>
     /// <param name="userRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -112,9 +117,9 @@ public class UserController : DesafioControllerBase
     }
 
     /// <summary>
-    /// Update Login
+    /// Atualizar Login
     /// </summary>
-    /// <remarks>Updates the password of an especific user</remarks>
+    /// <remarks>Atualiza senha do usuário</remarks>
     /// <param name="userRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR")]
@@ -132,9 +137,9 @@ public class UserController : DesafioControllerBase
 
     #region Delete
     /// <summary>
-    /// Delete User
+    /// Excluir usuário
     /// </summary>
-    /// <remarks>Removes an especific user from the database</remarks>
+    /// <remarks>Exclui um cadastro de usuário</remarks>
     /// <param name="email"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]

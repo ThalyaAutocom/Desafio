@@ -1,8 +1,6 @@
 ﻿using Desafio.Application;
-using Desafio.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Desafio.API;
 [ApiVersion("1.0")]
@@ -19,9 +17,10 @@ public class AuthorizationController : DesafioControllerBase
     /// <summary>
     /// Create User
     /// </summary>
-    /// <remarks>Create a new User on database</remarks>
+    /// <remarks>Cria um novo usuário</remarks>
     /// <param name="registerUserRequest"></param>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpPost("register-user")]
     public async Task<ActionResult<RegisterUserResponse>> RegisterUserAsync(RegisterUserRequest registerUserRequest)
     {
@@ -35,7 +34,7 @@ public class AuthorizationController : DesafioControllerBase
     /// <summary>
     /// Login User 
     /// </summary>
-    /// <remarks>Login using E-mail and Password</remarks>
+    /// <remarks>Login de Usuário</remarks>
     /// <param name="loginUserRequest"></param>
     /// <returns></returns>
     [HttpPost("login")]
@@ -53,8 +52,9 @@ public class AuthorizationController : DesafioControllerBase
     /// <summary>
     /// Select User Roles
     /// </summary>
-    /// <remarks>Select every user on database, including their roles</remarks>
+    /// <remarks>Seleciona todos os usuários cadastrados, informando suas permissões</remarks>
     /// <returns></returns>
+    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-users-roles")]
     public async Task<ActionResult<UserResponse>> GetAllUsersRoles()
     {
