@@ -29,6 +29,7 @@ internal static class DbMigrationHelpers
 
         var identityContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
         var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
         
         if (env.IsDevelopment())
         {
@@ -41,12 +42,13 @@ internal static class DbMigrationHelpers
             //appDbContext.Database.EnsureCreated();
 
             //Usar caso for necessário criar dados iniciais
-            await EnsureSeedUserLevel(identityContext, appDbContext);
+            await EnsureSeedUserLevel(identityContext, userManager);
         }
     }
 
-    internal static async Task EnsureSeedUserLevel(IdentityContext identityContext, AppDbContext appDbContext)
-    { 
+    internal static async Task EnsureSeedUserLevel(IdentityContext identityContext, UserManager<User> userManager)
+    {
+        #region Roles
         EUserLevel[] roles = (EUserLevel[])Enum.GetValues(typeof(EUserLevel));
         foreach(var role in roles)
         {
@@ -62,6 +64,28 @@ internal static class DbMigrationHelpers
             }
 
         }
+        #endregion
+
+        #region User
+        if (!userManager.Users.Any())
+        {
+            User user = new()
+            {
+                Name = "ADMINISTRATOR",
+                NickName = "ADMINISTRATOR",
+                UserName = "admin@admin.com"
+            };
+
+            var result = await userManager.CreateAsync(user, "Administrator2024@");
+            if (!result.Succeeded) throw new Exception("Não foi possível cadastrar um usuário padrão");
+
+            //desbloquear usuário já que não terá e-mail de confirmação
+            await userManager.SetLockoutEnabledAsync(user, false);
+
+            var resultRole = await userManager.AddToRoleAsync(user, "ADMINISTRATOR");
+            if (!result.Succeeded) throw new Exception("Não foi possível vincular uma permissão ao usuário padrão cadastrado");
+        }
+        #endregion
 
         await identityContext.SaveChangesAsync();
     }

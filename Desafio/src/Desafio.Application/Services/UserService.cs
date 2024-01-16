@@ -17,7 +17,6 @@ public class UserService : ServiceBase, IUserService
     private readonly UserManager<User> _userManager;
     private readonly JwtOptions _jwtOptions;
     private readonly IMapper _mapper;
-    private readonly IError _error;
 
     public UserService(SignInManager<User> signInManager, 
                            UserManager<User> userManager,
@@ -29,7 +28,6 @@ public class UserService : ServiceBase, IUserService
         _userManager = userManager;
         _jwtOptions = jwtOptions.Value;
         _mapper = mapper;
-        _error = error;
     }
     #region Controller Methods
     public async Task<LoginUserResponse> LoginAsync(LoginUserRequest loginUserRequest)
@@ -44,25 +42,6 @@ public class UserService : ServiceBase, IUserService
 
     public async Task<RegisterUserResponse> RegisterUserAsync(RegisterUserRequest registerUserRequest, ClaimsPrincipal user)
     {
-        //verificar se existe usuário na base
-        if(!HasAnyUserRegisteredOnDatabase() && registerUserRequest.UserLevel != EUserLevel.Administrator)
-        {
-            Notificate("There must be at least one administrator user before entering any other information on the database.");
-            return null;
-        }
-
-        if (!user.Identity.IsAuthenticated && HasAnyUserRegisteredOnDatabase())
-        {
-            Notificate("No user is authenticated.");
-            return null;
-        }
-
-        if (!user.IsInRole("ADMINISTRATOR") && HasAnyUserRegisteredOnDatabase())
-        {
-            Notificate("Only administrator user can register another user.");
-            return null;
-        }
-
         var identityUser = _mapper.Map<User>(registerUserRequest);
 
         identityUser.EmailConfirmed = true;
