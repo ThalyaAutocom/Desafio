@@ -76,10 +76,12 @@ internal static class DbMigrationHelpers
                 UserName = "admin@admin.com",
                 Email = "admin@admin.com",
                 NormalizedEmail = "ADMIN@ADMIN.COM",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Enable = true,
+                UserLevel = EUserLevel.Administrator
             };
 
-            var result = await userManager.CreateAsync(user, "Administrator2024@");
+            var result = await userManager.CreateAsync(user, "Admin2024@");
             if (!result.Succeeded) throw new Exception("Não foi possível cadastrar um usuário padrão");
 
             //desbloquear usuário já que não terá e-mail de confirmação

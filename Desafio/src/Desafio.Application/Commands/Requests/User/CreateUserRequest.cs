@@ -6,10 +6,15 @@ namespace Desafio.Application;
 public class CreateUserRequest : IRequest<CreateUserResponse>
 {
     private string _document;
-    private string _userName;
-
     
-    public string Email { get; set; }
+    public string Email 
+    { 
+        get => UserName;
+        set 
+        {
+            UserName = value;
+        } 
+    }
     public string Password { get; set; } 
     public string ConfirmPassword { get; set; } 
     public EUserLevel UserLevel { get; set; } = EUserLevel.Administrator;
@@ -20,9 +25,5 @@ public class CreateUserRequest : IRequest<CreateUserResponse>
         get => _document;
         set => _document = value.GetOnlyDocumentNumber();
     }
-    private string UserName
-    {
-        get => _userName;
-        set => _userName = Email;
-    }
+    public string UserName { get; private set; }
 }

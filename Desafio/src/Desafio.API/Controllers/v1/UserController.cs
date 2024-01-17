@@ -23,9 +23,9 @@ public class UserController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-users")]
-    public async Task<ActionResult<UserResponse>> GetAllUsers()
+    public async Task<ActionResult<GetUserResponse>> GetAllUsers()
     {
-        IEnumerable<UserResponse> result = await _userService.GetAllAsync(false);
+        var result = await _userService.GetAllAsync();
 
         if (result.Count() == 0) return CustomResponse(result, "No users were found.");
 
@@ -39,9 +39,9 @@ public class UserController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-administrator-users")]
-    public async Task<ActionResult<UserResponse>> GetAllAdministratorUsers()
+    public async Task<ActionResult<GetUserResponse>> GetAllAdministratorUsers()
     {
-        IEnumerable<UserResponse> result = await _userService.GetAllUsersByRoleAsync(EUserLevel.Administrator.ToString().ToUpper());
+        IEnumerable<GetUserResponse> result = await _userService.GetAllUsersByRoleAsync(EUserLevel.Administrator.ToString().ToUpper());
 
         if (result.Count() == 0) return CustomResponse(result, "No administrator users were found.");
 
@@ -55,9 +55,9 @@ public class UserController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-manager-users")]
-    public async Task<ActionResult<UserResponse>> GetAllManagerUsers()
+    public async Task<ActionResult<GetUserResponse>> GetAllManagerUsers()
     {
-        IEnumerable<UserResponse> result = await _userService.GetAllUsersByRoleAsync(EUserLevel.Manager.ToString().ToUpper());
+        IEnumerable<GetUserResponse> result = await _userService.GetAllUsersByRoleAsync(EUserLevel.Manager.ToString().ToUpper());
 
         if (result.Count() == 0) return CustomResponse(result, "No manager users were found.");
 
@@ -71,9 +71,9 @@ public class UserController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-seller-users")]
-    public async Task<ActionResult<UserResponse>> GetAllSellerUsers()
+    public async Task<ActionResult<GetUserResponse>> GetAllSellerUsers()
     {
-        IEnumerable<UserResponse> result = await _userService.GetAllUsersByRoleAsync(EUserLevel.Seller.ToString().ToUpper());
+        IEnumerable<GetUserResponse> result = await _userService.GetAllUsersByRoleAsync(EUserLevel.Seller.ToString().ToUpper());
 
         if (result.Count() == 0) return CustomResponse(result, "No seller users were found.");
 
@@ -88,9 +88,9 @@ public class UserController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-short-id")]
-    public async Task<ActionResult<UserResponse>> GetUnitByShortIdAsync(string shortId)
+    public async Task<ActionResult<GetUserResponse>> GetUnitByShortIdAsync(string shortId)
     {
-        UserResponse result = await _userService.GetByShortIdAsync(shortId);
+        GetUserResponse result = await _userService.GetByShortIdAsync(shortId);
 
         return CustomResponse(result);
 
@@ -106,11 +106,11 @@ public class UserController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPut("update-user-informations")]
-    public async Task<ActionResult<UserResponse>> UpdateUserAsync(UpdateUserRequest userRequest)
+    public async Task<ActionResult<GetUserResponse>> UpdateUserAsync(UpdateUserRequest userRequest)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-        UserResponse result = await _userService.UpdateAsync(userRequest);
+        GetUserResponse result = await _userService.UpdateAsync(userRequest);
 
         return CustomResponse(result);
 
@@ -124,11 +124,11 @@ public class UserController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR")]
     [HttpPut("update-login")]
-    public async Task<ActionResult<UserResponse>> UpdateLoginUserAsync(UpdateLoginUserRequest userRequest)
+    public async Task<ActionResult<GetUserResponse>> UpdateLoginUserAsync(UpdateLoginUserRequest userRequest)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-        UserResponse result = await _userService.UpdateAsync(userRequest);
+        GetUserResponse result = await _userService.UpdateAsync(userRequest);
 
         return CustomResponse(result);
 
@@ -144,11 +144,11 @@ public class UserController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpDelete("delete-user")]
-    public async Task<ActionResult<UserResponse>> DeleteUserAsync(string email)
+    public async Task<ActionResult<GetUserResponse>> DeleteUserAsync(string email)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-        UserResponse result = await _userService.RemoveAsync(email);
+        GetUserResponse result = await _userService.RemoveAsync(email);
 
         return CustomResponse(result);
 

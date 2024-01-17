@@ -35,6 +35,8 @@ namespace Desafio.Identity.Migrations
                     NickName = table.Column<string>(type: "text", nullable: true),
                     Document = table.Column<string>(type: "text", nullable: true),
                     ShortId = table.Column<string>(type: "text", nullable: true),
+                    Enable = table.Column<bool>(type: "boolean", nullable: false),
+                    UserLevel = table.Column<int>(type: "integer", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),

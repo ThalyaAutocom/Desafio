@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Desafio.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240107160703_IdentityContext_V_00_01")]
+    [Migration("20240117205927_IdentityContext_V_00_01")]
     partial class IdentityContext_V_00_01
     {
         /// <inheritdoc />
@@ -45,6 +45,9 @@ namespace Desafio.Identity.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Enable")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
@@ -84,6 +87,9 @@ namespace Desafio.Identity.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("UserLevel")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)

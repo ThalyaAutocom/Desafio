@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Desafio.Identity;
 
@@ -17,7 +19,6 @@ public class UserService : ServiceBase, IUserService
     private readonly UserManager<User> _userManager;
     private readonly JwtOptions _jwtOptions;
     private readonly IMapper _mapper;
-    private readonly IError _error;
 
     public UserService(SignInManager<User> signInManager, 
                            UserManager<User> userManager,
@@ -29,7 +30,6 @@ public class UserService : ServiceBase, IUserService
         _userManager = userManager;
         _jwtOptions = jwtOptions.Value;
         _mapper = mapper;
-        _error = error;
     }
     #region Controller Methods
     public async Task<LoginUserResponse> LoginAsync(LoginUserRequest loginUserRequest)
@@ -42,23 +42,21 @@ public class UserService : ServiceBase, IUserService
         return null;
     }
 
-    public async Task<CreateUserResponse> InsertUserAsync(CreateUserRequest registerUserRequest, ClaimsPrincipal user)
+    public async Task<CreateUserResponse> InsertUserAsync(CreateUserRequest registerUserRequest)
     {
         var identityUser = _mapper.Map<User>(registerUserRequest);
 
         identityUser.EmailConfirmed = true;
-
-        //if (!await ExecuteValidationIdentityAsync(new UserValidator(), identityUser))
-        //{
-        //    return null;
-        //}
-
         var result = await _userManager.CreateAsync(identityUser, registerUserRequest.Password);
 
         if (!result.Succeeded)
         {
-            Notificate(result.Errors);
-            return null;
+            string errorMessage = string.Empty;
+            foreach (var error in result.Errors)
+            {
+                errorMessage += $"{error.Description}\r\n";
+            }
+            throw new ValidationException(errorMessage);
         }
 
         //desbloquear usuário já que não terá e-mail de confirmação
@@ -72,27 +70,12 @@ public class UserService : ServiceBase, IUserService
         return userRegisterResponse;
     }
 
-    public async Task<IEnumerable<UserResponse>> GetAllAsync(bool selectRoles)
+    public async Task<IEnumerable<User>> GetAllAsync()
     {
-        IEnumerable<User> users = await _userManager.Users.ToListAsync();
-
-        var usersRoles = users.Select(async user => new UserResponse
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Document = user.Document,
-            Name = user.Name,
-            NickName = user.NickName,
-            UserName = user.Name,
-            ShortId = user.ShortId,
-            Roles = selectRoles ? await _userManager.GetRolesAsync(user).ConfigureAwait(true) : null
-        });
-
-        var mappedUsers = await Task.WhenAll(usersRoles);
-        return mappedUsers;
+        return await _userManager.Users.ToListAsync();
     }
 
-    public async Task<UserResponse> GetByShortIdAsync(string shortId)
+    public async Task<GetUserResponse> GetByShortIdAsync(string shortId)
     {
         var user = await _userManager.Users.FirstOrDefaultAsync(x => x.ShortId == shortId);
 
@@ -102,31 +85,31 @@ public class UserService : ServiceBase, IUserService
             return null;
         }
         
-        UserResponse userResponse = _mapper.Map<UserResponse>(user);
-        userResponse.Roles = _userManager.GetRolesAsync(user).Result;
+        GetUserResponse userResponse = _mapper.Map<GetUserResponse>(user);
+        //userResponse.Roles = _userManager.GetRolesAsync(user).Result;
 
         return userResponse;
     }
 
-    public async Task<IEnumerable<UserResponse>> GetAllUsersByRoleAsync(string role)
+    public async Task<IEnumerable<GetUserResponse>> GetAllUsersByRoleAsync(string role)
     {
         IEnumerable<User> users = await _userManager.GetUsersInRoleAsync(role);
 
-        var usersRoles = users.Select(user => new UserResponse
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Document = user.Document,
-            Name = user.Name,
-            NickName = user.NickName,
-            UserName = user.Name,
-            ShortId = user.ShortId,
-            Roles = _userManager.GetRolesAsync(user).Result
-        });
+        //var usersRoles = users.Select(user => new GetUserResponse
+        //{
+        //    Id = user.Id,
+        //    Email = user.Email,
+        //    Document = user.Document,
+        //    Name = user.Name,
+        //    NickName = user.NickName,
+        //    UserName = user.Name,
+        //    ShortId = user.ShortId,
+        //    Roles = _userManager.GetRolesAsync(user).Result
+        //});
 
-        return usersRoles;
+        return null;
     }
-    public async Task<UserResponse> UpdateAsync(UpdateUserRequest userRequest)
+    public async Task<GetUserResponse> UpdateAsync(UpdateUserRequest userRequest)
     {
         var existingUser = await _userManager.FindByEmailAsync(userRequest.Email);
         
@@ -146,14 +129,14 @@ public class UserService : ServiceBase, IUserService
         await _userManager.RemoveFromRoleAsync(existingUser, existingRole.FirstOrDefault());
         await _userManager.AddToRoleAsync(existingUser, newRole);
 
-        var userResponse = _mapper.Map<UserResponse>(existingUser);
+        var userResponse = _mapper.Map<GetUserResponse>(existingUser);
 
-        userResponse.Roles.Add(newRole);
+       // userResponse.Roles.Add(newRole);
 
         return userResponse;
 
     }
-    public async Task<UserResponse> UpdateAsync (UpdateLoginUserRequest userRequest)
+    public async Task<GetUserResponse> UpdateAsync (UpdateLoginUserRequest userRequest)
     {
         var existingUser = await _userManager.FindByEmailAsync(userRequest.Email);
 
@@ -166,7 +149,7 @@ public class UserService : ServiceBase, IUserService
         var result = await _userManager.ChangePasswordAsync(existingUser, userRequest.CurrentPassword, userRequest.NewPassword);
         if(result.Succeeded) 
         {
-            var userResponse = _mapper.Map<UserResponse>(existingUser);
+            var userResponse = _mapper.Map<GetUserResponse>(existingUser);
 
             return userResponse;
         }
@@ -176,7 +159,7 @@ public class UserService : ServiceBase, IUserService
         
     }
 
-    public async Task<UserResponse> RemoveAsync(string email)
+    public async Task<GetUserResponse> RemoveAsync(string email)
     {
         var existingUser = await _userManager.FindByEmailAsync(email);
         if(existingUser == null)
@@ -226,10 +209,8 @@ public class UserService : ServiceBase, IUserService
 
         return new LoginUserResponse
         {
-            Email = email,
             Token = encodedToken,
             Expiration = TimeSpan.FromHours(_jwtOptions.ExpirationHour).TotalMinutes,
-            ShortId = user.ShortId
         };
     }
 
@@ -242,32 +223,19 @@ public class UserService : ServiceBase, IUserService
     #endregion
 
     #region Validations Methods
-    public async Task<bool> EmailAlreadyExisistsAsync(string email)
+    public async Task<bool> EmailAlreadyUsed(string email)
     {
-        return await _userManager.Users.FirstOrDefaultAsync(x => x.Email == email) != null;
+        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email) != null;
     }
 
-    public async Task<bool> DocumentAlreadyExisistsAsync(string document)
+    public async Task<bool> DocumentAlreadyUsed(string document)
     {
-        return await _userManager.Users.FirstOrDefaultAsync(x => x.Document == document) != null;
+        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == document) != null;
     }
 
-    public bool IsValidDocument(string documentNumber)
+    public async Task<bool> NickNameAlreadyUsed(string nickName)
     {
-        bool validLength = documentNumber.Length == 11 || documentNumber.Length == 14;
-
-        if (string.IsNullOrWhiteSpace(documentNumber) || HasRepeatedValues(documentNumber) || !validLength)
-        {
-            return false;
-        }
-
-        return true;
-
-    }
-
-    public bool HasAnyUserRegisteredOnDatabase()
-    {
-        return _userManager.GetUsersInRoleAsync("ADMINISTRATOR").Result.Count > 0;
+        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == nickName) != null;
     }
     #endregion
 }

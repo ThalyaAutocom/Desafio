@@ -1,34 +1,20 @@
-﻿using AutoMapper;
-using Desafio.Domain;
-using Desafio.Infrastructure;
-using FluentValidation;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using MediatR;
 
 namespace Desafio.Application;
 public class CreateUserHandler : IRequestHandler<CreateUserRequest, CreateUserResponse>
 {
-    private readonly IMapper _mapper;
-    private readonly AppDbContext _appDbContext;
+    private readonly IUserService _userService;
 
-    public CreateUserHandler(IMapper mapper, AppDbContext appDbContext)
+    public CreateUserHandler(IUserService userService)
     {
-        _mapper = mapper;
-        _appDbContext = appDbContext;
+        _userService = userService;
     }
 
     public async Task<CreateUserResponse> Handle(CreateUserRequest request, CancellationToken cancellationToken)
     {
-        var identityUser = _mapper.Map<User>(request);
+        var result = await _userService.InsertUserAsync(request);
 
-        //inserir cliente
-        //retorna resultado 
-
-        return new CreateUserResponse
-        {
-            Id = Guid.NewGuid().ToString(),
-            ShortId = string.Empty
-        };
+        return result;
     }
 }
 

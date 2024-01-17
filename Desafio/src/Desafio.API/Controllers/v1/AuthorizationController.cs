@@ -1,19 +1,17 @@
 ﻿using Desafio.Application;
+using Desafio.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace Desafio.API;
 [ApiVersion("1.0")]
 public class AuthorizationController : DesafioControllerBase
 {
-    private IUserService _userService;
-    private IMediator _mediator;
-
-    public AuthorizationController(IUserService identityService, IError error, IMediator mediator) : base(error)
+    public AuthorizationController(IError error) : base(error)
     {
-        _userService = identityService;
-        _mediator = mediator;
+
     }
 
     #region Post
@@ -21,33 +19,33 @@ public class AuthorizationController : DesafioControllerBase
     /// Create User
     /// </summary>
     /// <remarks>Cria um novo usuário</remarks>
+    /// <param name="mediator"></param>
     /// <param name="createUserRequest"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpPost("register-user")]
-    public async Task<CreateUserResponse> RegisterUserAsync(CreateUserRequest createUserRequest)
+    public async Task<ActionResult<CreateUserResponse>> RegisterUserAsync(ISender mediator, 
+        CreateUserRequest createUserRequest,
+        CancellationToken cancellationToken = default)
     {
-        //if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-        //CreateUserResponse result = await _userService.InsertUserAsync(createUserRequest, User);
-
-        return await _mediator.Send(createUserRequest);
+        return await mediator.Send(createUserRequest, cancellationToken);
     }
 
     /// <summary>
     /// Login User 
     /// </summary>
     /// <remarks>Login de Usuário</remarks>
+    /// <param name="mediator"></param>
     /// <param name="loginUserRequest"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("login")]
-    public async Task<ActionResult<LoginUserResponse>> LoginUserAsync(LoginUserRequest loginUserRequest)
+    public async Task<ActionResult<LoginUserResponse>> LoginUserAsync(ISender mediator,
+        LoginUserRequest loginUserRequest,
+        CancellationToken cancellationToken = default)
     {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-        LoginUserResponse result = await _userService.LoginAsync(loginUserRequest);
-
-        return CustomResponse(result);
+        return await mediator.Send(loginUserRequest, cancellationToken);
     }
     #endregion
 
@@ -59,13 +57,12 @@ public class AuthorizationController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-users-roles")]
-    public async Task<ActionResult<UserResponse>> GetAllUsersRoles()
+    public async Task<ActionResult<GetUserResponse>> GetAllUsersRoles(ISender mediator,
+        bool enable, 
+        EUserLevel? userLevel,
+        CancellationToken cancellationToken)
     {
-        var result = await _userService.GetAllAsync(true);
-
-        if (result.Count() == 0) return CustomResponse(result, "No users were found.");
-
-        return CustomResponse(result);
+        return await mediator.Send(new GetUserRequest(enable, userLevel), cancellationToken);
     }
     #endregion
 }
