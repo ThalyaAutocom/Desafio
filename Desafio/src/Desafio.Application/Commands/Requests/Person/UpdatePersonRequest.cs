@@ -3,9 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Desafio.Application;
 
-public class PersonRequest
+public class UpdatePersonRequest
 {
     private string _document;
+
     public Guid Id { get; set; } = Guid.Empty;
     public string Name { get; set; } = string.Empty;
     public string Document

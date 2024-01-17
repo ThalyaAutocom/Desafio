@@ -16,8 +16,8 @@ public class AutoMapperConfiguration : Profile
         #region User
         CreateMap<User, LoginUserRequest>().ReverseMap();
         CreateMap<User, LoginUserResponse>().ReverseMap();
-        CreateMap<User, RegisterUserRequest>().ReverseMap();
-        CreateMap<User, RegisterUserResponse>().ReverseMap();
+        CreateMap<User, CreateUserRequest>().ReverseMap();
+        CreateMap<User, CreateUserResponse>().ReverseMap();
         CreateMap<User, UserResponse>().ReverseMap();
         CreateMap<User, UpdateUserRequest>().ReverseMap();
         CreateMap<User, UpdateLoginUserRequest>().ReverseMap();
@@ -25,18 +25,14 @@ public class AutoMapperConfiguration : Profile
 
         #region Product
         CreateMap<Product, InsertProductRequest>().ReverseMap();
-        CreateMap<Product, ProductRequest>().ReverseMap();
+        CreateMap<Product, UpdateProductRequest>().ReverseMap();
         CreateMap<Product, ProductResponse>().ReverseMap();
-        CreateMap<Product, EnabledProductRequest>().ReverseMap();
-        CreateMap<Product, SellableProductRequest>().ReverseMap();
         #endregion
 
         #region Person
         CreateMap<Person, PersonResponse>().ReverseMap();
         CreateMap<Person, InsertPersonRequest>().ReverseMap();
-        CreateMap<Person, PersonRequest>().ReverseMap();
-        CreateMap<Person, EnabledPersonRequest>().ReverseMap();
-        CreateMap<Person, CanBuyPersonRequest>().ReverseMap();
+        CreateMap<Person, UpdatePersonRequest>().ReverseMap();
         #endregion
     }
 }

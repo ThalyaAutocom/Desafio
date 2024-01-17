@@ -1,4 +1,5 @@
 ﻿using Desafio.Application;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,10 +8,12 @@ namespace Desafio.API;
 public class AuthorizationController : DesafioControllerBase
 {
     private IUserService _userService;
+    private IMediator _mediator;
 
-    public AuthorizationController(IUserService identityService, IError error) : base(error)
+    public AuthorizationController(IUserService identityService, IError error, IMediator mediator) : base(error)
     {
         _userService = identityService;
+        _mediator = mediator;
     }
 
     #region Post
@@ -18,17 +21,17 @@ public class AuthorizationController : DesafioControllerBase
     /// Create User
     /// </summary>
     /// <remarks>Cria um novo usuário</remarks>
-    /// <param name="registerUserRequest"></param>
+    /// <param name="createUserRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpPost("register-user")]
-    public async Task<ActionResult<RegisterUserResponse>> RegisterUserAsync(RegisterUserRequest registerUserRequest)
+    public async Task<CreateUserResponse> RegisterUserAsync(CreateUserRequest createUserRequest)
     {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
+        //if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-        RegisterUserResponse result = await _userService.RegisterUserAsync(registerUserRequest, User);
+        //CreateUserResponse result = await _userService.InsertUserAsync(createUserRequest, User);
 
-        return CustomResponse(result);
+        return await _mediator.Send(createUserRequest);
     }
 
     /// <summary>

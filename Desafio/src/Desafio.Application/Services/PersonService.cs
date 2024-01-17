@@ -118,7 +118,7 @@ public class PersonService : ServiceBase, IPersonService
         return null;
     }
 
-    public async Task<PersonResponse> UpdateAsync(PersonRequest personRequest)
+    public async Task<PersonResponse> UpdateAsync(UpdatePersonRequest personRequest)
     {
         var existingperson = await _personRepository.GetByIdAsync(personRequest.Id);
 
@@ -140,39 +140,6 @@ public class PersonService : ServiceBase, IPersonService
         var personResponse = _mapper.Map<PersonResponse>(existingperson);
 
         return personResponse;
-    }
-
-    public async Task<PersonResponse> UpdateCanBuyPersonAsync(CanBuyPersonRequest personRequest)
-    {
-        var existingperson = await _personRepository.GetByIdAsync(personRequest.Id);
-
-        if (existingperson == null)
-        {
-            Notificate("No person was found.");
-            return null;
-        }
-        _mapper.Map(personRequest, existingperson);
-        await _personRepository.UpdateAsync(existingperson);
-
-        var personResponse = _mapper.Map<PersonResponse>(existingperson);
-
-        return personResponse;
-    }
-
-    public async Task<PersonResponse> UpdateEnablePersonAsync(EnabledPersonRequest personRequest)
-    {
-        var existingperson = await _personRepository.GetByIdAsync(personRequest.Id);
-
-        if (existingperson == null)
-        {
-            Notificate("The person was not found.");
-            return null;
-        }
-
-        _mapper.Map(personRequest, existingperson);
-        await _personRepository.UpdateAsync(existingperson);
-
-        return _mapper.Map<PersonResponse>(existingperson);
     }
     #endregion
 

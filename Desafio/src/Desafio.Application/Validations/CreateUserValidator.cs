@@ -1,18 +1,18 @@
 ﻿using Desafio.Domain;
 using FluentValidation;
+using MediatR;
 
 namespace Desafio.Application;
 
-public class UserValidator : AbstractValidator<User>
+public class CreateUserValidator : AbstractValidator<CreateUserRequest>
 {
-    private readonly IUserService _userService;
-
-    public UserValidator(IUserService userService)
+    public CreateUserValidator()
     {
-        _userService = userService;
 
         RuleFor(x => x.Email)
-            .NotEmpty().WithMessage("The field {PropertyName} is required.")
+            .NotEmpty()
+            .EmailAddress().WithMessage("Email Invalido")
+            .WithMessage("The field {PropertyName} is required.")
             .MustAsync(UniqueEmailAsync).WithMessage("The Email must be unique.");
 
         RuleFor(x => x.Document)
@@ -26,11 +26,11 @@ public class UserValidator : AbstractValidator<User>
     private async Task<bool> UniqueEmailAsync(string email, CancellationToken token)
     {
         // Verificar se existe cadastro desse e-mail
-        return !await _userService.EmailAlreadyExisistsAsync(email);
+        return true;
     }
     private async Task<bool> UniqueDocument(string document, CancellationToken token)
     {
         // Verificar se existe cadastro desse documento
-        return !await _userService.DocumentAlreadyExisistsAsync(document);
+        return true;
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Desafio.Domain;
-using System.ComponentModel.DataAnnotations;
+using MediatR;
 
 namespace Desafio.Application;
 
-public class RegisterUserRequest
+public class CreateUserRequest : IRequest<CreateUserResponse>
 {
     private string _document;
     private string _userName;
@@ -20,7 +20,7 @@ public class RegisterUserRequest
         get => _document;
         set => _document = value.GetOnlyDocumentNumber();
     }
-    private string UserName 
+    private string UserName
     {
         get => _userName;
         set => _userName = Email;

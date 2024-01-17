@@ -96,7 +96,7 @@ public class ProductService : ServiceBase, IProductService
         return null;
     }
 
-    public async Task<ProductResponse> UpdateAsync(ProductRequest productRequest)
+    public async Task<ProductResponse> UpdateAsync(UpdateProductRequest productRequest)
     {
         var existingProduct = await _productRepository.GetByIdAsync(productRequest.Id);
 
@@ -119,45 +119,6 @@ public class ProductService : ServiceBase, IProductService
 
         return productResponse;
     }
-
-    public async Task<ProductResponse> UpdateEnableProductAsync(EnabledProductRequest productRequest)
-    {
-        var existingProduct = await _productRepository.GetByIdAsync(productRequest.Id);
-
-        if (existingProduct == null)
-        {
-            Notificate("The product was not found.");
-            return null;
-        }
-
-        _mapper.Map(productRequest, existingProduct);
-
-        await _productRepository.UpdateAsync(existingProduct);
-
-        var productResponse = _mapper.Map<ProductResponse>(existingProduct);
-
-        return productResponse;
-    }
-
-    public async Task<ProductResponse> UpdateSellableProductAsync(SellableProductRequest productRequest)
-    {
-        var existingProduct = await _productRepository.GetByIdAsync(productRequest.Id);
-
-        if (existingProduct == null)
-        {
-            Notificate("The product was not found.");
-            return null;
-        }
-
-        _mapper.Map(productRequest, existingProduct);
-
-        await _productRepository.UpdateAsync(existingProduct);
-
-        var productResponse = _mapper.Map<ProductResponse>(existingProduct);
-
-        return productResponse;
-    }
-
     #endregion
 
     #region Validations Methods

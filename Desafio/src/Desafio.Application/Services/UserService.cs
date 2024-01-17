@@ -17,6 +17,7 @@ public class UserService : ServiceBase, IUserService
     private readonly UserManager<User> _userManager;
     private readonly JwtOptions _jwtOptions;
     private readonly IMapper _mapper;
+    private readonly IError _error;
 
     public UserService(SignInManager<User> signInManager, 
                            UserManager<User> userManager,
@@ -28,6 +29,7 @@ public class UserService : ServiceBase, IUserService
         _userManager = userManager;
         _jwtOptions = jwtOptions.Value;
         _mapper = mapper;
+        _error = error;
     }
     #region Controller Methods
     public async Task<LoginUserResponse> LoginAsync(LoginUserRequest loginUserRequest)
@@ -40,16 +42,16 @@ public class UserService : ServiceBase, IUserService
         return null;
     }
 
-    public async Task<RegisterUserResponse> RegisterUserAsync(RegisterUserRequest registerUserRequest, ClaimsPrincipal user)
+    public async Task<CreateUserResponse> InsertUserAsync(CreateUserRequest registerUserRequest, ClaimsPrincipal user)
     {
         var identityUser = _mapper.Map<User>(registerUserRequest);
 
         identityUser.EmailConfirmed = true;
 
-        if (!await ExecuteValidationIdentityAsync(new UserValidator(this), identityUser))
-        {
-            return null;
-        }
+        //if (!await ExecuteValidationIdentityAsync(new UserValidator(), identityUser))
+        //{
+        //    return null;
+        //}
 
         var result = await _userManager.CreateAsync(identityUser, registerUserRequest.Password);
 
@@ -65,7 +67,7 @@ public class UserService : ServiceBase, IUserService
         string roleDescription = registerUserRequest.UserLevel.ToString();
         await _userManager.AddToRoleAsync(identityUser, roleDescription);
 
-        RegisterUserResponse userRegisterResponse = _mapper.Map<RegisterUserResponse>(identityUser);
+        CreateUserResponse userRegisterResponse = _mapper.Map<CreateUserResponse>(identityUser);
 
         return userRegisterResponse;
     }

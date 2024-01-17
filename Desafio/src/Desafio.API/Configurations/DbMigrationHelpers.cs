@@ -73,7 +73,10 @@ internal static class DbMigrationHelpers
             {
                 Name = "ADMINISTRATOR",
                 NickName = "ADMINISTRATOR",
-                UserName = "admin@admin.com"
+                UserName = "admin@admin.com",
+                Email = "admin@admin.com",
+                NormalizedEmail = "ADMIN@ADMIN.COM",
+                EmailConfirmed = true
             };
 
             var result = await userManager.CreateAsync(user, "Administrator2024@");

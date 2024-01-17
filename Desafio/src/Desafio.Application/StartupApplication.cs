@@ -14,6 +14,7 @@ public static class StartupApplication
             .AddExceptionMiddleware()
             .AddRepositories(config)
             .AddServices()
+            .AddHandlers()
             .AddAutoMapper(Assembly.GetExecutingAssembly());
         return services;
     }

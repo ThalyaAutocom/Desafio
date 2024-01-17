@@ -102,45 +102,11 @@ public class ProductController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPut("update-product-information")]
-    public async Task<ActionResult<ProductResponse>> UpdateProductAsync(ProductRequest productRequest)
+    public async Task<ActionResult<ProductResponse>> UpdateProductAsync(UpdateProductRequest productRequest)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
         ProductResponse result = await _productService.UpdateAsync(productRequest);
-
-        return CustomResponse(result);
-    }
-
-    /// <summary>
-    /// Atualiza propriedade "Enable" (Ativo)
-    /// </summary>
-    /// <remarks>Atualiza somente a propriedade "enable", indicando se o produto está ativo ou não</remarks>
-    /// <param name="productRequest"></param>
-    /// <returns></returns>
-    [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
-    [HttpPut("update-enabled-property")]
-    public async Task<ActionResult<bool>> UpdateProductEnabled(EnabledProductRequest productRequest)
-    {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-        ProductResponse result = await _productService.UpdateEnableProductAsync(productRequest);
-
-        return CustomResponse(result);
-    }
-
-    /// <summary>
-    /// Atualiza propriedade "Sellable" (Vendável)
-    /// </summary>
-    /// <remarks>Atualiza somente a propriedade "sellable", indicando se o produto está disponível ou não para venda</remarks>
-    /// <param name="productRequest"></param>
-    /// <returns></returns>
-    [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
-    [HttpPut("update-sellable-property")]
-    public async Task<ActionResult<bool>> UpdateProductSellable(SellableProductRequest productRequest)
-    {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-        ProductResponse result = await _productService.UpdateSellableProductAsync(productRequest);
 
         return CustomResponse(result);
     }

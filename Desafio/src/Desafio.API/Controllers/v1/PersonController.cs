@@ -118,45 +118,11 @@ public class PersonController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPut("update-person-information")]
-    public async Task<ActionResult<PersonResponse>> UpdatePersonAsync(PersonRequest personRequest)
+    public async Task<ActionResult<PersonResponse>> UpdatePersonAsync(UpdatePersonRequest personRequest)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
         PersonResponse result = await _personService.UpdateAsync(personRequest);
-
-        return CustomResponse(result);
-    }
-
-    /// <summary>
-    /// Atualizar propriedade "Enable" (Ativo)
-    /// </summary>
-    /// <remarks>Atualiza somente a propriedade "enable", indicando se a pessoa está ativa ou não</remarks>
-    /// <param name="personRequest"></param>
-    /// <returns></returns>
-    [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
-    [HttpPut("update-enabled-property")]
-    public async Task<ActionResult<bool>> UpdatePersonEnabled(EnabledPersonRequest personRequest)
-    {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-        PersonResponse result = await _personService.UpdateEnablePersonAsync(personRequest);
-
-        return CustomResponse(result);
-    }
-
-    /// <summary>
-    /// Atualizar propriedade "CanBuy" (Cliente)
-    /// </summary>
-    /// <remarks>Atualiza somente a propriedade "CanBuy", indicando que a pessoa é do tipo Cliente</remarks>
-    /// <param name="personRequest"></param>
-    /// <returns></returns>
-    [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
-    [HttpPut("update-canbuy-property")]
-    public async Task<ActionResult<bool>> UpdatePersonSellable(CanBuyPersonRequest personRequest)
-    {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-        PersonResponse result = await _personService.UpdateCanBuyPersonAsync(personRequest);
 
         return CustomResponse(result);
     }

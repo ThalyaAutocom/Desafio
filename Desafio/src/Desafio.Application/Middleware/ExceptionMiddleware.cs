@@ -19,7 +19,6 @@ public class ExceptionMiddleware : IMiddleware
             var errorId = Guid.NewGuid().ToString();
             ErrorResult errorResult = new()
             {
-                Source = exception.TargetSite?.DeclaringType?.Name,
                 Exception = exception.Message,
                 ErrorId = errorId
             };
