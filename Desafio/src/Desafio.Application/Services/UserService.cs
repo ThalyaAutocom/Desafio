@@ -70,9 +70,11 @@ public class UserService : ServiceBase, IUserService
         return userRegisterResponse;
     }
 
-    public async Task<IEnumerable<User>> GetAllAsync()
+    public async Task<IEnumerable<UserResponse>> GetAllAsync()
     {
-        return await _userManager.Users.ToListAsync();
+        var result = await _userManager.Users.ToListAsync();
+        var response = _mapper.Map<List<UserResponse>>(result);
+        return response; 
     }
 
     public async Task<GetUserResponse> GetByShortIdAsync(string shortId)

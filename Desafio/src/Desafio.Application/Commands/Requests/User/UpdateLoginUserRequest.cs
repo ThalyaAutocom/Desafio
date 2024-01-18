@@ -1,9 +1,8 @@
-﻿using Desafio.Domain;
-using System.ComponentModel.DataAnnotations;
+﻿using MediatR;
 
 namespace Desafio.Application;
 
-public class UpdateLoginUserRequest
+public class UpdateLoginUserRequest : IRequest<bool>
 {
     public string Email { get; set; }
     public string CurrentPassword { get; set; }

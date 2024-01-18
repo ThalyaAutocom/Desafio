@@ -6,7 +6,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, CreateUserRe
     private readonly IUserService _userService;
 
     public CreateUserHandler(IUserService userService)
-    {
+{
         _userService = userService;
     }
 

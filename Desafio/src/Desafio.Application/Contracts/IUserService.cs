@@ -7,7 +7,7 @@ public interface IUserService
 {
     Task<CreateUserResponse> InsertUserAsync(CreateUserRequest registerUserRequest);
     Task<LoginUserResponse> LoginAsync(LoginUserRequest loginUserRequest);
-    Task<IEnumerable<User>> GetAllAsync();
+    Task<IEnumerable<UserResponse>> GetAllAsync();
     Task<IEnumerable<GetUserResponse>> GetAllUsersByRoleAsync(string role);
     Task<GetUserResponse> GetByShortIdAsync(string shortId);
     Task<GetUserResponse> UpdateAsync(UpdateUserRequest userRequest);

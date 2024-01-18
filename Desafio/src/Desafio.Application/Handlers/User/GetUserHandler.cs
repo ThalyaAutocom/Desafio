@@ -1,13 +1,16 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 
 namespace Desafio.Application;
 public class GetUserHandler : IRequestHandler<GetUserRequest, GetUserResponse>
 {
     private readonly IUserService _userService;
+    private readonly IMapper _mapper;
 
-    public GetUserHandler(IUserService userService)
+    public GetUserHandler(IUserService userService, IMapper mapper)
     {
         _userService = userService;
+        _mapper = mapper;
     }
 
     public async Task<GetUserResponse> Handle(GetUserRequest request, CancellationToken cancellationToken)
@@ -16,14 +19,18 @@ public class GetUserHandler : IRequestHandler<GetUserRequest, GetUserResponse>
 
         if (request.Enable)
         {
-            result = result.Where(x => x.Enable);
+            result = result.Where(x => x.Enable).ToList();
         }
 
         if(request.UserLevel != null)
         {
-            result = result.Where(x => x.UserLevel == request.UserLevel);
+            result = result.Where(x => x.UserLevel == request.UserLevel).ToList();
         }
-        return null;
+
+        return new GetUserResponse
+        {
+            UserResponses = result
+        };
     }
 }
 

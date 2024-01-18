@@ -4,6 +4,5 @@ namespace Desafio.Application;
 
 public class GetUserResponse
 {
-    public IEnumerable<User> Users { get; set; }
-
+    public IEnumerable<UserResponse> UserResponses { get; set; } = default!;
 }

@@ -12,6 +12,7 @@ public class LoginUserValidator : AbstractValidator<LoginUserRequest>
         RuleFor(x => x.Email).NotEmpty().WithMessage("The field {PropertyName} is required.")
             .EmailAddress().WithMessage("{PropertyName} invalid.");
 
-        RuleFor(x => x.Password).IsInEnum().WithMessage("The field {PropertyName} is required.");
+        RuleFor(x => x.Password)
+            .NotNull().NotEmpty().WithMessage("The field {PropertyName} is required.");
     }
 }

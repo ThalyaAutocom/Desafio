@@ -3,7 +3,6 @@ using Desafio.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 
 namespace Desafio.API;
 [ApiVersion("1.0")]
