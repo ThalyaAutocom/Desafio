@@ -8,7 +8,7 @@ public class ProductController : DesafioControllerBase
 {
     private readonly IProductService _productService;
 
-    public ProductController(IProductService productService, IError error) : base(error)
+    public ProductController(IProductService productService) 
     {
         _productService = productService;
     }
@@ -25,7 +25,7 @@ public class ProductController : DesafioControllerBase
     {
         ProductResponse result = await _productService.GetByIdAsync(id);
 
-        return CustomResponse(result);
+        return null;
     }
 
     /// <summary>
@@ -37,9 +37,8 @@ public class ProductController : DesafioControllerBase
     public async Task<ActionResult<IEnumerable<ProductResponse>>> GetAllProductsAsync()
     {
         IEnumerable<ProductResponse> result = await _productService.GetAllAsync();
-        if (!result.Any()) return CustomResponseList(result, "No Products were found.");
 
-        return CustomResponseList(result);
+        return null;
     }
 
     /// <summary>
@@ -51,9 +50,8 @@ public class ProductController : DesafioControllerBase
     public async Task<ActionResult<IEnumerable<ProductResponse>>> GetAllSalabeProductsAsync()
     {
         IEnumerable<ProductResponse> result = await _productService.GetAllSellableAsync();
-        if (!result.Any()) return CustomResponseList(result, "No Products were found.");
 
-        return CustomResponseList(result);
+        return null;
     }
     /// <summary>
     /// Retornar produtos por Short Id
@@ -66,7 +64,7 @@ public class ProductController : DesafioControllerBase
     {
         ProductResponse result = await _productService.GetByShortIdAsync(shortId);
 
-        return CustomResponse(result);
+        return null;
     }
     #endregion
 
@@ -80,11 +78,9 @@ public class ProductController : DesafioControllerBase
     [HttpPost("insert-product")]
     public async Task<ActionResult<ProductResponse>> InsertProductAsync(InsertProductRequest productRequest)
     {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
         ProductResponse result = await _productService.InsertAsync(productRequest);
 
-        return CustomResponse(result);
+        return null;
     }
     #endregion
 
@@ -98,11 +94,9 @@ public class ProductController : DesafioControllerBase
     [HttpPut("update-product-information")]
     public async Task<ActionResult<ProductResponse>> UpdateProductAsync(UpdateProductRequest productRequest)
     {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
         ProductResponse result = await _productService.UpdateAsync(productRequest);
 
-        return CustomResponse(result);
+        return null;
     }
     #endregion
 
@@ -116,11 +110,8 @@ public class ProductController : DesafioControllerBase
     [HttpDelete("delete-product")]
     public async Task<ActionResult<ProductResponse>> RemoveProductAsync(Guid id)
     {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
         ProductResponse result = await _productService.RemoveAsync(id);
 
-        return CustomResponse(result);
-    }
+return null;    }
     #endregion
 }

@@ -1,9 +1,8 @@
-﻿using Desafio.Domain;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace Desafio.Application;
+namespace Desafio.Application.Validations.Person;
 
-public class RemovePersonValidator : AbstractValidator<Person>
+public class RemovePersonValidator : AbstractValidator<DeletePersonRequest>
 {
     private readonly IPersonService _personService;
 

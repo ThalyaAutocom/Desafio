@@ -1,16 +1,13 @@
 ﻿using Desafio.Application;
-using Desafio.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 
 namespace Desafio.API;
 [ApiVersion("1.0")]
 public class UnitController : DesafioControllerBase
 {
-    public UnitController(IError error) : base(error)
+    public UnitController()
     {
         
     }

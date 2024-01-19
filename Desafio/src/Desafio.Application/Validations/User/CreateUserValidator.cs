@@ -1,6 +1,4 @@
-﻿using Desafio.Domain;
-using FluentValidation;
-using MediatR;
+﻿using FluentValidation;
 
 namespace Desafio.Application;
 
@@ -10,7 +8,7 @@ public class CreateUserValidator : AbstractValidator<CreateUserRequest>
     public CreateUserValidator(IUserService userService)
     {
         _userService = userService;
-        
+
 
         RuleFor(x => x.Name).NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.");
 
@@ -20,7 +18,7 @@ public class CreateUserValidator : AbstractValidator<CreateUserRequest>
             .NotNull().NotEmpty().WithMessage("The field {PropertyName} is required.");
 
         RuleFor(x => x.NickName)
-            .MustAsync(async(nickName, _) => !await _userService.NickNameAlreadyUsed(nickName)).WithMessage("The field {PropertyName} must be unique.")
+            .MustAsync(async (nickName, _) => !await _userService.NickNameAlreadyUsed(nickName)).WithMessage("The field {PropertyName} must be unique.")
             .When(user => !string.IsNullOrWhiteSpace(user.NickName));
 
         RuleFor(x => x.Email).NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.");

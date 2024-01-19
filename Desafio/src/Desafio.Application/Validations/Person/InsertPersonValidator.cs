@@ -1,13 +1,12 @@
-﻿using Desafio.Domain;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace Desafio.Application;
+namespace Desafio.Application.Validations.Person;
 
-public class PersonValidator : AbstractValidator<Person>
+public class InsertPersonValidator : AbstractValidator<InsertPersonRequest>
 {
     private readonly IPersonService _personService;
 
-    public PersonValidator(IPersonService personService)
+    public InsertPersonValidator(IPersonService personService)
     {
         _personService = personService;
         RuleFor(x => x.Name).NotEmpty().NotNull().WithMessage("Nome é obrigatório.");

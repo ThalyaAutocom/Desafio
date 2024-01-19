@@ -7,13 +7,12 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection.Metadata;
 using System.Security.Claims;
 using System.Text;
 
 namespace Desafio.Identity;
 
-public class UserService : ServiceBase, IUserService
+public class UserService : IUserService
 {
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
@@ -23,8 +22,7 @@ public class UserService : ServiceBase, IUserService
     public UserService(SignInManager<User> signInManager,
                            UserManager<User> userManager,
                            IOptions<JwtOptions> jwtOptions,
-                           IMapper mapper,
-                           IError error) : base(error)
+                           IMapper mapper)
     {
         _signInManager = signInManager;
         _userManager = userManager;

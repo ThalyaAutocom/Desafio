@@ -1,5 +1,4 @@
-﻿using Desafio.Domain;
-using MediatR;
+﻿using MediatR;
 
 namespace Desafio.Application;
 

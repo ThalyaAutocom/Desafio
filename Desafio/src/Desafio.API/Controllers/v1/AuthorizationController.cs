@@ -8,7 +8,7 @@ namespace Desafio.API;
 [ApiVersion("1.0")]
 public class AuthorizationController : DesafioControllerBase
 {
-    public AuthorizationController(IError error) : base(error)
+    public AuthorizationController()
     {
 
     }

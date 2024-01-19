@@ -1,9 +1,8 @@
-﻿using Desafio.Domain;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace Desafio.Application;
+namespace Desafio.Application.Validations.Product;
 
-public class ProductValidator : AbstractValidator<Product>
+public class ProductValidator : AbstractValidator<InsertProductRequest>
 {
     private readonly IProductService _productService;
 

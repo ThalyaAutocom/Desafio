@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
 using Desafio.Domain;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Net.Http.Headers;
 
 namespace Desafio.Application;
 
-public class PersonService : ServiceBase, IPersonService
+public class PersonService : IPersonService
 {
     private readonly IPersonRepository _personRepository;
     private readonly IMapper _mapper;
 
-    public PersonService(IPersonRepository personRepository, IMapper mapper, IError error) : base(error)
+    public PersonService(IPersonRepository personRepository, IMapper mapper) 
     {
         _personRepository = personRepository;
         _mapper = mapper;
@@ -24,8 +21,7 @@ public class PersonService : ServiceBase, IPersonService
 
         if(result == null || result.Count() == 0)
         {
-            Notificate("No person was found");
-            return null;    
+            throw new Exception("No person was found");
         }
 
         return result;
@@ -36,8 +32,7 @@ public class PersonService : ServiceBase, IPersonService
 
         if (result == null || result.Count() == 0)
         {
-            Notificate("No client was found");
-            return null;
+            throw new Exception("No client was found");
         }
 
         return result;
@@ -49,8 +44,7 @@ public class PersonService : ServiceBase, IPersonService
 
         if (person == null)
         {
-            Notificate("No person was found.");
-            return null;
+            throw new Exception("No person was found.");
         }
 
         return _mapper.Map<PersonResponse>(person);
@@ -62,8 +56,7 @@ public class PersonService : ServiceBase, IPersonService
 
         if (person == null)
         {
-            Notificate("No client was found.");
-            return null;
+            throw new Exception("No client was found.");
         }
 
         return _mapper.Map<PersonResponse>(person);
@@ -75,8 +68,7 @@ public class PersonService : ServiceBase, IPersonService
 
         if (person == null)
         {
-            Notificate("No person was found.");
-            return null;
+            throw new Exception("No person was found.");
         }
 
         return _mapper.Map<PersonResponse>(person);
@@ -84,13 +76,7 @@ public class PersonService : ServiceBase, IPersonService
 
     public async Task<PersonResponse> InsertAsync(InsertPersonRequest personRequest)
     {
-        
         var person = _mapper.Map<Person>(personRequest);
-
-        if (!await ExecuteValidationAsync(new PersonValidator(this), person))
-        {
-            return null;
-        }
 
         await _personRepository.InsertAsync(person);
         var newperson = _mapper.Map<PersonResponse>(person);
@@ -103,15 +89,8 @@ public class PersonService : ServiceBase, IPersonService
 
         if (person == null)
         {
-            Notificate("No person was found.");
-            return null;
+            throw new Exception("No person was found.");
         }
-
-        if (!await ExecuteValidationAsync(new RemovePersonValidator(this), person))
-        {
-            return null;
-        }
-
 
         await _personRepository.RemoveAsync(id);
 
@@ -124,16 +103,11 @@ public class PersonService : ServiceBase, IPersonService
 
         if (existingperson == null)
         {
-            Notificate("No person was found.");
-            return null;
+            throw new Exception("No person was found.");
         }
 
         _mapper.Map<Person>(personRequest);
 
-        if (!await ExecuteValidationAsync(new PersonValidator(this), existingperson))
-        {
-            return null;
-        }
         _mapper.Map(personRequest, existingperson);
         await _personRepository.UpdateAsync(existingperson);
 

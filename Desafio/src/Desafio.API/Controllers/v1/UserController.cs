@@ -7,7 +7,7 @@ namespace Desafio.API;
 [ApiVersion("1.0")]
 public class UserController : DesafioControllerBase
 {
-    public UserController(IError error) : base(error)
+    public UserController() 
     {
         
     }

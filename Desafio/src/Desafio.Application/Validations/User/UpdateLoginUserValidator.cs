@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Desafio.Application;
+namespace Desafio.Application.Validations.User;
 
 public class UpdateLoginUserValidator : AbstractValidator<UpdateLoginUserRequest>
 {
@@ -10,11 +10,11 @@ public class UpdateLoginUserValidator : AbstractValidator<UpdateLoginUserRequest
         _userService = userService;
 
         RuleFor(x => x.Email).NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.")
-            .EmailAddress().WithMessage("Invalid Email");   
-        
+            .EmailAddress().WithMessage("Invalid Email");
+
         RuleFor(x => x.CurrentPassword).NotEmpty().WithMessage("The field {PropertyName} must be unique.")
             .MustAsync(async (request, currentPassword, _) => await _userService.CorrectPassword(request)).WithMessage("Incorrect Password");
-        
+
         RuleFor(x => x.NewPassword)
             .NotEmpty().NotNull().WithMessage("{PropertyName} is required.")
             .Length(8, 20).WithMessage("The field {PropertyName} must have between 8 and 20 caracteres.")
@@ -25,5 +25,5 @@ public class UpdateLoginUserValidator : AbstractValidator<UpdateLoginUserRequest
         RuleFor(x => x.ConfirmNewPassword).NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.")
             .Equal(user => user.NewPassword).WithMessage("Password and ConfirmPassword must be the same.");
     }
-    
+
 }

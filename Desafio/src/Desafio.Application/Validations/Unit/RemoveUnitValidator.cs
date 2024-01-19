@@ -1,7 +1,7 @@
 ﻿using Desafio.Domain;
 using FluentValidation;
 
-namespace Desafio.Application;
+namespace Desafio.Application.Validations.Unit;
 
 public class RemoveUnitValidator : AbstractValidator<DeleteUnitRequest>
 {
@@ -19,5 +19,5 @@ public class RemoveUnitValidator : AbstractValidator<DeleteUnitRequest>
 
         return;
     }
-    
+
 }

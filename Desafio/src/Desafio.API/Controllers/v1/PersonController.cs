@@ -8,7 +8,7 @@ public class PersonController : DesafioControllerBase
 {
     private readonly IPersonService _personService;
 
-    public PersonController(IPersonService personService, IError error) : base(error)
+    public PersonController(IPersonService personService)
     {
         _personService = personService;
     }
@@ -25,7 +25,7 @@ public class PersonController : DesafioControllerBase
     {
         PersonResponse result = await _personService.GetByIdAsync(id);
 
-        return CustomResponse(result);
+        return null;
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class PersonController : DesafioControllerBase
     {
         IEnumerable<PersonResponse> result = await _personService.GetAllAsync();
 
-        return CustomResponseList(result);
+        return null;
 
     }
     /// <summary>
@@ -52,7 +52,7 @@ public class PersonController : DesafioControllerBase
     {
         PersonResponse result = await _personService.GetByShortIdAsync(shortId);
 
-        return CustomResponse(result);
+        return null;
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public class PersonController : DesafioControllerBase
     {
         IEnumerable<PersonResponse> result = await _personService.GetAllClientAsync();
 
-        return CustomResponseList(result);
+        return null;
 
     }
 
@@ -80,7 +80,7 @@ public class PersonController : DesafioControllerBase
     {
         PersonResponse result = await _personService.GetClientByIdAsync(id);
 
-        return CustomResponse(result);
+        return null;
     }
     #endregion
 
@@ -94,11 +94,9 @@ public class PersonController : DesafioControllerBase
     [HttpPost("insert-person")]
     public async Task<ActionResult<PersonResponse>> InsertPersonAsync(InsertPersonRequest personRequest)
     {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
         PersonResponse result = await _personService.InsertAsync(personRequest);
 
-        return CustomResponse(result);
+        return null;
     }
     #endregion
 
@@ -113,11 +111,9 @@ public class PersonController : DesafioControllerBase
     [HttpPut("update-person-information")]
     public async Task<ActionResult<PersonResponse>> UpdatePersonAsync(UpdatePersonRequest personRequest)
     {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
         PersonResponse result = await _personService.UpdateAsync(personRequest);
 
-        return CustomResponse(result);
+        return null;
     }
     #endregion
 
@@ -131,11 +127,9 @@ public class PersonController : DesafioControllerBase
     [HttpDelete("delete-person")]
     public async Task<ActionResult<PersonResponse>> RemovePersonAsync(Guid id)
     {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
         PersonResponse result = await _personService.RemoveAsync(id);
 
-        return CustomResponse(result);
+        return null;
     }
     #endregion
 }

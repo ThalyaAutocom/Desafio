@@ -1,8 +1,6 @@
-﻿using Desafio.Domain;
-using FluentValidation;
-using MediatR;
+﻿using FluentValidation;
 
-namespace Desafio.Application;
+namespace Desafio.Application.Validations.User;
 
 public class LoginUserValidator : AbstractValidator<LoginUserRequest>
 {

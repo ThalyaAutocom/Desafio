@@ -1,6 +1,5 @@
 ﻿using Desafio.Domain;
 using MediatR;
-using System.ComponentModel.DataAnnotations;
 
 namespace Desafio.Application;
 

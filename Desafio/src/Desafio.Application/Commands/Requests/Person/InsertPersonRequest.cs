@@ -1,6 +1,5 @@
 ﻿using Desafio.Domain;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace Desafio.Application;
 

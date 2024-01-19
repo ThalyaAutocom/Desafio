@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Desafio.Application;
+namespace Desafio.Application.Validations.User;
 
 public class UpdateUserValidator : AbstractValidator<UpdateUserRequest>
 {
@@ -8,9 +8,9 @@ public class UpdateUserValidator : AbstractValidator<UpdateUserRequest>
     public UpdateUserValidator(IUserService userService)
     {
         _userService = userService;
-        
+
         RuleFor(x => x.NickName)
-            .MustAsync(async(user, nickName, _) => !await _userService.NickNameAlreadyUsed(user)).WithMessage("The field {PropertyName} must be unique.")
+            .MustAsync(async (user, nickName, _) => !await _userService.NickNameAlreadyUsed(user)).WithMessage("The field {PropertyName} must be unique.")
             .When(user => !string.IsNullOrWhiteSpace(user.NickName));
 
         RuleFor(x => x.Email).NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.");

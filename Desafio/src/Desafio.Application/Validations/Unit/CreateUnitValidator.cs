@@ -1,13 +1,13 @@
 ﻿using Desafio.Domain;
 using FluentValidation;
 
-namespace Desafio.Application;
+namespace Desafio.Application.Validations.Unit;
 
-public class UnitValidator : AbstractValidator<Unit>
+public class CreateUnitValidator : AbstractValidator<CreateUnitRequest>
 {
     private readonly IUnitService _unitService;
 
-    public UnitValidator(IUnitService unitService)
+    public CreateUnitValidator(IUnitService unitService)
     {
         _unitService = unitService;
 
@@ -21,7 +21,7 @@ public class UnitValidator : AbstractValidator<Unit>
             .Length(2, 50)
             .WithMessage("The field {PropertyName} must have between {MinLength} and {MaxLength} caracters.");
     }
-    
+
 
     private async Task<bool> UnitDoesNotExistsAsync(string acronym, CancellationToken token)
     {

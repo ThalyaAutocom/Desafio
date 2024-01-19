@@ -3,12 +3,12 @@ using Desafio.Domain;
 
 namespace Desafio.Application;
 
-public class UnitService : ServiceBase, IUnitService
+public class UnitService : IUnitService
 {
     private readonly IUnitRepository _unitRepository;
     private readonly IMapper _mapper;
 
-    public UnitService(IUnitRepository unitRepository, IMapper mapper, IError error) : base(error)
+    public UnitService(IUnitRepository unitRepository, IMapper mapper) 
     {
         _unitRepository = unitRepository;
         _mapper = mapper;
@@ -49,11 +49,6 @@ public class UnitService : ServiceBase, IUnitService
     public async Task<CreateUnitResponse> InsertAsync(CreateUnitRequest unitRequest)
     {
         var unit = _mapper.Map<Unit>(unitRequest);
-
-        if (!await ExecuteValidationAsync(new UnitValidator(this), unit))
-        {
-            return null;
-        }
 
         await _unitRepository.InsertAsync(unit);
         var newUnit = _mapper.Map<CreateUnitResponse>(unit);

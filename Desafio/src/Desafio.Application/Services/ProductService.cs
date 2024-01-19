@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using Desafio.Domain;
-using Microsoft.AspNetCore.Identity;
 
 namespace Desafio.Application;
 
-public class ProductService : ServiceBase, IProductService
+public class ProductService : IProductService
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
 
-    public ProductService(IProductRepository productRepository, IMapper mapper, IError error) : base(error)
+    public ProductService(IProductRepository productRepository, IMapper mapper) 
     {
         _productRepository = productRepository;
         _mapper = mapper;
@@ -22,8 +21,7 @@ public class ProductService : ServiceBase, IProductService
 
         if (result == null)
         {
-            Notificate("No products were found.");
-            return null;
+            throw new Exception("No products were found.");
         }
 
         return result;
@@ -35,8 +33,7 @@ public class ProductService : ServiceBase, IProductService
 
         if (result == null)
         {
-            Notificate("No products were found.");
-            return null;
+            throw new Exception("No products were found.");
         }
 
         return result;
@@ -48,8 +45,7 @@ public class ProductService : ServiceBase, IProductService
 
         if (product == null)
         {
-            Notificate("Product was not found.");
-            return null;
+            throw new Exception("Product was not found.");
         }
 
         return _mapper.Map<ProductResponse>(product);
@@ -61,8 +57,7 @@ public class ProductService : ServiceBase, IProductService
 
         if (product == null)
         {
-            Notificate("Product was not found.");
-            return null;
+            throw new Exception("Product was not found.");
         }
 
         return _mapper.Map<ProductResponse>(product);
@@ -71,11 +66,6 @@ public class ProductService : ServiceBase, IProductService
     public async Task<ProductResponse> InsertAsync(InsertProductRequest productRequest)
     {
         var product = _mapper.Map<Product>(productRequest);
-
-        if (!await ExecuteValidationAsync(new ProductValidator(this), product))
-        {
-            return null;
-        }
 
         await _productRepository.InsertAsync(product);
         var newProduct = _mapper.Map<ProductResponse>(product);
@@ -88,8 +78,7 @@ public class ProductService : ServiceBase, IProductService
 
         if (product == null)
         {
-            Notificate("Product was not found.");
-            return null;
+            throw new Exception("Product was not found.");
         }
         await _productRepository.RemoveAsync(id);
 
@@ -102,16 +91,10 @@ public class ProductService : ServiceBase, IProductService
 
         if (existingProduct == null)
         {
-            Notificate("The product was not found.");
-            return null;
+            throw new Exception("The product was not found.");
         }
 
         _mapper.Map(productRequest, existingProduct);
-
-        if (!await ExecuteValidationAsync(new ProductValidator(this), existingProduct))
-        {
-            return null;
-        }
 
         await _productRepository.UpdateAsync(existingProduct);
 
