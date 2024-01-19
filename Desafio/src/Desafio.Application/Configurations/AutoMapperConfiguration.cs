@@ -35,7 +35,7 @@ public class AutoMapperConfiguration : Profile
 
         #region Person
         CreateMap<Person, PersonResponse>().ReverseMap();
-        CreateMap<Person, InsertPersonRequest>().ReverseMap();
+        CreateMap<Person, CreatePersonRequest>().ReverseMap();
         CreateMap<Person, UpdatePersonRequest>().ReverseMap();
         #endregion
     }

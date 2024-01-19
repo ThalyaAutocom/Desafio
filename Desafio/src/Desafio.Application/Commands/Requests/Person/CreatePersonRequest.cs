@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace Desafio.Application;
 
-public class InsertPersonRequest
+public class CreatePersonRequest
 {
     private string _document;
 

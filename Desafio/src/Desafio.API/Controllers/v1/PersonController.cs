@@ -92,7 +92,7 @@ public class PersonController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPost("insert-person")]
-    public async Task<ActionResult<PersonResponse>> InsertPersonAsync(InsertPersonRequest personRequest)
+    public async Task<ActionResult<PersonResponse>> InsertPersonAsync(CreatePersonRequest personRequest)
     {
         PersonResponse result = await _personService.InsertAsync(personRequest);
 

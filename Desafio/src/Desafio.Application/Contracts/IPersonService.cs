@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Desafio.Application;
 public interface IPersonService
 {
-    Task<PersonResponse> InsertAsync(InsertPersonRequest personRequest);
+    Task<PersonResponse> InsertAsync(CreatePersonRequest personRequest);
     Task<PersonResponse> UpdateAsync(UpdatePersonRequest person);
     Task<PersonResponse> RemoveAsync(Guid id);
     Task<PersonResponse> GetByIdAsync(Guid id);

@@ -74,7 +74,7 @@ public class PersonService : IPersonService
         return _mapper.Map<PersonResponse>(person);
     }
 
-    public async Task<PersonResponse> InsertAsync(InsertPersonRequest personRequest)
+    public async Task<PersonResponse> InsertAsync(CreatePersonRequest personRequest)
     {
         var person = _mapper.Map<Person>(personRequest);
 

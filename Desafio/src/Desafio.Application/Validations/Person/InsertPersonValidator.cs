@@ -2,7 +2,7 @@
 
 namespace Desafio.Application.Validations.Person;
 
-public class InsertPersonValidator : AbstractValidator<InsertPersonRequest>
+public class InsertPersonValidator : AbstractValidator<CreatePersonRequest>
 {
     private readonly IPersonService _personService;
 
