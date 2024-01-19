@@ -1,46 +1,53 @@
 ﻿using Desafio.Application;
+using Desafio.Domain;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace Desafio.API;
 [ApiVersion("1.0")]
 public class UnitController : DesafioControllerBase
 {
-    private readonly IUnitService _unitService;
-
-    public UnitController(IUnitService unitService, IError error) : base(error)
+    public UnitController(IError error) : base(error)
     {
-        _unitService = unitService;
+        
     }
 
     #region Get
     /// <summary>
     /// Retornar unidade por Símbolo de unidade de Medida
     /// </summary>
+    /// <param name="mediator"></param>
+    /// <param name="cancellationToken"></param>
     /// <param name="acronym"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-acronym")]
-    public async Task<ActionResult<UnitResponse>> GetUnitAsync(string acronym)
+    public async Task<ActionResult<UnitResponse>> GetUnitAsync(ISender mediator,
+        string acronym,
+        CancellationToken cancellationToken = default)
     {
-        UnitResponse result = await _unitService.GetByAcronymAsync(acronym);
-
-        return CustomResponse(result);
+        return await mediator.Send(new GetByAcronymUnitRequest(acronym), cancellationToken);
 
     }
 
     /// <summary>
     /// Retornar unidade por Short Id
     /// </summary>
+    /// <param name="mediator"></param>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
     /// <param name="shortId"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-short-id")]
-    public async Task<ActionResult<UnitResponse>> GetUnitByShortIdAsync(string shortId)
+    public async Task<ActionResult<UnitResponse>> GetUnitByShortIdAsync(ISender mediator,
+        string shortId,
+        CancellationToken cancellationToken = default)
     {
-        UnitResponse result = await _unitService.GetByShortIdAsync(shortId);
-
-        return CustomResponse(result);
+        return await mediator.Send(new GetByShortIdUnitRequest(shortId), cancellationToken);
 
     }
 
@@ -50,12 +57,10 @@ public class UnitController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all")]
-    public async Task<ActionResult<IEnumerable<UnitResponse>>> GetAllUnitSAsync()
+    public async Task<ActionResult<GetUnitResponse>> GetAllUnitSAsync(ISender mediator,
+        CancellationToken cancellationToken = default)
     {
-        IEnumerable<UnitResponse> result = await _unitService.GetAllAsync();
-        if (!result.Any()) return CustomResponseList(result, "No units were found.");
-
-        return CustomResponseList(result);
+        return await mediator.Send(new GetUnitRequest(), cancellationToken);
     }
     #endregion
 
@@ -63,17 +68,17 @@ public class UnitController : DesafioControllerBase
     /// <summary>
     /// Cadastrar Unidade
     /// </summary>
+    /// <param name="mediator"></param>
     /// <param name="unitRequest"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPost("insert-unit")]
-    public async Task<ActionResult<UnitResponse>> InsertUnitAsync(UnitRequest unitRequest)
+    public async Task<ActionResult<CreateUnitResponse>> InsertUnitAsync(ISender mediator,
+        CreateUnitRequest unitRequest,
+        CancellationToken cancellationToken = default)
     {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-        UnitResponse result = await _unitService.InsertAsync(unitRequest);
-
-        return CustomResponse(result);
+        return await mediator.Send(unitRequest, cancellationToken);
     }
     #endregion
 
@@ -81,17 +86,17 @@ public class UnitController : DesafioControllerBase
     /// <summary>
     /// Atualizar unidade
     /// </summary>
+    /// <param name="mediator"></param>
     /// <param name="unitRequest"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPut("update-unit")]
-    public async Task<ActionResult<UnitResponse>> UpdateUnitAsync(UnitRequest unitRequest)
+    public async Task<bool> UpdateUnitAsync(ISender mediator,
+        UpdateUnitRequest unitRequest,
+        CancellationToken cancellationToken = default)
     {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-        UnitResponse result = await _unitService.UpdateAsync(unitRequest);
-
-        return CustomResponse(result);
+        return await mediator.Send(unitRequest, cancellationToken);
 
     }
     #endregion
@@ -100,17 +105,17 @@ public class UnitController : DesafioControllerBase
     /// <summary>
     /// Ecluir Unidade
     /// </summary>
-    /// <param name="acronym"></param>
+    /// <param name="mediator"></param>
+    /// <param name="unitRequest"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpDelete("delete-unit")]
-    public async Task<ActionResult<UnitResponse>> DeleteUnitAsync(string acronym)
+    public async Task<bool> DeleteUnitAsync(ISender mediator,
+        DeleteUnitRequest unitRequest,
+        CancellationToken cancellationToken = default)
     {
-        if (!ModelState.IsValid) return CustomResponse(ModelState);
-
-        UnitResponse result = await _unitService.RemoveAsync(acronym.ToUpper());
-
-        return CustomResponse(result);
+        return await mediator.Send(unitRequest, cancellationToken);
     }
     #endregion
 }

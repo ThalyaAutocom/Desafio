@@ -15,7 +15,9 @@ public interface IUserService
     Task<bool> RemoveAsync(string email);
     Task<bool> EmailAlreadyUsed(string email);
     Task<bool> DocumentAlreadyUsed(string document);
+    Task<bool> DocumentAlreadyUsed(UpdateUserRequest userRequest);
     Task<bool> NickNameAlreadyUsed(string nickName);
+    Task<bool> NickNameAlreadyUsed(UpdateUserRequest userRequest);
     Task<bool> CorrectPassword(UpdateLoginUserRequest request);
 }
 

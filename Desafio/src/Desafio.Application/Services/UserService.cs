@@ -7,9 +7,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Metadata;
 using System.Security.Claims;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Desafio.Identity;
 
@@ -105,8 +105,7 @@ public class UserService : ServiceBase, IUserService
 
         if (existingUser == null)
         {
-            Notificate("The user was not found.");
-            return false;
+            throw new Exception("User was not found");
         }
 
         var existingRole = await _userManager.GetRolesAsync(existingUser);
@@ -133,8 +132,7 @@ public class UserService : ServiceBase, IUserService
 
         if (existingUser == null)
         {
-            Notificate("The user was not found.");
-            return false;
+            throw new Exception("The user was not found.");
         }
 
         var result = await _userManager.ChangePasswordAsync(existingUser, userRequest.CurrentPassword, userRequest.NewPassword);
@@ -148,8 +146,7 @@ public class UserService : ServiceBase, IUserService
         var existingUser = await _userManager.FindByEmailAsync(email);
         if (existingUser == null)
         {
-            Notificate("Email was not found.");
-            return false;
+            throw new Exception("Email was not found.");
         }
         await _userManager.DeleteAsync(existingUser);
 
@@ -224,8 +221,25 @@ public class UserService : ServiceBase, IUserService
 
     public async Task<bool> CorrectPassword(UpdateLoginUserRequest request)
     {
+        var existingUser = await _userManager.FindByEmailAsync(request.Email);
+
+        if (existingUser == null)
+        {
+            throw new Exception("The user was not found.");
+        }
+
         var result = await _signInManager.PasswordSignInAsync(request.Email, request.CurrentPassword, false, true);
         return result.Succeeded;
+    }
+
+    public async Task<bool> DocumentAlreadyUsed(UpdateUserRequest userRequest)
+    {
+        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == userRequest.Document && x.Id != userRequest.Id) != null;
+    }
+
+    public async Task<bool> NickNameAlreadyUsed(UpdateUserRequest userRequest)
+    {
+        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == userRequest.NickName && x.Id != userRequest.Id) != null;
     }
     #endregion
 }

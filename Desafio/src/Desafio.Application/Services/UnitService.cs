@@ -28,8 +28,7 @@ public class UnitService : ServiceBase, IUnitService
 
         if (unit == null)
         {
-            Notificate("The unit was not found.");
-            return null;
+            throw new Exception("The unit was not found.");
         }
 
         return _mapper.Map<UnitResponse>(unit);
@@ -41,14 +40,13 @@ public class UnitService : ServiceBase, IUnitService
 
         if (unit == null)
         {
-            Notificate("No units were found.");
-            return null;
+            throw new Exception("No units were found.");
         }
 
         return _mapper.Map<UnitResponse>(unit);
     }
 
-    public async Task<UnitResponse> InsertAsync(UnitRequest unitRequest)
+    public async Task<CreateUnitResponse> InsertAsync(CreateUnitRequest unitRequest)
     {
         var unit = _mapper.Map<Unit>(unitRequest);
 
@@ -58,47 +56,38 @@ public class UnitService : ServiceBase, IUnitService
         }
 
         await _unitRepository.InsertAsync(unit);
-        var newUnit = _mapper.Map<UnitResponse>(unit);
+        var newUnit = _mapper.Map<CreateUnitResponse>(unit);
         return newUnit;
 
     }
 
-    public async Task<UnitResponse> RemoveAsync(string acronym)
+    public async Task<bool> RemoveAsync(string acronym)
     {
         var unit = await _unitRepository.GetByAcronymAsync(acronym);
         if (unit == null)
         {
-            Notificate("The unit was not found");
-            return null;
-        }
-
-        if (!await ExecuteValidationAsync(new RemoveUnitValidator(this), unit))
-        {
-            return null;
+            throw new Exception("The unit was not found");
         }
 
         await _unitRepository.RemoveAsync(acronym);
 
-        return null;
+        return true;
     }
 
-    public async Task<UnitResponse> UpdateAsync(UnitRequest unitRequest)
+    public async Task<bool> UpdateAsync(UpdateUnitRequest unitRequest)
     {
         var existingUnit = await _unitRepository.GetByAcronymAsync(unitRequest.Acronym.ToUpper());
 
         if (existingUnit == null)
         {
-            Notificate("The unit was not found.");
-            return null;
+            throw new Exception("Unit was not found.");
         }
 
         _mapper.Map(unitRequest, existingUnit);
 
         await _unitRepository.UpdateAsync(existingUnit);
 
-        var unitResponse = _mapper.Map<UnitResponse>(existingUnit);
-
-        return unitResponse;
+        return true;
 
     }
     #endregion

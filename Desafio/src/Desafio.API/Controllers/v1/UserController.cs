@@ -22,7 +22,7 @@ public class UserController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-short-id")]
-    public async Task<ActionResult<UserResponse>> GetUnitByShortIdAsync(ISender mediator,
+    public async Task<ActionResult<UserResponse>> GetUserByShortIdAsync(ISender mediator,
         string shortId,
         CancellationToken cancellationToken = default)
     {
@@ -39,7 +39,7 @@ public class UserController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-id")]
-    public async Task<ActionResult<UserResponse>> GetUnitByIdAsync(ISender mediator,
+    public async Task<ActionResult<UserResponse>> GetUserByIdAsync(ISender mediator,
         string id,
         CancellationToken cancellationToken = default)
     {

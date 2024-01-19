@@ -9,8 +9,10 @@ public class AutoMapperConfiguration : Profile
     public AutoMapperConfiguration()
     {
         #region Unit
-        CreateMap<Unit, UnitRequest>().ReverseMap();
+        CreateMap<Unit, CreateUnitRequest>().ReverseMap();
+        CreateMap<Unit, CreateUnitResponse>().ReverseMap();
         CreateMap<Unit, UnitResponse>().ReverseMap();
+        CreateMap<Unit, UpdateUnitRequest>().ReverseMap();
         #endregion
 
         #region User

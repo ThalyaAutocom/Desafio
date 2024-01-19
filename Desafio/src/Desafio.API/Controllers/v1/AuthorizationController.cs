@@ -54,9 +54,9 @@ public class AuthorizationController : DesafioControllerBase
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-users-roles")]
     public async Task<ActionResult<GetUserResponse>> GetAllUsersRoles(ISender mediator,
-        bool enable, 
+        bool? enable, 
         EUserLevel? userLevel,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         return await mediator.Send(new GetUserRequest(enable, userLevel), cancellationToken);
     }

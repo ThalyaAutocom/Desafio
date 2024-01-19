@@ -46,43 +46,4 @@ public abstract class ServiceBase
 
         return false;
     }
-
-    protected async Task<bool> ExecuteValidationIdentityAsync<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : IdentityUser
-    {
-        var validator = await validacao.ValidateAsync(entidade);
-
-        if (validator.IsValid) return true;
-
-        Notificate(validator);
-
-        return false;
-    }
-
-    protected bool HasRepeatedValues(string document)
-    {
-        string[] invalidNumbers =
-        {
-                "00000000000",
-                "11111111111",
-                "22222222222",
-                "33333333333",
-                "44444444444",
-                "55555555555",
-                "66666666666",
-                "77777777777",
-                "88888888888",
-                "99999999999",
-                "00000000000000",
-                "11111111111111",
-                "22222222222222",
-                "33333333333333",
-                "44444444444444",
-                "55555555555555",
-                "66666666666666",
-                "77777777777777",
-                "88888888888888",
-                "99999999999999"
-            };
-        return invalidNumbers.Contains(document);
-    }
 }

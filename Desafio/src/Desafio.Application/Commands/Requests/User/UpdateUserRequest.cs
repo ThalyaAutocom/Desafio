@@ -8,6 +8,7 @@ public class UpdateUserRequest : IRequest<bool>
 {
     private string _document;
 
+    public string Id { get; set; }
     public string Email
     {
         get => UserName;
@@ -25,4 +26,5 @@ public class UpdateUserRequest : IRequest<bool>
         get => _document;
         set => _document = value.GetOnlyDocumentNumber();
     }
+    public bool Enable {  get; set; }
 }

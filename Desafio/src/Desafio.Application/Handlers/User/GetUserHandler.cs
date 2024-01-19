@@ -17,12 +17,12 @@ public class GetUserHandler : IRequestHandler<GetUserRequest, GetUserResponse>
     {
         var result = await _userService.GetAllAsync();
 
-        if (request.Enable)
+        if (request.Enable is not null)
         {
-            result = result.Where(x => x.Enable).ToList();
+            result = result.Where(x => x.Enable == request.Enable).ToList();
         }
 
-        if(request.UserLevel != null)
+        if(request.UserLevel is not null)
         {
             result = result.Where(x => x.UserLevel == request.UserLevel).ToList();
         }

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MediatR;
+using System.ComponentModel.DataAnnotations;
 
 namespace Desafio.Application;
 
-public class UnitRequest
+public class UpdateUnitRequest : IRequest<bool>
 {
     private string _acronym;
     private string _description;
