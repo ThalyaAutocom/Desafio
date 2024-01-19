@@ -1,9 +1,8 @@
-﻿using Desafio.Domain;
-using MediatR;
+﻿using MediatR;
 
 namespace Desafio.Application;
 
-public class GetByIdUserRequest(Guid id) : IRequest<GetUserResponse>
+public class GetByIdUserRequest(string id) : IRequest<UserResponse>
 {
-    public Guid Id { get; set; } = id;
+    public string Id { get; set; } = id;
 }

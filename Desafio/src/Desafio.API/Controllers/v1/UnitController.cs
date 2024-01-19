@@ -17,7 +17,6 @@ public class UnitController : DesafioControllerBase
     /// <summary>
     /// Retornar unidade por Símbolo de unidade de Medida
     /// </summary>
-    /// <remarks>Retorna uma unidade específica, pesquisando por seu símbolo de unidade de medida</remarks>
     /// <param name="acronym"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
@@ -33,7 +32,6 @@ public class UnitController : DesafioControllerBase
     /// <summary>
     /// Retornar unidade por Short Id
     /// </summary>
-    /// <remarks>Retorna uma unidade específica, pesquisando por seu Short Id</remarks>
     /// <param name="shortId"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
@@ -49,7 +47,6 @@ public class UnitController : DesafioControllerBase
     /// <summary>
     /// Retornar todas as unidades
     /// </summary>
-    /// <remarks>Retorna todas as unidades cadastradas</remarks>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all")]
@@ -66,7 +63,6 @@ public class UnitController : DesafioControllerBase
     /// <summary>
     /// Cadastrar Unidade
     /// </summary>
-    /// <remarks>Cadastra uma unidade</remarks>
     /// <param name="unitRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -85,7 +81,6 @@ public class UnitController : DesafioControllerBase
     /// <summary>
     /// Atualizar unidade
     /// </summary>
-    /// <remarks>Atualiza informações de uma unidade</remarks>
     /// <param name="unitRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -105,7 +100,6 @@ public class UnitController : DesafioControllerBase
     /// <summary>
     /// Ecluir Unidade
     /// </summary>
-    /// <remarks>Exclui um cadastro de unidade</remarks>
     /// <param name="acronym"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]

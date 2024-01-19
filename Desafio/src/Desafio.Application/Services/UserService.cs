@@ -77,48 +77,38 @@ public class UserService : ServiceBase, IUserService
         return response; 
     }
 
-    public async Task<GetUserResponse> GetByShortIdAsync(string shortId)
+    public async Task<UserResponse> GetByShortIdAsync(string shortId)
     {
         var user = await _userManager.Users.FirstOrDefaultAsync(x => x.ShortId == shortId);
 
         if(user == null)
         {
-            Notificate("No user was found.");
-            return null;
+            throw new Exception("No user was found.");
         }
-        
-        GetUserResponse userResponse = _mapper.Map<GetUserResponse>(user);
-        //userResponse.Roles = _userManager.GetRolesAsync(user).Result;
 
-        return userResponse;
+        return _mapper.Map<UserResponse>(user);
     }
 
-    public async Task<IEnumerable<GetUserResponse>> GetAllUsersByRoleAsync(string role)
+    public async Task<UserResponse> GetByIdAsync(string id)
     {
-        IEnumerable<User> users = await _userManager.GetUsersInRoleAsync(role);
+        var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-        //var usersRoles = users.Select(user => new GetUserResponse
-        //{
-        //    Id = user.Id,
-        //    Email = user.Email,
-        //    Document = user.Document,
-        //    Name = user.Name,
-        //    NickName = user.NickName,
-        //    UserName = user.Name,
-        //    ShortId = user.ShortId,
-        //    Roles = _userManager.GetRolesAsync(user).Result
-        //});
+        if (user == null)
+        {
+            throw new Exception("No user was found.");
+        }
 
-        return null;
+        return _mapper.Map<UserResponse>(user);
     }
-    public async Task<GetUserResponse> UpdateAsync(UpdateUserRequest userRequest)
+   
+    public async Task<bool> UpdateAsync(UpdateUserRequest userRequest)
     {
         var existingUser = await _userManager.FindByEmailAsync(userRequest.Email);
         
         if (existingUser == null)
         {
             Notificate("The user was not found.");
-            return null;
+            return false;
         }
 
         var existingRole = await _userManager.GetRolesAsync(existingUser);
@@ -135,43 +125,37 @@ public class UserService : ServiceBase, IUserService
 
        // userResponse.Roles.Add(newRole);
 
-        return userResponse;
+        return true;
 
     }
-    public async Task<GetUserResponse> UpdateAsync (UpdateLoginUserRequest userRequest)
+    
+    public async Task<bool> UpdateAsync (UpdateLoginUserRequest userRequest)
     {
         var existingUser = await _userManager.FindByEmailAsync(userRequest.Email);
 
         if (existingUser == null)
         {
             Notificate("The user was not found.");
-            return null;
+            return false;
         }
 
         var result = await _userManager.ChangePasswordAsync(existingUser, userRequest.CurrentPassword, userRequest.NewPassword);
-        if(result.Succeeded) 
-        {
-            var userResponse = _mapper.Map<GetUserResponse>(existingUser);
+        if (!result.Succeeded) return false;
 
-            return userResponse;
-        }
-
-        Notificate(result.Errors);
-        return null;
-        
+        return true;
     }
 
-    public async Task<GetUserResponse> RemoveAsync(string email)
+    public async Task<bool> RemoveAsync(string email)
     {
         var existingUser = await _userManager.FindByEmailAsync(email);
         if(existingUser == null)
         {
             Notificate("Email was not found.");
-            return null;
+            return false;
         }
         await _userManager.DeleteAsync(existingUser);
 
-        return null;
+        return true;
     }
     #endregion
 

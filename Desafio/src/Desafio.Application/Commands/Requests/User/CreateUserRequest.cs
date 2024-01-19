@@ -26,4 +26,5 @@ public class CreateUserRequest : IRequest<CreateUserResponse>
         set => _document = value.GetOnlyDocumentNumber();
     }
     public string UserName { get; private set; }
+    public bool Enable { get; set; } = true;
 }

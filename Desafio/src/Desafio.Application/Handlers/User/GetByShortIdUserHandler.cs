@@ -1,26 +1,18 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 
 namespace Desafio.Application;
-public class GetByShortIdUserHandler : IRequestHandler<GetByShortIdUserRequest, GetUserResponse>
+public class GetByShortIdUserHandler : IRequestHandler<GetByShortIdUserRequest, UserResponse>
 {
     private readonly IUserService _userService;
-    private readonly IMapper _mapper;
 
-    public GetByShortIdUserHandler(IUserService userService, IMapper mapper)
+    public GetByShortIdUserHandler(IUserService userService)
     {
         _userService = userService;
-        _mapper = mapper;
     }
 
-    public async Task<GetUserResponse> Handle(GetByShortIdUserRequest request, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(GetByShortIdUserRequest request, CancellationToken cancellationToken)
     {
-        var result = await _userService.GetAllAsync();
-
-        return new GetUserResponse
-        {
-            UserResponses = result
-        };
+        return await _userService.GetByShortIdAsync(request.ShortId);       
     }
 }
 

@@ -4,10 +4,10 @@ using MediatR;
 
 namespace Desafio.Application;
 
-public class CreateUserValidator : AbstractValidator<CreateUserRequest>
+public class UpdateUserValidator : AbstractValidator<UpdateUserRequest>
 {
     private readonly IUserService _userService;
-    public CreateUserValidator(IUserService userService)
+    public UpdateUserValidator(IUserService userService)
     {
         _userService = userService;
         
@@ -28,16 +28,6 @@ public class CreateUserValidator : AbstractValidator<CreateUserRequest>
         RuleFor(x => x.Email)
             .EmailAddress().WithMessage("Invalid E-mail.")
             .MustAsync(async (email, _) => !await userService.EmailAlreadyUsed(email)).WithMessage("The Email must be unique.");
-
-        RuleFor(x => x.Password)
-            .NotEmpty().NotNull().WithMessage("{PropertyName} is required.")
-            .Length(8, 20).WithMessage("The field {PropertyName} must have between 8 and 20 caracteres.")
-            .Must(user => user.Any(char.IsDigit)).WithMessage("{PropertyName} must contain at least one number.")
-            .Must(user => user.Any(char.IsLower)).WithMessage("{PropertyName} must contain at least one lowercase character.")
-            .Must(user => user.Any(char.IsUpper)).WithMessage("{PropertyName} must contain at least one uppercase character.");
-
-        RuleFor(x => x.ConfirmPassword).NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.")
-            .Equal(user => user.Password).WithMessage("Password and ConfirmPassword must be the same.");
 
         RuleFor(x => x.Document)
             .NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.")

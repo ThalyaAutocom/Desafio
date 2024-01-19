@@ -2,25 +2,18 @@
 using MediatR;
 
 namespace Desafio.Application;
-public class DeleteUserHandler : IRequestHandler<GetByIdUserRequest, GetUserResponse>
+public class DeleteUserHandler : IRequestHandler<DeleteUserRequest, bool>
 {
     private readonly IUserService _userService;
-    private readonly IMapper _mapper;
 
-    public DeleteUserHandler(IUserService userService, IMapper mapper)
+    public DeleteUserHandler(IUserService userService)
     {
         _userService = userService;
-        _mapper = mapper;
     }
 
-    public async Task<GetUserResponse> Handle(GetByIdUserRequest request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(DeleteUserRequest request, CancellationToken cancellationToken)
     {
-        var result = await _userService.GetAllAsync();
-
-        return new GetUserResponse
-        {
-            UserResponses = result
-        };
+        return await _userService.RemoveAsync(request.Email);
     }
 }
 

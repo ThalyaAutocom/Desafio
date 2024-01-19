@@ -17,7 +17,6 @@ public class AuthorizationController : DesafioControllerBase
     /// <summary>
     /// Create User
     /// </summary>
-    /// <remarks>Cria um novo usuário</remarks>
     /// <param name="mediator"></param>
     /// <param name="createUserRequest"></param>
     /// <param name="cancellationToken"></param>
@@ -34,7 +33,6 @@ public class AuthorizationController : DesafioControllerBase
     /// <summary>
     /// Login User 
     /// </summary>
-    /// <remarks>Login de Usuário</remarks>
     /// <param name="mediator"></param>
     /// <param name="loginUserRequest"></param>
     /// <param name="cancellationToken"></param>
@@ -52,7 +50,6 @@ public class AuthorizationController : DesafioControllerBase
     /// <summary>
     /// Select User Roles
     /// </summary>
-    /// <remarks>Seleciona todos os usuários cadastrados, informando suas permissões</remarks>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-users-roles")]

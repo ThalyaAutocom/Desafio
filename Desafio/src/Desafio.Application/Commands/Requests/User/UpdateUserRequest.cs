@@ -8,8 +8,15 @@ public class UpdateUserRequest : IRequest<bool>
 {
     private string _document;
 
-    public string Email { get; set; }
-    public string UserName { get; set; }
+    public string Email
+    {
+        get => UserName;
+        set
+        {
+            UserName = value;
+        }
+    }
+    public string UserName { get; private set; }
     public EUserLevel UserLevel { get; set; } = EUserLevel.Administrator;
     public string Name { get; set; }
     public string NickName { get; set; }

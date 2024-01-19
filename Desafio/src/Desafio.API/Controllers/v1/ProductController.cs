@@ -17,7 +17,6 @@ public class ProductController : DesafioControllerBase
     /// <summary>
     /// Retornar produto por Id
     /// </summary>
-    /// <remarks>Retorna um produto específico, pesquisando por seu Id</remarks>
     /// <param name="id"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
@@ -32,7 +31,6 @@ public class ProductController : DesafioControllerBase
     /// <summary>
     /// Retornar todos os produtos
     /// </summary>
-    /// <remarks>Retorna todos os produtos cadastrados</remarks>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all")]
@@ -47,7 +45,6 @@ public class ProductController : DesafioControllerBase
     /// <summary>
     /// Retornar todos os produtos vendáveis 
     /// </summary>
-    /// <remarks>Retorna todos os produtos que estão com a propriedade "sellable" setadas como "true"</remarks>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-sellable")]
@@ -61,7 +58,6 @@ public class ProductController : DesafioControllerBase
     /// <summary>
     /// Retornar produtos por Short Id
     /// </summary>
-    /// <remarks>Retorna um produto específico, pesquisando por seu Short Id</remarks>
     /// <param name="shortId"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
@@ -78,7 +74,6 @@ public class ProductController : DesafioControllerBase
     /// <summary>
     /// Cadastrar produto
     /// </summary>
-    /// <remarks>Cadastra um produto</remarks>
     /// <param name="productRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -97,7 +92,6 @@ public class ProductController : DesafioControllerBase
     /// <summary>
     /// Atualizar produto
     /// </summary>
-    /// <remarks>Atualiza informações de um produto</remarks>
     /// <param name="productRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -116,7 +110,6 @@ public class ProductController : DesafioControllerBase
     /// <summary>
     /// Excluir Produto
     /// </summary>
-    /// <remarks>Exclui um cadastro de produto</remarks>
     /// <param name="id"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -130,11 +123,4 @@ public class ProductController : DesafioControllerBase
         return CustomResponse(result);
     }
     #endregion
-
-
-
-
-
-
-    
 }

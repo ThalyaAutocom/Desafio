@@ -17,7 +17,6 @@ public class PersonController : DesafioControllerBase
     /// <summary>
     /// Retornar pessoa por Id
     /// </summary>
-    /// <remarks>Retorna uma pessoa específica, pesquisando por seu Id</remarks>
     /// <param name="id"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
@@ -32,7 +31,6 @@ public class PersonController : DesafioControllerBase
     /// <summary>
     /// Retornar todas as pessoas
     /// </summary>
-    /// <remarks>Retorna todas as pessoas cadastradas</remarks>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-person")]
@@ -46,7 +44,6 @@ public class PersonController : DesafioControllerBase
     /// <summary>
     /// Retornar pessoa por Short Id
     /// </summary>
-    /// <remarks>Retorna uma pessoa específica, pesquisando por seu Short Id</remarks>
     /// <param name="shortId"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
@@ -61,7 +58,6 @@ public class PersonController : DesafioControllerBase
     /// <summary>
     /// Retornar todos os clientes
     /// </summary>
-    /// <remarks>Retorna todas as pessoas cadastradas. Clientes são todas as pessoas que possuem a propriedade "CanBuy" setadas como "true"</remarks>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-clients")]
@@ -76,7 +72,6 @@ public class PersonController : DesafioControllerBase
     /// <summary>
     /// Retornar cliente por Id
     /// </summary>
-    /// <remarks>Retorna uma pessoa específica, pesquisando por seu Id. Clientes são todas as pessoas que possuem a propriedade "CanBuy" setadas como "true"</remarks>
     /// <param name="id"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
@@ -93,7 +88,6 @@ public class PersonController : DesafioControllerBase
     /// <summary>
     /// Cadastrar Pessoa
     /// </summary>
-    /// <remarks>Cadastra uma pessoa</remarks>
     /// <param name="personRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -113,7 +107,6 @@ public class PersonController : DesafioControllerBase
     /// <summary>
     /// Atualizar pessoa
     /// </summary>
-    /// <remarks>Atualiza informações de uma pessoa</remarks>
     /// <param name="personRequest"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
@@ -132,7 +125,6 @@ public class PersonController : DesafioControllerBase
     /// <summary>
     /// Excluir Pessoa
     /// </summary>
-    /// <remarks>Exclui um cadastro de pessoa</remarks>
     /// <param name="id"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
