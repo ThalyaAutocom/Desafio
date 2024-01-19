@@ -20,11 +20,11 @@ public class UserService : ServiceBase, IUserService
     private readonly JwtOptions _jwtOptions;
     private readonly IMapper _mapper;
 
-    public UserService(SignInManager<User> signInManager, 
+    public UserService(SignInManager<User> signInManager,
                            UserManager<User> userManager,
                            IOptions<JwtOptions> jwtOptions,
                            IMapper mapper,
-                           IError error) : base (error)
+                           IError error) : base(error)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -34,12 +34,10 @@ public class UserService : ServiceBase, IUserService
     #region Controller Methods
     public async Task<LoginUserResponse> LoginAsync(LoginUserRequest loginUserRequest)
     {
-        //usar mapper
         var result = await _signInManager.PasswordSignInAsync(loginUserRequest.Email, loginUserRequest.Password, false, true);
         if (result.Succeeded) return await GenerateToken(loginUserRequest.Email);
 
-        Notificate("Incorrect email or password.");
-        return null;
+        throw new ValidationException("Incorrect e-mail ou password");
     }
 
     public async Task<CreateUserResponse> InsertUserAsync(CreateUserRequest registerUserRequest)
@@ -74,14 +72,14 @@ public class UserService : ServiceBase, IUserService
     {
         var result = await _userManager.Users.ToListAsync();
         var response = _mapper.Map<List<UserResponse>>(result);
-        return response; 
+        return response;
     }
 
     public async Task<UserResponse> GetByShortIdAsync(string shortId)
     {
         var user = await _userManager.Users.FirstOrDefaultAsync(x => x.ShortId == shortId);
 
-        if(user == null)
+        if (user == null)
         {
             throw new Exception("No user was found.");
         }
@@ -100,11 +98,11 @@ public class UserService : ServiceBase, IUserService
 
         return _mapper.Map<UserResponse>(user);
     }
-   
+
     public async Task<bool> UpdateAsync(UpdateUserRequest userRequest)
     {
         var existingUser = await _userManager.FindByEmailAsync(userRequest.Email);
-        
+
         if (existingUser == null)
         {
             Notificate("The user was not found.");
@@ -123,13 +121,13 @@ public class UserService : ServiceBase, IUserService
 
         var userResponse = _mapper.Map<GetUserResponse>(existingUser);
 
-       // userResponse.Roles.Add(newRole);
+        // userResponse.Roles.Add(newRole);
 
         return true;
 
     }
-    
-    public async Task<bool> UpdateAsync (UpdateLoginUserRequest userRequest)
+
+    public async Task<bool> UpdateAsync(UpdateLoginUserRequest userRequest)
     {
         var existingUser = await _userManager.FindByEmailAsync(userRequest.Email);
 
@@ -148,7 +146,7 @@ public class UserService : ServiceBase, IUserService
     public async Task<bool> RemoveAsync(string email)
     {
         var existingUser = await _userManager.FindByEmailAsync(email);
-        if(existingUser == null)
+        if (existingUser == null)
         {
             Notificate("Email was not found.");
             return false;
@@ -222,6 +220,12 @@ public class UserService : ServiceBase, IUserService
     public async Task<bool> NickNameAlreadyUsed(string nickName)
     {
         return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == nickName) != null;
+    }
+
+    public async Task<bool> CorrectPassword(UpdateLoginUserRequest request)
+    {
+        var result = await _signInManager.PasswordSignInAsync(request.Email, request.CurrentPassword, false, true);
+        return result.Succeeded;
     }
     #endregion
 }
