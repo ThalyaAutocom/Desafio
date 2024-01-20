@@ -117,10 +117,6 @@ public class UserService : IUserService
         await _userManager.RemoveFromRoleAsync(existingUser, existingRole.FirstOrDefault());
         await _userManager.AddToRoleAsync(existingUser, newRole);
 
-        var userResponse = _mapper.Map<GetUserResponse>(existingUser);
-
-        // userResponse.Roles.Add(newRole);
-
         return true;
 
     }

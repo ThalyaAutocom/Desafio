@@ -1,3 +1,2 @@
-﻿- MEDIATR 
-- VERIFICAR MIDLEWARES
-- VERIFICAR AULA SOBRE DOCUMENTAÇÃO E VERSIONAMENTO
+﻿- Criar Custom Exception
+- Verificar validações
