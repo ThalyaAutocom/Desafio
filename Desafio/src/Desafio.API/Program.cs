@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddVersioning(); 
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddApplicationConfigurations(builder.Configuration);
-    builder.Services.AddIdentityConfigurations(builder.Configuration);
     builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddApiConfigurations();
 }

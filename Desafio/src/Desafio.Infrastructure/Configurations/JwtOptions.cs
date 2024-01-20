@@ -1,4 +1,4 @@
-﻿namespace Desafio.Identity;
+﻿namespace Desafio.Infrastructure;
 
 public class JwtOptions
 {

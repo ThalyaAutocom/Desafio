@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Desafio.Identity;
+namespace Desafio.Infrastructure;
 
-public static class AddIdentityStartup
+internal static class IdentitySetup
 {
     public static void AddIdentitySetup(this IServiceCollection services, IConfiguration configuration)
     {

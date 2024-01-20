@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Desafio.Application;
 using Desafio.Domain;
+using Desafio.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Desafio.Identity;
+namespace Desafio.Infrastructure;
 
 public class IdentityContext : IdentityDbContext<User>
 {
@@ -12,10 +12,10 @@ public class IdentityContext : IdentityDbContext<User>
     {
 
     }
-    
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        
+
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
