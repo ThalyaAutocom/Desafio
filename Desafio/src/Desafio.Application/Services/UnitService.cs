@@ -18,7 +18,12 @@ public class UnitService : IUnitService
     public async Task<IEnumerable<UnitResponse>> GetAllAsync()
     {
         var result = _mapper.Map<IEnumerable<UnitResponse>>(await _unitRepository.GetAllAsync());
-
+        
+        if (result == null)
+        {
+            throw new Exception("No products were found.");
+        }
+       
         return result;
     }
 

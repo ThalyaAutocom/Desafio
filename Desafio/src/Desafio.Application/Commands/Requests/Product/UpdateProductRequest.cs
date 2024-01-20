@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MediatR;
+using System.ComponentModel.DataAnnotations;
 
 namespace Desafio.Application;
 
-public class UpdateProductRequest
+public class UpdateProductRequest : IRequest<bool>
 {
     private string _acronym = string.Empty;
 

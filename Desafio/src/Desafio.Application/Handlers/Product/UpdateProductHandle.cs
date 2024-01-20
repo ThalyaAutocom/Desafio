@@ -2,18 +2,18 @@
 
 namespace Desafio.Application;
 
-public class UpdateProductHandle : IRequestHandler<UpdateUnitRequest, bool>
+public class UpdateProductHandle : IRequestHandler<UpdateProductRequest, bool>
 {
-    private readonly IUnitService _unitService;
+    private readonly IProductService _productService;
 
-    public UpdateProductHandle(IUnitService unitService)
+    public UpdateProductHandle(IProductService productService)
     {
-        _unitService = unitService;
+        _productService = productService;
     }
 
-    public async Task<bool> Handle(UpdateUnitRequest request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(UpdateProductRequest request, CancellationToken cancellationToken)
     {
-        var result = await _unitService.UpdateAsync(request);
+        var result = await _productService.UpdateAsync(request);
 
         return result;
     }

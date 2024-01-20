@@ -1,23 +1,31 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 
 namespace Desafio.Application;
-public class GetProductHandler : IRequestHandler<GetUnitRequest, GetUnitResponse>
+public class GetProductHandler : IRequestHandler<GetProductRequest, GetProductResponse>
 {
-    private readonly IUnitService _unitService;
+    private readonly IProductService _productService;
 
-    public GetProductHandler(IUnitService unitService)
+    public GetProductHandler(IProductService productService)
     {
-        _unitService = unitService;
+        _productService = productService;
     }
 
-    public async Task<GetUnitResponse> Handle(GetUnitRequest request, CancellationToken cancellationToken)
+    public async Task<GetProductResponse> Handle(GetProductRequest request, CancellationToken cancellationToken)
     {
-        var result = await _unitService.GetAllAsync();
+        var result = await _productService.GetAllAsync();
 
-        return new GetUnitResponse
+        if(request.Sellable is not null)
         {
-            UnitResponses = result
+            result = result.Where(x => x.Sellable).ToList();
+        }
+        if (request.Enable is not null)
+        {
+            result = result.Where(x => x.Enable).ToList();
+        }
+
+        return new GetProductResponse
+        {
+            ProductResponses = result
         };
     }
 }

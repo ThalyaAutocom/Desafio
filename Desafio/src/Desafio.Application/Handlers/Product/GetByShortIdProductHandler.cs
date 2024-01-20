@@ -1,18 +1,18 @@
 ﻿using MediatR;
 
 namespace Desafio.Application;
-public class GetByShortIdProductHandler : IRequestHandler<GetByShortIdUnitRequest, UnitResponse>
+public class GetByShortIdProductHandler : IRequestHandler<GetByShortIdProductRequest, ProductResponse>
 {
-    private readonly IUnitService _unitService;
+    private readonly IProductService _productService;
 
-    public GetByShortIdProductHandler(IUnitService unitService)
+    public GetByShortIdProductHandler(IProductService productService)
     {
-        _unitService = unitService;
+        _productService = productService;
     }
 
-    public async Task<UnitResponse> Handle(GetByShortIdUnitRequest request, CancellationToken cancellationToken)
+    public async Task<ProductResponse> Handle(GetByShortIdProductRequest request, CancellationToken cancellationToken)
     {
-        return await _unitService.GetByShortIdAsync(request.ShortId);       
+        return await _productService.GetByShortIdAsync(request.ShortId);       
     }
 }
 

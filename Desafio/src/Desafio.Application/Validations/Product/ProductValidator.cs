@@ -2,7 +2,7 @@
 
 namespace Desafio.Application.Validations.Product;
 
-public class ProductValidator : AbstractValidator<InsertProductRequest>
+public class ProductValidator : AbstractValidator<CreateProductRequest>
 {
     private readonly IProductService _productService;
 

@@ -27,18 +27,6 @@ public class ProductService : IProductService
         return result;
     }
 
-    public async Task<IEnumerable<ProductResponse>> GetAllSellableAsync()
-    {
-        var result = _mapper.Map<IEnumerable<ProductResponse>>(await _productRepository.GetAllSellableAsync());
-
-        if (result == null)
-        {
-            throw new Exception("No products were found.");
-        }
-
-        return result;
-    }
-
     public async Task<ProductResponse> GetByIdAsync(Guid id)
     {
         var product = await _productRepository.GetByIdAsync(id);
@@ -63,16 +51,16 @@ public class ProductService : IProductService
         return _mapper.Map<ProductResponse>(product);
     }
 
-    public async Task<ProductResponse> InsertAsync(InsertProductRequest productRequest)
+    public async Task<CreateProductResponse> InsertAsync(CreateProductRequest productRequest)
     {
         var product = _mapper.Map<Product>(productRequest);
 
         await _productRepository.InsertAsync(product);
-        var newProduct = _mapper.Map<ProductResponse>(product);
+        var newProduct = _mapper.Map<CreateProductResponse>(product);
         return newProduct;
     }
 
-    public async Task<ProductResponse> RemoveAsync(Guid id)
+    public async Task<bool> RemoveAsync(Guid id)
     {
         var product = await _productRepository.GetByIdAsync(id);
 
@@ -82,10 +70,10 @@ public class ProductService : IProductService
         }
         await _productRepository.RemoveAsync(id);
 
-        return null;
+        return true;
     }
 
-    public async Task<ProductResponse> UpdateAsync(UpdateProductRequest productRequest)
+    public async Task<bool> UpdateAsync(UpdateProductRequest productRequest)
     {
         var existingProduct = await _productRepository.GetByIdAsync(productRequest.Id);
 
@@ -98,9 +86,7 @@ public class ProductService : IProductService
 
         await _productRepository.UpdateAsync(existingProduct);
 
-        var productResponse = _mapper.Map<ProductResponse>(existingProduct);
-
-        return productResponse;
+        return true;
     }
     #endregion
 

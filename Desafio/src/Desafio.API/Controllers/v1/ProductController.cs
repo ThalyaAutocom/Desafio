@@ -1,4 +1,5 @@
 ﻿using Desafio.Application;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,15 +18,17 @@ public class ProductController : DesafioControllerBase
     /// <summary>
     /// Retornar produto por Id
     /// </summary>
+    /// <param name="mediator"></param>
     /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-id")]
-    public async Task<ActionResult<ProductResponse>> GetProductAsync(Guid id)
+    public async Task<ActionResult<ProductResponse>> GetByIdProductAsync(ISender mediator,
+        Guid id,
+        CancellationToken cancellationToken = default)
     {
-        ProductResponse result = await _productService.GetByIdAsync(id);
-
-        return null;
+        return await mediator.Send(new GetByIdProductRequest(id), cancellationToken);
     }
 
     /// <summary>
@@ -34,37 +37,28 @@ public class ProductController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all")]
-    public async Task<ActionResult<IEnumerable<ProductResponse>>> GetAllProductsAsync()
+    public async Task<ActionResult<GetProductResponse>> GetAllProductsAsync(ISender mediator,
+        bool? sellable,
+        bool? enable,
+        CancellationToken cancellationToken = default)
     {
-        IEnumerable<ProductResponse> result = await _productService.GetAllAsync();
-
-        return null;
+        return await mediator.Send(new GetProductRequest(sellable, enable), cancellationToken);
     }
 
-    /// <summary>
-    /// Retornar todos os produtos vendáveis 
-    /// </summary>
-    /// <returns></returns>
-    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
-    [HttpGet("get-all-sellable")]
-    public async Task<ActionResult<IEnumerable<ProductResponse>>> GetAllSalabeProductsAsync()
-    {
-        IEnumerable<ProductResponse> result = await _productService.GetAllSellableAsync();
-
-        return null;
-    }
     /// <summary>
     /// Retornar produtos por Short Id
     /// </summary>
+    /// <param name="mediator"></param>
     /// <param name="shortId"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-short-id")]
-    public async Task<ActionResult<ProductResponse>> GetProductByShortIdAsync(string shortId)
+    public async Task<ActionResult<ProductResponse>> GetProductByShortIdAsync(ISender mediator,
+        string shortId,
+        CancellationToken cancellationToken = default)
     {
-        ProductResponse result = await _productService.GetByShortIdAsync(shortId);
-
-        return null;
+        return await mediator.Send(new GetByShortIdProductRequest(shortId), cancellationToken);
     }
     #endregion
 
@@ -72,15 +66,17 @@ public class ProductController : DesafioControllerBase
     /// <summary>
     /// Cadastrar produto
     /// </summary>
+    /// <param name="mediator"></param>
     /// <param name="productRequest"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPost("insert-product")]
-    public async Task<ActionResult<ProductResponse>> InsertProductAsync(InsertProductRequest productRequest)
+    public async Task<ActionResult<CreateProductResponse>> InsertProductAsync(ISender mediator,
+        CreateProductRequest productRequest,
+        CancellationToken cancellationToken = default)
     {
-        ProductResponse result = await _productService.InsertAsync(productRequest);
-
-        return null;
+        return await mediator.Send(productRequest, cancellationToken);
     }
     #endregion
 
@@ -88,15 +84,17 @@ public class ProductController : DesafioControllerBase
     /// <summary>
     /// Atualizar produto
     /// </summary>
+    /// <param name="mediator"></param>
     /// <param name="productRequest"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPut("update-product-information")]
-    public async Task<ActionResult<ProductResponse>> UpdateProductAsync(UpdateProductRequest productRequest)
+    public async Task<ActionResult<bool>> UpdateProductAsync(ISender mediator,
+        UpdateProductRequest productRequest, 
+        CancellationToken cancellationToken)
     {
-        ProductResponse result = await _productService.UpdateAsync(productRequest);
-
-        return null;
+        return await mediator.Send(productRequest, cancellationToken);
     }
     #endregion
 
@@ -104,14 +102,17 @@ public class ProductController : DesafioControllerBase
     /// <summary>
     /// Excluir Produto
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="mediator"></param>
+    /// <param name="productRequest"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpDelete("delete-product")]
-    public async Task<ActionResult<ProductResponse>> RemoveProductAsync(Guid id)
+    public async Task<ActionResult<bool>> RemoveProductAsync(ISender mediator,
+        DeleteProductRequest productRequest,
+        CancellationToken cancellationToken = default)
     {
-        ProductResponse result = await _productService.RemoveAsync(id);
-
-return null;    }
+        return await mediator.Send(productRequest, cancellationToken);
+    }
     #endregion
 }

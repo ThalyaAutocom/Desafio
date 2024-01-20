@@ -28,7 +28,7 @@ public class AutoMapperConfiguration : Profile
         #endregion
 
         #region Product
-        CreateMap<Product, InsertProductRequest>().ReverseMap();
+        CreateMap<Product, CreateProductRequest>().ReverseMap();
         CreateMap<Product, UpdateProductRequest>().ReverseMap();
         CreateMap<Product, ProductResponse>().ReverseMap();
         #endregion

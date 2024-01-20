@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 
 namespace Desafio.Application;
 public class GetUnitHandler : IRequestHandler<GetUnitRequest, GetUnitResponse>

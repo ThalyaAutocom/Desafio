@@ -2,7 +2,7 @@
 
 namespace Desafio.Application;
 
-public class GetByShortIdProductRequest(string shortId) : IRequest<UnitResponse>
+public class GetByShortIdProductRequest(string shortId) : IRequest<ProductResponse>
 {
     public string ShortId { get; set; } = shortId;
 }

@@ -2,17 +2,17 @@
 
 namespace Desafio.Application;
 
-public class DeleteProductHandle : IRequestHandler<DeleteUnitRequest, bool>
+public class DeleteProductHandle : IRequestHandler<DeleteProductRequest, bool>
 {
-    private readonly IUnitService _unitService;
+    private readonly IProductService _productService;
 
-    public DeleteProductHandle(IUnitService unitService)
+    public DeleteProductHandle(IProductService productService)
     {
-        _unitService = unitService;
+        _productService = productService;
     }
 
-    public async Task<bool> Handle(DeleteUnitRequest request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(DeleteProductRequest request, CancellationToken cancellationToken)
     {
-        return await _unitService.RemoveAsync(request.Acronym);
+        return await _productService.RemoveAsync(request.Id);
     }
 }

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel;
+﻿using MediatR;
+using System.ComponentModel;
 
 namespace Desafio.Application;
 
-public class InsertProductRequest
+public class CreateProductRequest : IRequest<CreateProductResponse>
 {
     private string _acronym;
     public string Description { get; set; } = string.Empty;

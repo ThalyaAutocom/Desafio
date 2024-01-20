@@ -2,7 +2,7 @@
 
 namespace Desafio.Application;
 
-public class GetByIdProductRequest(Guid id) : IRequest<ProductResponse>
+public class DeleteProductRequest(Guid id) : IRequest<bool>
 {
     public Guid Id { get; set; } = id;
 }
