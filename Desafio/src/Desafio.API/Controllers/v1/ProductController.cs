@@ -7,11 +7,9 @@ namespace Desafio.API;
 [ApiVersion("1.0")]
 public class ProductController : DesafioControllerBase
 {
-    private readonly IProductService _productService;
-
-    public ProductController(IProductService productService) 
+    public ProductController() 
     {
-        _productService = productService;
+
     }
 
     #region Get

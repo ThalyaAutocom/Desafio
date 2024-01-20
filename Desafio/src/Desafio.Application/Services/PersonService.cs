@@ -74,16 +74,16 @@ public class PersonService : IPersonService
         return _mapper.Map<PersonResponse>(person);
     }
 
-    public async Task<PersonResponse> InsertAsync(CreatePersonRequest personRequest)
+    public async Task<CreatePersonResponse> InsertAsync(CreatePersonRequest personRequest)
     {
         var person = _mapper.Map<Person>(personRequest);
 
         await _personRepository.InsertAsync(person);
-        var newperson = _mapper.Map<PersonResponse>(person);
+        var newperson = _mapper.Map<CreatePersonResponse>(person);
         return newperson;
     }
 
-    public async Task<PersonResponse> RemoveAsync(Guid id)
+    public async Task<bool> RemoveAsync(Guid id)
     {
         var person = await _personRepository.GetByIdAsync(id);
 
@@ -94,10 +94,10 @@ public class PersonService : IPersonService
 
         await _personRepository.RemoveAsync(id);
 
-        return null;
+        return true;
     }
 
-    public async Task<PersonResponse> UpdateAsync(UpdatePersonRequest personRequest)
+    public async Task<bool> UpdateAsync(UpdatePersonRequest personRequest)
     {
         var existingperson = await _personRepository.GetByIdAsync(personRequest.Id);
 
@@ -111,9 +111,7 @@ public class PersonService : IPersonService
         _mapper.Map(personRequest, existingperson);
         await _personRepository.UpdateAsync(existingperson);
 
-        var personResponse = _mapper.Map<PersonResponse>(existingperson);
-
-        return personResponse;
+        return true;
     }
     #endregion
 

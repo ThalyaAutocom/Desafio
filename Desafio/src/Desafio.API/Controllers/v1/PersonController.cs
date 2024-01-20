@@ -1,4 +1,5 @@
 ﻿using Desafio.Application;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,26 +7,26 @@ namespace Desafio.API;
 [ApiVersion("1.0")]
 public class PersonController : DesafioControllerBase
 {
-    private readonly IPersonService _personService;
-
-    public PersonController(IPersonService personService)
+    public PersonController()
     {
-        _personService = personService;
+        
     }
 
     #region Get
     /// <summary>
     /// Retornar pessoa por Id
     /// </summary>
+    /// <param name="mediator"></param>
     /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-person-by-id")]
-    public async Task<ActionResult<PersonResponse>> GetPersonAsync(Guid id)
+    public async Task<ActionResult<PersonResponse>> GetPersonByIdAsync(ISender mediator,
+        Guid id,
+        CancellationToken cancellationToken = default)
     {
-        PersonResponse result = await _personService.GetByIdAsync(id);
-
-        return null;
+        return await mediator.Send(new GetByIdPersonRequest(id), cancellationToken);
     }
 
     /// <summary>
@@ -34,25 +35,26 @@ public class PersonController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-person")]
-    public async Task<ActionResult<PersonResponse>> GetAllPerson()
+    public async Task<ActionResult<GetPersonResponse>> GetAllPerson(ISender mediator,
+        bool? enable,
+        CancellationToken cancellationToken = default)
     {
-        IEnumerable<PersonResponse> result = await _personService.GetAllAsync();
-
-        return null;
-
+        return await mediator.Send(new GetPersonRequest(enable), cancellationToken);
     }
     /// <summary>
     /// Retornar pessoa por Short Id
     /// </summary>
+    /// <param name="mediator"></param>
     /// <param name="shortId"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-short-id")]
-    public async Task<ActionResult<PersonResponse>> GetPersonByShortIdAsync(string shortId)
+    public async Task<ActionResult<PersonResponse>> GetPersonByShortIdAsync(ISender mediator,
+        string shortId,
+        CancellationToken cancellationToken = default)
     {
-        PersonResponse result = await _personService.GetByShortIdAsync(shortId);
-
-        return null;
+        return await mediator.Send(new GetByShortIdPersonRequest(shortId), cancellationToken);
     }
 
     /// <summary>
@@ -61,26 +63,27 @@ public class PersonController : DesafioControllerBase
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-all-clients")]
-    public async Task<ActionResult<PersonResponse>> GetAllClients()
+    public async Task<ActionResult<GetPersonResponse>> GetAllClients(ISender mediator,
+        bool? enable,
+        CancellationToken cancellationToken = default)
     {
-        IEnumerable<PersonResponse> result = await _personService.GetAllClientAsync();
-
-        return null;
-
+        return await mediator.Send(new GetClientRequest(enable), cancellationToken);
     }
 
     /// <summary>
     /// Retornar cliente por Id
     /// </summary>
+    /// <param name="mediator"></param>
+    /// <param name="cancellationToken"></param>
     /// <param name="id"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-client-by-id")]
-    public async Task<ActionResult<PersonResponse>> GetClientAsync(Guid id)
+    public async Task<ActionResult<PersonResponse>> GetClientAsync(ISender mediator,
+        Guid id,
+        CancellationToken cancellationToken = default)
     {
-        PersonResponse result = await _personService.GetClientByIdAsync(id);
-
-        return null;
+        return await mediator.Send(new GetByIdClientRequest(id), cancellationToken);
     }
     #endregion
 
@@ -88,15 +91,17 @@ public class PersonController : DesafioControllerBase
     /// <summary>
     /// Cadastrar Pessoa
     /// </summary>
+    /// <param name="mediator"></param>
     /// <param name="personRequest"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPost("insert-person")]
-    public async Task<ActionResult<PersonResponse>> InsertPersonAsync(CreatePersonRequest personRequest)
+    public async Task<ActionResult<CreatePersonResponse>> InsertPersonAsync(ISender mediator,
+        CreatePersonRequest personRequest,
+        CancellationToken cancellationToken = default)
     {
-        PersonResponse result = await _personService.InsertAsync(personRequest);
-
-        return null;
+        return await mediator.Send(personRequest, cancellationToken);
     }
     #endregion
 
@@ -105,15 +110,17 @@ public class PersonController : DesafioControllerBase
     /// <summary>
     /// Atualizar pessoa
     /// </summary>
+    /// <param name="mediator"></param>
     /// <param name="personRequest"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpPut("update-person-information")]
-    public async Task<ActionResult<PersonResponse>> UpdatePersonAsync(UpdatePersonRequest personRequest)
+    public async Task<ActionResult<bool>> UpdatePersonAsync(ISender mediator,
+        UpdatePersonRequest personRequest,
+        CancellationToken cancellationToken = default)
     {
-        PersonResponse result = await _personService.UpdateAsync(personRequest);
-
-        return null;
+        return await mediator.Send(personRequest, cancellationToken);
     }
     #endregion
 
@@ -121,15 +128,17 @@ public class PersonController : DesafioControllerBase
     /// <summary>
     /// Excluir Pessoa
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="mediator"></param>
+    /// <param name="personRequest"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpDelete("delete-person")]
-    public async Task<ActionResult<PersonResponse>> RemovePersonAsync(Guid id)
+    public async Task<ActionResult<bool>> RemovePersonAsync(ISender mediator,
+        DeletePersonRequest personRequest,
+        CancellationToken cancellationToken = default)
     {
-        PersonResponse result = await _personService.RemoveAsync(id);
-
-        return null;
+        return await mediator.Send(personRequest, cancellationToken);
     }
     #endregion
 }

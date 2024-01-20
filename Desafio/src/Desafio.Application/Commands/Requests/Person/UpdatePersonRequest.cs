@@ -1,9 +1,9 @@
 ﻿using Desafio.Domain;
-using System.ComponentModel.DataAnnotations;
+using MediatR;
 
 namespace Desafio.Application;
 
-public class UpdatePersonRequest
+public class UpdatePersonRequest : IRequest<bool>
 {
     private string _document;
 

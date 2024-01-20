@@ -1,9 +1,10 @@
 ﻿using Desafio.Domain;
+using MediatR;
 using System.ComponentModel;
 
 namespace Desafio.Application;
 
-public class CreatePersonRequest
+public class CreatePersonRequest : IRequest<CreatePersonResponse>
 {
     private string _document;
 
