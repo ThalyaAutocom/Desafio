@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Desafio.Application;
 
@@ -23,9 +24,17 @@ public class ExceptionMiddleware : IMiddleware
                 ErrorId = errorId
             };
 
+            if(exception is FluentValidation.ValidationException fluentException)
+            {
+                errorResult.Exception = "One or more validations failed";
+                foreach(var error in fluentException.Errors)
+                {
+                    errorResult.Messages.Add($"{error.ErrorMessage}");
+                }
+            }
+
             errorResult.StatusCode = (int)ReturnStatusCode(exception);
 
-           
             HttpResponse response = context.Response;
             response.ContentType = "application/json";
 
@@ -42,6 +51,8 @@ public class ExceptionMiddleware : IMiddleware
                 return HttpStatusCode.BadRequest;
             case FluentValidation.ValidationException:
                 return HttpStatusCode.UnprocessableEntity;
+            case CustomException e:
+                return e.StatusCode;
             default:
                return HttpStatusCode.InternalServerError;
         }

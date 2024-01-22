@@ -14,6 +14,8 @@ public interface IPersonRepository
     Task<int> SaveChangesAsync();
     Task<Person> GetByShortIdAsync(string shortId);
     Task<bool> AlternativeCodeAlreadyExistsAsync(string alternativeCode);
+    Task<bool> AlternativeCodeAlreadyExistsAsync(UpdatePersonRequest request);
     Task<bool> DocumentAlreadyExistsAsync(string document);
+    Task<bool> DocumentAlreadyExistsAsync(UpdatePersonRequest request);
     Task<bool> PersonCanBuyAsync(Guid id);
 }

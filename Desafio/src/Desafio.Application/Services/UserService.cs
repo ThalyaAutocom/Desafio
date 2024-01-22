@@ -33,10 +33,13 @@ public class UserService : IUserService
     #region Controller Methods
     public async Task<LoginUserResponse> LoginAsync(LoginUserRequest loginUserRequest)
     {
-        var result = await _signInManager.PasswordSignInAsync(loginUserRequest.Email, loginUserRequest.Password, false, true);
-        if (result.Succeeded) return await GenerateToken(loginUserRequest.Email);
+        var email = _userManager.Users.FirstOrDefaultAsync(x => x.NickName == loginUserRequest.NickName).Result?.Email;
+        if(email == null) throw new CustomException("User was not found.", statusCode: System.Net.HttpStatusCode.NotFound);
 
-        throw new ValidationException("Incorrect e-mail ou password");
+        var result = await _signInManager.PasswordSignInAsync(email, loginUserRequest.Password, false, true);
+        if (result.Succeeded) return await GenerateToken(email);
+
+        throw new CustomException("Incorrect e-mail ou password", statusCode: System.Net.HttpStatusCode.Unauthorized);
     }
 
     public async Task<CreateUserResponse> InsertUserAsync(CreateUserRequest registerUserRequest)
@@ -53,7 +56,7 @@ public class UserService : IUserService
             {
                 errorMessage += $"{error.Description}\r\n";
             }
-            throw new ValidationException(errorMessage);
+            throw new CustomException(errorMessage);
         }
 
         //desbloquear usuário já que não terá e-mail de confirmação
@@ -123,7 +126,7 @@ public class UserService : IUserService
 
     public async Task<bool> UpdateAsync(UpdateLoginUserRequest userRequest)
     {
-        var existingUser = await _userManager.FindByEmailAsync(userRequest.Email);
+        var existingUser = _userManager.Users.FirstOrDefaultAsync(x => x.NickName == userRequest.NickName).Result;
 
         if (existingUser == null)
         {
@@ -208,33 +211,31 @@ public class UserService : IUserService
     {
         return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == document) != null;
     }
+    public async Task<bool> DocumentAlreadyUsed(UpdateUserRequest userRequest)
+    {
+        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == userRequest.Document && x.Id != userRequest.Id) != null;
+    }
 
     public async Task<bool> NickNameAlreadyUsed(string nickName)
     {
-        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == nickName) != null;
+        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.NickName == nickName) != null;
+    }
+    public async Task<bool> NickNameAlreadyUsed(UpdateUserRequest userRequest)
+    {
+        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.NickName == userRequest.NickName && x.Id != userRequest.Id) != null;
     }
 
     public async Task<bool> CorrectPassword(UpdateLoginUserRequest request)
     {
-        var existingUser = await _userManager.FindByEmailAsync(request.Email);
+        var existingUser = _userManager.Users.FirstOrDefaultAsync(x => x.NickName == request.NickName).Result;
 
         if (existingUser == null)
         {
             throw new Exception("The user was not found.");
         }
 
-        var result = await _signInManager.PasswordSignInAsync(request.Email, request.CurrentPassword, false, true);
+        var result = await _signInManager.PasswordSignInAsync(existingUser.Email, request.CurrentPassword, false, true);
         return result.Succeeded;
-    }
-
-    public async Task<bool> DocumentAlreadyUsed(UpdateUserRequest userRequest)
-    {
-        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == userRequest.Document && x.Id != userRequest.Id) != null;
-    }
-
-    public async Task<bool> NickNameAlreadyUsed(UpdateUserRequest userRequest)
-    {
-        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == userRequest.NickName && x.Id != userRequest.Id) != null;
     }
     #endregion
 }

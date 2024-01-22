@@ -21,7 +21,7 @@ public class AuthorizationController : DesafioControllerBase
     /// <param name="createUserRequest"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
+    [Authorize(Roles = "ADMINISTRATOR")]
     [HttpPost("register-user")]
     public async Task<ActionResult<CreateUserResponse>> RegisterUserAsync(ISender mediator, 
         CreateUserRequest createUserRequest,

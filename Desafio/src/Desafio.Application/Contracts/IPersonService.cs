@@ -13,6 +13,9 @@ public interface IPersonService
     Task<IEnumerable<PersonResponse>> GetAllClientAsync();
     Task<PersonResponse> GetByShortIdAsync(string shortId);
     Task<bool> AlternativeCodeAlreadyExistsAsync(string alternativeCode);
+    Task<bool> AlternativeCodeAlreadyExistsAsync(UpdatePersonRequest userRequest);
     Task<bool> DocumentAlreadyExistsAsync(string document);
+    Task<bool> DocumentAlreadyExistsAsync(UpdatePersonRequest userRequest);
+
     Task<bool> PersonCanBuyAsync(Guid id);
 }

@@ -9,11 +9,10 @@ public class UpdateLoginUserValidator : AbstractValidator<UpdateLoginUserRequest
     {
         _userService = userService;
 
-        RuleFor(x => x.Email).NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.")
-            .EmailAddress().WithMessage("Invalid Email");
+        RuleFor(x => x.NickName).NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.");
 
         RuleFor(x => x.CurrentPassword).NotEmpty().WithMessage("The field {PropertyName} must be unique.")
-            .MustAsync(async (request, currentPassword, _) => await _userService.CorrectPassword(request)).WithMessage("Incorrect Password");
+            .MustAsync(async (request, currentPassword, _) => await _userService.CorrectPassword(request)).WithMessage("Incorrect Current Password");
 
         RuleFor(x => x.NewPassword)
             .NotEmpty().NotNull().WithMessage("{PropertyName} is required.")

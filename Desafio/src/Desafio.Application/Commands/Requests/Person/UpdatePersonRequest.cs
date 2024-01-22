@@ -1,5 +1,6 @@
 ﻿using Desafio.Domain;
 using MediatR;
+using System.ComponentModel;
 
 namespace Desafio.Application;
 
@@ -17,4 +18,7 @@ public class UpdatePersonRequest : IRequest<bool>
     public string City { get; set; } = string.Empty;
     public string Notes { get; set; } = string.Empty;
     public string AlternativeCode { get; set; } = string.Empty;
+    public bool Enable { get; set; } = true;
+    [DefaultValue(false)]
+    public bool CanBuy { get; set; }
 }

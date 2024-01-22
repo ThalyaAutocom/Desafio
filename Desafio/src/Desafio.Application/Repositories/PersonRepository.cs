@@ -86,10 +86,18 @@ public class PersonRepository : IPersonRepository
     {
         return await _appDbContext.People.AsNoTracking().AnyAsync(x => x.AlternativeCode == alternativeCode);
     }
+    public async Task<bool> AlternativeCodeAlreadyExistsAsync(UpdatePersonRequest request)
+    {
+        return await _appDbContext.People.AsNoTracking().AnyAsync(x => x.AlternativeCode == request.AlternativeCode && x.Id != request.Id);
+    }
 
     public async Task<bool> DocumentAlreadyExistsAsync(string document)
     {
         return await _appDbContext.People.AsNoTracking().AnyAsync(x => x.Document == document);
+    }
+    public async Task<bool> DocumentAlreadyExistsAsync(UpdatePersonRequest request)
+    {
+        return await _appDbContext.People.AsNoTracking().AnyAsync(x => x.Document == request.Document && x.Id != request.Id);
     }
 
     public async Task<bool> PersonCanBuyAsync(Guid id)

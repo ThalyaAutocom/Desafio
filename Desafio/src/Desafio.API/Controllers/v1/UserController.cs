@@ -90,7 +90,6 @@ public class UserController : DesafioControllerBase
     /// <param name="mediatior"></param>
     /// <param name="userRequest"></param>
     /// <param name="cancellationToken"></param>
-    /// <param name="email"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
     [HttpDelete("delete-user")]

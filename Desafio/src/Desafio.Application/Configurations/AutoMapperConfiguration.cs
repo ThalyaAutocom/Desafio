@@ -14,6 +14,7 @@ public class AutoMapperConfiguration : Profile
         #endregion
 
         #region User
+        CreateMap<User, UpdateUserRequest>().ReverseMap();
         CreateMap<User, CreateUserRequest>().ReverseMap();
         CreateMap<User, CreateUserResponse>().ReverseMap();
         CreateMap<User, UserResponse>().ReverseMap();

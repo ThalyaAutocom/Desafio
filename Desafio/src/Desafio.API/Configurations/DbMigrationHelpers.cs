@@ -72,7 +72,7 @@ internal static class DbMigrationHelpers
             User user = new()
             {
                 Name = "ADMINISTRATOR",
-                NickName = "ADMINISTRATOR",
+                NickName = "ADMIN",
                 UserName = "admin@admin.com",
                 Email = "admin@admin.com",
                 NormalizedEmail = "ADMIN@ADMIN.COM",

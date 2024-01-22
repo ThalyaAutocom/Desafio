@@ -34,7 +34,6 @@ public class UnitController : DesafioControllerBase
     /// Retornar unidade por Short Id
     /// </summary>
     /// <param name="mediator"></param>
-    /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <param name="shortId"></param>
     /// <returns></returns>

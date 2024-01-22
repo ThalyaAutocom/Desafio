@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
 using Desafio.Domain;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using System.Reflection.Metadata;
+using System.Xml.Linq;
 
 namespace Desafio.Application;
 
@@ -118,11 +122,30 @@ public class PersonService : IPersonService
     #region Validation Methods
     public async Task<bool> DocumentAlreadyExistsAsync(string document)
     {
+        //Retornar validação como verdadeira se vazia
+        if (string.IsNullOrWhiteSpace(document)) return true; 
+
         return await _personRepository.DocumentAlreadyExistsAsync(document);
+    }
+    public async Task<bool> DocumentAlreadyExistsAsync(UpdatePersonRequest userRequest)
+    {
+        //Retornar validação como verdadeira se vazia
+        if (string.IsNullOrWhiteSpace(userRequest.Document)) return true;
+
+        return await _personRepository.DocumentAlreadyExistsAsync(userRequest);
     }
     public async Task<bool> AlternativeCodeAlreadyExistsAsync(string alternativeCode)
     {
+        //Retornar validação como verdadeira se vazia
+        if (string.IsNullOrWhiteSpace(alternativeCode)) return true;
         return await _personRepository.AlternativeCodeAlreadyExistsAsync(alternativeCode);
+    }
+    public async Task<bool> AlternativeCodeAlreadyExistsAsync(UpdatePersonRequest userRequest)
+    {
+        //Retornar validação como verdadeira se vazia
+        if (string.IsNullOrWhiteSpace(userRequest.AlternativeCode)) return true;
+
+        return await _personRepository.AlternativeCodeAlreadyExistsAsync(userRequest);
     }
     public async Task<bool> PersonCanBuyAsync(Guid id)
     {
