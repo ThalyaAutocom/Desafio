@@ -2,8 +2,6 @@
 using MediatR;
 using FluentValidation;
 using System.Reflection;
-using Desafio.Application.Behaviours;
-
 
 namespace Desafio.Application;
 
@@ -16,6 +14,7 @@ internal static class AddHandlerStartup
         services.AddMediatR(assembly);
         services.AddValidatorsFromAssembly(assembly);
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
 
         return services;
     }
