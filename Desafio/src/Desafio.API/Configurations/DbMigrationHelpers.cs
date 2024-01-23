@@ -82,13 +82,13 @@ internal static class DbMigrationHelpers
             };
 
             var result = await userManager.CreateAsync(user, "Admin2024@");
-            if (!result.Succeeded) throw new Exception("Não foi possível cadastrar um usuário padrão");
+            if (!result.Succeeded) throw new CustomException("User coud not be registered.");
 
             //desbloquear usuário já que não terá e-mail de confirmação
             await userManager.SetLockoutEnabledAsync(user, false);
 
             var resultRole = await userManager.AddToRoleAsync(user, "ADMINISTRATOR");
-            if (!result.Succeeded) throw new Exception("Não foi possível vincular uma permissão ao usuário padrão cadastrado");
+            if (!result.Succeeded) throw new CustomException("Role coud not be registered.");
         }
         #endregion
 

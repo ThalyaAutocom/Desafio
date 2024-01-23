@@ -83,7 +83,7 @@ public class UserService : IUserService
 
         if (user == null)
         {
-            throw new Exception("No user was found.");
+            throw new CustomException("No user was found.");
         }
 
         return _mapper.Map<UserResponse>(user);
@@ -95,7 +95,7 @@ public class UserService : IUserService
 
         if (user == null)
         {
-            throw new Exception("No user was found.");
+            throw new CustomException("No user was found.");
         }
 
         return _mapper.Map<UserResponse>(user);
@@ -107,7 +107,7 @@ public class UserService : IUserService
 
         if (existingUser == null)
         {
-            throw new Exception("User was not found");
+            throw new CustomException("User was not found");
         }
 
         var existingRole = await _userManager.GetRolesAsync(existingUser);
@@ -130,7 +130,7 @@ public class UserService : IUserService
 
         if (existingUser == null)
         {
-            throw new Exception("The user was not found.");
+            throw new CustomException("The user was not found.");
         }
 
         var result = await _userManager.ChangePasswordAsync(existingUser, userRequest.CurrentPassword, userRequest.NewPassword);
@@ -144,7 +144,7 @@ public class UserService : IUserService
         var existingUser = await _userManager.FindByEmailAsync(email);
         if (existingUser == null)
         {
-            throw new Exception("Email was not found.");
+            throw new CustomException("Email was not found.");
         }
         await _userManager.DeleteAsync(existingUser);
 
@@ -231,7 +231,7 @@ public class UserService : IUserService
 
         if (existingUser == null)
         {
-            throw new Exception("The user was not found.");
+            throw new CustomException("The user was not found.");
         }
 
         var result = await _signInManager.PasswordSignInAsync(existingUser.Email, request.CurrentPassword, false, true);

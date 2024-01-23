@@ -9,6 +9,6 @@ public class LoginUserValidator : AbstractValidator<LoginUserRequest>
         RuleFor(x => x.NickName).NotEmpty().WithMessage("The field {PropertyName} is required.");
 
         RuleFor(x => x.Password)
-            .NotNull().NotEmpty().WithMessage("The field {PropertyName} is required.");
+            .NotEmpty().WithMessage("The field {PropertyName} is required.");
     }
 }

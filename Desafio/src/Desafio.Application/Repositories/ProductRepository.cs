@@ -39,9 +39,9 @@ public class ProductRepository : IProductRepository
             await _appDbContext.Products.AddAsync(product);
             await SaveChangesAsync();
         }
-        catch (Exception)
+        catch (CustomException)
         {
-            throw new Exception("Error while inserting product");
+            throw new CustomException("Error while inserting product");
         }
     }
 
@@ -52,12 +52,12 @@ public class ProductRepository : IProductRepository
             Product product = await GetByIdAsync(id);
             if (product == null)
             {
-                throw new Exception($"Product {id} doesn't exists.");
+                throw new CustomException($"Product {id} doesn't exists.");
             }
             _appDbContext.Products.Remove(product);
             await SaveChangesAsync();
         }
-        catch (Exception)
+        catch (CustomException)
         {
             throw;
         }
@@ -69,9 +69,9 @@ public class ProductRepository : IProductRepository
         {
             return await _appDbContext.SaveChangesAsync();
         }
-        catch (Exception)
+        catch (CustomException)
         {
-            throw new Exception("Error while saving product");
+            throw new CustomException("Error while saving product");
         }
     }
 
@@ -83,9 +83,9 @@ public class ProductRepository : IProductRepository
             await SaveChangesAsync();
             return product;
         }
-        catch (Exception)
+        catch (CustomException)
         {
-            throw new Exception("Error while updating product");
+            throw new CustomException("Error while updating product");
         }
     }
 

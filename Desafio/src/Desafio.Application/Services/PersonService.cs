@@ -25,7 +25,7 @@ public class PersonService : IPersonService
 
         if(result == null || result.Count() == 0)
         {
-            throw new Exception("No person was found");
+            throw new CustomException("No person was found");
         }
 
         return result;
@@ -36,7 +36,7 @@ public class PersonService : IPersonService
 
         if (result == null || result.Count() == 0)
         {
-            throw new Exception("No client was found");
+            throw new CustomException("No client was found");
         }
 
         return result;
@@ -48,7 +48,7 @@ public class PersonService : IPersonService
 
         if (person == null)
         {
-            throw new Exception("No person was found.");
+            throw new CustomException("No person was found.");
         }
 
         return _mapper.Map<PersonResponse>(person);
@@ -60,7 +60,7 @@ public class PersonService : IPersonService
 
         if (person == null)
         {
-            throw new Exception("No client was found.");
+            throw new CustomException("No client was found.");
         }
 
         return _mapper.Map<PersonResponse>(person);
@@ -72,7 +72,7 @@ public class PersonService : IPersonService
 
         if (person == null)
         {
-            throw new Exception("No person was found.");
+            throw new CustomException("No person was found.");
         }
 
         return _mapper.Map<PersonResponse>(person);
@@ -93,7 +93,7 @@ public class PersonService : IPersonService
 
         if (person == null)
         {
-            throw new Exception("No person was found.");
+            throw new CustomException("No person was found.");
         }
 
         await _personRepository.RemoveAsync(id);
@@ -107,7 +107,7 @@ public class PersonService : IPersonService
 
         if (existingperson == null)
         {
-            throw new Exception("No person was found.");
+            throw new CustomException("No person was found.");
         }
 
         _mapper.Map<Person>(personRequest);
@@ -123,27 +123,27 @@ public class PersonService : IPersonService
     public async Task<bool> DocumentAlreadyExistsAsync(string document)
     {
         //Retornar validação como verdadeira se vazia
-        if (string.IsNullOrWhiteSpace(document)) return true; 
+        if (string.IsNullOrWhiteSpace(document)) return false; 
 
         return await _personRepository.DocumentAlreadyExistsAsync(document);
     }
     public async Task<bool> DocumentAlreadyExistsAsync(UpdatePersonRequest userRequest)
     {
         //Retornar validação como verdadeira se vazia
-        if (string.IsNullOrWhiteSpace(userRequest.Document)) return true;
+        if (string.IsNullOrWhiteSpace(userRequest.Document)) return false;
 
         return await _personRepository.DocumentAlreadyExistsAsync(userRequest);
     }
     public async Task<bool> AlternativeCodeAlreadyExistsAsync(string alternativeCode)
     {
         //Retornar validação como verdadeira se vazia
-        if (string.IsNullOrWhiteSpace(alternativeCode)) return true;
+        if (string.IsNullOrWhiteSpace(alternativeCode)) return false;
         return await _personRepository.AlternativeCodeAlreadyExistsAsync(alternativeCode);
     }
     public async Task<bool> AlternativeCodeAlreadyExistsAsync(UpdatePersonRequest userRequest)
     {
         //Retornar validação como verdadeira se vazia
-        if (string.IsNullOrWhiteSpace(userRequest.AlternativeCode)) return true;
+        if (string.IsNullOrWhiteSpace(userRequest.AlternativeCode)) return false;
 
         return await _personRepository.AlternativeCodeAlreadyExistsAsync(userRequest);
     }

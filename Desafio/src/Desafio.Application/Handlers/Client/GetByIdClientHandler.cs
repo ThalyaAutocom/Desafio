@@ -12,7 +12,7 @@ public class GetByIdClientHandler : IRequestHandler<GetByIdClientRequest, Person
 
     public async Task<PersonResponse> Handle(GetByIdClientRequest request, CancellationToken cancellationToken)
     {
-        return await _clientService.GetByIdAsync(request.Id);       
+        return await _clientService.GetClientByIdAsync(request.Id);       
     }
 }
 

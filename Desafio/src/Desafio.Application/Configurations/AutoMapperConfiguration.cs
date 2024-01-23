@@ -11,6 +11,8 @@ public class AutoMapperConfiguration : Profile
         #region Unit
         CreateMap<Unit, CreateUnitResponse>().ReverseMap();
         CreateMap<Unit, UnitResponse>().ReverseMap();
+        CreateMap<Unit, CreateUnitRequest>().ReverseMap();
+        CreateMap<Unit, UpdateUnitRequest>().ReverseMap();
         #endregion
 
         #region User
@@ -25,6 +27,7 @@ public class AutoMapperConfiguration : Profile
         CreateMap<Product, CreateProductRequest>().ReverseMap();
         CreateMap<Product, CreateProductResponse>().ReverseMap();
         CreateMap<Product, ProductResponse>().ReverseMap();
+        CreateMap<Product, UpdateProductRequest>().ReverseMap();
         #endregion
 
         #region Person

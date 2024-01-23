@@ -21,7 +21,7 @@ public class ProductService : IProductService
 
         if (result == null)
         {
-            throw new Exception("No products were found.");
+            throw new CustomException("No products were found.");
         }
 
         return result;
@@ -33,7 +33,7 @@ public class ProductService : IProductService
 
         if (product == null)
         {
-            throw new Exception("Product was not found.");
+            throw new CustomException("Product was not found.");
         }
 
         return _mapper.Map<ProductResponse>(product);
@@ -45,7 +45,7 @@ public class ProductService : IProductService
 
         if (product == null)
         {
-            throw new Exception("Product was not found.");
+            throw new CustomException("Product was not found.");
         }
 
         return _mapper.Map<ProductResponse>(product);
@@ -66,7 +66,7 @@ public class ProductService : IProductService
 
         if (product == null)
         {
-            throw new Exception("Product was not found.");
+            throw new CustomException("Product was not found.");
         }
         await _productRepository.RemoveAsync(id);
 
@@ -79,7 +79,7 @@ public class ProductService : IProductService
 
         if (existingProduct == null)
         {
-            throw new Exception("The product was not found.");
+            throw new CustomException("The product was not found.");
         }
 
         _mapper.Map(productRequest, existingProduct);
@@ -93,12 +93,24 @@ public class ProductService : IProductService
     #region Validations Methods
     public async Task<bool> ExistingBarCodeAsync(string barCode)
     {
+        if (string.IsNullOrWhiteSpace(barCode)) return false;
         return await _productRepository.GetByBarCodeAsync(barCode) != null;
+    }
+    public async Task<bool> ExistingBarCodeAsync(UpdateProductRequest productRequest)
+    {
+        if (string.IsNullOrWhiteSpace(productRequest.BarCode)) return false;
+        return await _productRepository.GetByBarCodeAsync(productRequest.BarCode) != null;
     }
 
     public async Task<bool> UnitAlreadyExistsAsync(string acronym)
     {
+        if (string.IsNullOrWhiteSpace(acronym)) return false;
         return await _productRepository.UnitAlreadyExistsAsync(acronym);
+    }
+    public async Task<bool> UnitAlreadyExistsAsync(UpdateProductRequest productRequest)
+    {
+        if (string.IsNullOrWhiteSpace(productRequest.Acronym)) return false;
+        return await _productRepository.UnitAlreadyExistsAsync(productRequest.Acronym);
     }
     #endregion
 }

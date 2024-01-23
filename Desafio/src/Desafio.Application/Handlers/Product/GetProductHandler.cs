@@ -16,11 +16,11 @@ public class GetProductHandler : IRequestHandler<GetProductRequest, GetProductRe
 
         if(request.Sellable is not null)
         {
-            result = result.Where(x => x.Sellable).ToList();
+            result = result.Where(x => x.Sellable == request.Sellable).ToList();
         }
         if (request.Enable is not null)
         {
-            result = result.Where(x => x.Enable).ToList();
+            result = result.Where(x => x.Enable == request.Enable).ToList();
         }
 
         return new GetProductResponse

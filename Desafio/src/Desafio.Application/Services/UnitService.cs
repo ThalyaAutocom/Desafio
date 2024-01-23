@@ -21,7 +21,7 @@ public class UnitService : IUnitService
         
         if (result == null)
         {
-            throw new Exception("No products were found.");
+            throw new CustomException("No products were found.");
         }
        
         return result;
@@ -33,7 +33,7 @@ public class UnitService : IUnitService
 
         if (unit == null)
         {
-            throw new Exception("The unit was not found.");
+            throw new CustomException("The unit was not found.");
         }
 
         return _mapper.Map<UnitResponse>(unit);
@@ -45,7 +45,7 @@ public class UnitService : IUnitService
 
         if (unit == null)
         {
-            throw new Exception("No units were found.");
+            throw new CustomException("No units were found.");
         }
 
         return _mapper.Map<UnitResponse>(unit);
@@ -66,7 +66,7 @@ public class UnitService : IUnitService
         var unit = await _unitRepository.GetByAcronymAsync(acronym);
         if (unit == null)
         {
-            throw new Exception("The unit was not found");
+            throw new CustomException("The unit was not found");
         }
 
         await _unitRepository.RemoveAsync(acronym);
@@ -80,7 +80,7 @@ public class UnitService : IUnitService
 
         if (existingUnit == null)
         {
-            throw new Exception("Unit was not found.");
+            throw new CustomException("Unit was not found.");
         }
 
         _mapper.Map(unitRequest, existingUnit);
@@ -93,13 +93,13 @@ public class UnitService : IUnitService
     #endregion
 
     #region Validations Methods
-    public async Task<bool> UnitDoesNotExistsAsync(string acronym)
+    public async Task<bool> AcronymAlreadyUsedAsync(string acronym)
     {
-        return await _unitRepository.GetByAcronymAsync(acronym) == null;
+        return await _unitRepository.GetByAcronymAsync(acronym) != null;
     }
-    public async Task<bool> HasNotBeenUsedBeforeAsync(string acronym)
+    public async Task<bool> HasBeenUsedBeforeAsync(string acronym)
     {
-        return await _unitRepository.HasNotBeenUsedBeforeAsync(acronym);
+        return await _unitRepository.HasBeenUsedBeforeAsync(acronym);
     }
     #endregion
 }

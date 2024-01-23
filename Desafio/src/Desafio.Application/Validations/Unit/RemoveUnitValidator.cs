@@ -12,8 +12,8 @@ public class RemoveUnitValidator : AbstractValidator<DeleteUnitRequest>
         _unitService = unitService;
 
         RuleFor(x => x.Acronym)
-                .NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.")
-                .MustAsync((acronym, _) => _unitService.HasNotBeenUsedBeforeAsync(acronym)).WithMessage("It's not possible to remove a unit that is being used in a product.")
+                .NotEmpty().WithMessage("The field {PropertyName} is required.")
+                .MustAsync(async(acronym, _) => !await _unitService.HasBeenUsedBeforeAsync(acronym)).WithMessage("It's not possible to remove a unit that is being used in a product.")
                 .Length(2, 4)
                 .WithMessage("The field {PropertyName} must have between {MinLength} and {MaxLength} caracters.");
 

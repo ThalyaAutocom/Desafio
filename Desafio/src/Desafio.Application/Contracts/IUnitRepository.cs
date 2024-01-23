@@ -11,5 +11,5 @@ public interface IUnitRepository
     Task<Unit> GetByShortIdAsync(string shortId);
     Task<List<Unit>> GetAllAsync();
     Task<int> SaveChangesAsync();
-    Task<bool> HasNotBeenUsedBeforeAsync(string acronym);
+    Task<bool> HasBeenUsedBeforeAsync(string acronym);
 }

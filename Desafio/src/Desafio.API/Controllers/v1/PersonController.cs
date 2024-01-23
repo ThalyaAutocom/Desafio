@@ -96,8 +96,8 @@ public class PersonController : DesafioControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
-    [HttpPost("insert-person")]
-    public async Task<ActionResult<CreatePersonResponse>> InsertPersonAsync(ISender mediator,
+    [HttpPost("create-person")]
+    public async Task<ActionResult<CreatePersonResponse>> CreatePersonAsync(ISender mediator,
         CreatePersonRequest personRequest,
         CancellationToken cancellationToken = default)
     {

@@ -69,8 +69,8 @@ public class UnitController : DesafioControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
-    [HttpPost("insert-unit")]
-    public async Task<ActionResult<CreateUnitResponse>> InsertUnitAsync(ISender mediator,
+    [HttpPost("create-unit")]
+    public async Task<ActionResult<CreateUnitResponse>> CreateUnitAsync(ISender mediator,
         CreateUnitRequest unitRequest,
         CancellationToken cancellationToken = default)
     {

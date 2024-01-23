@@ -7,6 +7,6 @@ public interface IUnitService
     Task<UnitResponse> GetByAcronymAsync(string acronym);
     Task<UnitResponse> GetByShortIdAsync(string shortId);
     Task<IEnumerable<UnitResponse>> GetAllAsync();
-    Task<bool> UnitDoesNotExistsAsync(string acronym);
-    Task<bool> HasNotBeenUsedBeforeAsync(string acronym);
+    Task<bool> AcronymAlreadyUsedAsync(string acronym);
+    Task<bool> HasBeenUsedBeforeAsync(string acronym);
 }

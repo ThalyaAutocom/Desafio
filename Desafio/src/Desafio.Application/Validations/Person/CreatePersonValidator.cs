@@ -9,10 +9,10 @@ public class CreatePersonValidator : AbstractValidator<CreatePersonRequest>
     public CreatePersonValidator(IPersonService personService)
     {
         _personService = personService;
-        RuleFor(x => x.Name).NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.");
-        RuleFor(x => x.City).NotEmpty().NotNull().WithMessage("The field {PropertyName} is required.");
+        RuleFor(x => x.Name).NotEmpty().WithMessage("The field {PropertyName} is required.");
+        RuleFor(x => x.City).NotEmpty().WithMessage("The field {PropertyName} is required.");
         RuleFor(x => x.AlternativeCode)
-            .MustAsync(async (alternativeCode, _) => await _personService.AlternativeCodeAlreadyExistsAsync(alternativeCode)).WithMessage("The field {PropertyName} must be unique.");
+            .MustAsync(async (alternativeCode, _) => !await _personService.AlternativeCodeAlreadyExistsAsync(alternativeCode)).WithMessage("The field {PropertyName} must be unique.");
         RuleFor(x => x.Document)
             .Must(document => (!string.IsNullOrWhiteSpace(document) && (document.Length == 11 || document.Length == 14)) || string.IsNullOrWhiteSpace(document)).WithMessage("The field {PropertyName} is invalid.")
             .MustAsync(async (document, _) => await _personService.DocumentAlreadyExistsAsync(document)).WithMessage("The field {PropertyName} must be unique.")

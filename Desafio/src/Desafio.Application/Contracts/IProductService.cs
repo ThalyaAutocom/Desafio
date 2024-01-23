@@ -9,7 +9,9 @@ public interface IProductService
     Task<ProductResponse> GetByIdAsync(Guid id);
     Task<IEnumerable<ProductResponse>> GetAllAsync();
     Task<bool> ExistingBarCodeAsync(string barCode);
+    Task<bool> ExistingBarCodeAsync(UpdateProductRequest productRequest);
     Task<bool> UnitAlreadyExistsAsync(string acronym);
+    Task<bool> UnitAlreadyExistsAsync(UpdateProductRequest productRequest);
     Task<ProductResponse> GetByShortIdAsync(string shortId);
 }
 

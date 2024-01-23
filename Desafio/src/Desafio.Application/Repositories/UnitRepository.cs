@@ -38,7 +38,7 @@ public class UnitRepository : IUnitRepository
         }
         catch (Exception)
         {
-            throw new Exception("Error while inserting unit");
+            throw new CustomException("Error while inserting unit");
         }
         
     }
@@ -50,7 +50,7 @@ public class UnitRepository : IUnitRepository
             Unit unit = await GetByAcronymAsync(acronym);
             if(unit == null)
             {
-                throw new Exception($"Unit {acronym} doesn't exists.");
+                throw new CustomException($"Unit {acronym} doesn't exists.");
             }
             _appDbContext.Units.Remove(unit);
             await SaveChangesAsync();
@@ -72,7 +72,7 @@ public class UnitRepository : IUnitRepository
         }
         catch (Exception)
         { 
-            throw new Exception("Error while updating unit");
+            throw new CustomException("Error while updating unit");
         }
         
     }
@@ -84,13 +84,13 @@ public class UnitRepository : IUnitRepository
         }
         catch (Exception)
         {
-            throw new Exception("Error while saving unit");
+            throw new CustomException("Error while saving unit");
         }
     }
 
-    public async Task<bool> HasNotBeenUsedBeforeAsync(string acronym)
+    public async Task<bool> HasBeenUsedBeforeAsync(string acronym)
     {
-        return !await _appDbContext.Products.AsNoTracking().AnyAsync(x => x.Acronym == acronym);
+        return await _appDbContext.Products.AsNoTracking().AnyAsync(x => x.Acronym == acronym);
     }
 
 }

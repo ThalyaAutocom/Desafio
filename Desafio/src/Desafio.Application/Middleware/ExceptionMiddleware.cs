@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Desafio.Application;
 

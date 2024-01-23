@@ -69,8 +69,8 @@ public class ProductController : DesafioControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
-    [HttpPost("insert-product")]
-    public async Task<ActionResult<CreateProductResponse>> InsertProductAsync(ISender mediator,
+    [HttpPost("create-product")]
+    public async Task<ActionResult<CreateProductResponse>> CreateProductAsync(ISender mediator,
         CreateProductRequest productRequest,
         CancellationToken cancellationToken = default)
     {

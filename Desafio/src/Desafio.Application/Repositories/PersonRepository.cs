@@ -45,7 +45,7 @@ public class PersonRepository : IPersonRepository
 
         if (person == null)
         {
-            throw new Exception($"Person {id} doesn't exists.");
+            throw new CustomException($"Person {id} doesn't exists.");
         }
         _appDbContext.People.Remove(person);
         await SaveChangesAsync();
@@ -61,7 +61,7 @@ public class PersonRepository : IPersonRepository
         }
         catch (Exception)
         {
-            throw new Exception("Error while updating person");
+            throw new CustomException("Error while updating person");
         }
     }
 
@@ -73,7 +73,7 @@ public class PersonRepository : IPersonRepository
         }
         catch (Exception)
         {
-            throw new Exception("Error while saving person");
+            throw new CustomException("Error while saving person");
         }
     }
 
