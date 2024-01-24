@@ -33,7 +33,7 @@ public class ProductService : IProductService
 
         if (product == null)
         {
-            throw new CustomException("Product was not found.");
+            throw new CustomException("The product was not found.");
         }
 
         return _mapper.Map<ProductResponse>(product);
@@ -45,7 +45,7 @@ public class ProductService : IProductService
 
         if (product == null)
         {
-            throw new CustomException("Product was not found.");
+            throw new CustomException("The product was not found.");
         }
 
         return _mapper.Map<ProductResponse>(product);
@@ -66,7 +66,7 @@ public class ProductService : IProductService
 
         if (product == null)
         {
-            throw new CustomException("Product was not found.");
+            throw new CustomException("The product was not found.");
         }
         await _productRepository.RemoveAsync(id);
 

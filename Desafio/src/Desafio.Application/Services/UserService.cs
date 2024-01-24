@@ -34,7 +34,7 @@ public class UserService : IUserService
     public async Task<LoginUserResponse> LoginAsync(LoginUserRequest loginUserRequest)
     {
         var email = _userManager.Users.FirstOrDefaultAsync(x => x.NickName == loginUserRequest.NickName).Result?.Email;
-        if(email == null) throw new CustomException("User was not found.", statusCode: System.Net.HttpStatusCode.NotFound);
+        if(email == null) throw new CustomException("The User was not found.", statusCode: System.Net.HttpStatusCode.NotFound);
 
         var result = await _signInManager.PasswordSignInAsync(email, loginUserRequest.Password, false, true);
         if (result.Succeeded) return await GenerateToken(email);

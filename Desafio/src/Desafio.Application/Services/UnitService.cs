@@ -21,7 +21,7 @@ public class UnitService : IUnitService
         
         if (result == null)
         {
-            throw new CustomException("No products were found.");
+            throw new CustomException("No units were found.");
         }
        
         return result;
@@ -45,7 +45,7 @@ public class UnitService : IUnitService
 
         if (unit == null)
         {
-            throw new CustomException("No units were found.");
+            throw new CustomException("The unit was not found.");
         }
 
         return _mapper.Map<UnitResponse>(unit);
@@ -80,7 +80,7 @@ public class UnitService : IUnitService
 
         if (existingUnit == null)
         {
-            throw new CustomException("Unit was not found.");
+            throw new CustomException("The unit was not found.");
         }
 
         _mapper.Map(unitRequest, existingUnit);

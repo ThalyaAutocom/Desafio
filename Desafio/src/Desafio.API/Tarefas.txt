@@ -1,2 +1,0 @@
-﻿- Criar Custom Exception
-- Verificar validações
