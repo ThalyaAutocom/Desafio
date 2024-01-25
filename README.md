@@ -1,8 +1,8 @@
 # Default login
    ```json
    {
-    "nickName": "string",
-    "password": "string"
+    "nickName": "admin",
+    "password": "Admin2024@"
    }
    ```
 
