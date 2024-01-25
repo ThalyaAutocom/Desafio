@@ -8,7 +8,7 @@ public class UpdateProductRequest : IRequest<bool>
 {
     private string _acronym = string.Empty;
 
-    public Guid Id { get; set; } = Guid.Empty;
+    public string ShortId { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string ShortDescription { get; set; } = string.Empty;
     public string Acronym

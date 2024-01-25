@@ -14,22 +14,6 @@ public class PersonController : DesafioControllerBase
 
     #region Get
     /// <summary>
-    /// Retornar pessoa por Id
-    /// </summary>
-    /// <param name="mediator"></param>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
-    [HttpGet("get-person-by-id")]
-    public async Task<ActionResult<PersonResponse>> GetPersonByIdAsync(ISender mediator,
-        Guid id,
-        CancellationToken cancellationToken = default)
-    {
-        return await mediator.Send(new GetByIdPersonRequest(id), cancellationToken);
-    }
-
-    /// <summary>
     /// Retornar todas as pessoas
     /// </summary>
     /// <returns></returns>
@@ -41,6 +25,7 @@ public class PersonController : DesafioControllerBase
     {
         return await mediator.Send(new GetPersonRequest(enable), cancellationToken);
     }
+
     /// <summary>
     /// Retornar pessoa por Short Id
     /// </summary>
@@ -68,22 +53,6 @@ public class PersonController : DesafioControllerBase
         CancellationToken cancellationToken = default)
     {
         return await mediator.Send(new GetClientRequest(enable), cancellationToken);
-    }
-
-    /// <summary>
-    /// Retornar cliente por Id
-    /// </summary>
-    /// <param name="mediator"></param>
-    /// <param name="cancellationToken"></param>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
-    [HttpGet("get-client-by-id")]
-    public async Task<ActionResult<PersonResponse>> GetClientAsync(ISender mediator,
-        Guid id,
-        CancellationToken cancellationToken = default)
-    {
-        return await mediator.Send(new GetByIdClientRequest(id), cancellationToken);
     }
     #endregion
 
@@ -115,7 +84,7 @@ public class PersonController : DesafioControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
-    [HttpPut("update-person-information")]
+    [HttpPut("update-person")]
     public async Task<ActionResult<bool>> UpdatePersonAsync(ISender mediator,
         UpdatePersonRequest personRequest,
         CancellationToken cancellationToken = default)

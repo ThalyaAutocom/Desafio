@@ -19,7 +19,7 @@ public class ProductService : IProductService
     {
         var result = _mapper.Map<IEnumerable<ProductResponse>>(await _productRepository.GetAllAsync());
 
-        if (result == null)
+        if (result == null || result.Count() == 0)
         {
             throw new CustomException("No products were found.");
         }
@@ -27,20 +27,10 @@ public class ProductService : IProductService
         return result;
     }
 
-    public async Task<ProductResponse> GetByIdAsync(Guid id)
-    {
-        var product = await _productRepository.GetByIdAsync(id);
-
-        if (product == null)
-        {
-            throw new CustomException("The product was not found.");
-        }
-
-        return _mapper.Map<ProductResponse>(product);
-    }
-
     public async Task<ProductResponse> GetByShortIdAsync(string shortId)
     {
+        if (shortId == null) throw new CustomException("The short id was not provided.");
+
         var product = await _productRepository.GetByShortIdAsync(shortId);
 
         if (product == null)
@@ -53,6 +43,8 @@ public class ProductService : IProductService
 
     public async Task<CreateProductResponse> InsertAsync(CreateProductRequest productRequest)
     {
+        if (productRequest == null) throw new CustomException("The request was not provided.");
+
         var product = _mapper.Map<Product>(productRequest);
 
         await _productRepository.InsertAsync(product);
@@ -60,22 +52,20 @@ public class ProductService : IProductService
         return newProduct;
     }
 
-    public async Task<bool> RemoveAsync(Guid id)
+    public async Task<bool> RemoveAsync(string shortId)
     {
-        var product = await _productRepository.GetByIdAsync(id);
+        if (shortId == null) throw new CustomException("The short id was not provided.");
 
-        if (product == null)
-        {
-            throw new CustomException("The product was not found.");
-        }
-        await _productRepository.RemoveAsync(id);
+        await _productRepository.RemoveAsync(shortId);
 
         return true;
     }
 
     public async Task<bool> UpdateAsync(UpdateProductRequest productRequest)
     {
-        var existingProduct = await _productRepository.GetByIdAsync(productRequest.Id);
+        if (productRequest == null) throw new CustomException("The request was not provided.");
+
+        var existingProduct = await _productRepository.GetByShortIdAsync(productRequest.ShortId);
 
         if (existingProduct == null)
         {
@@ -96,10 +86,11 @@ public class ProductService : IProductService
         if (string.IsNullOrWhiteSpace(barCode)) return false;
         return await _productRepository.GetByBarCodeAsync(barCode) != null;
     }
+
     public async Task<bool> ExistingBarCodeAsync(UpdateProductRequest productRequest)
     {
         if (string.IsNullOrWhiteSpace(productRequest.BarCode)) return false;
-        return await _productRepository.GetByBarCodeAsync(productRequest.BarCode) != null;
+        return await _productRepository.GetByBarCodeAsync(productRequest) != null;
     }
 
     public async Task<bool> UnitAlreadyExistsAsync(string acronym)
@@ -107,6 +98,7 @@ public class ProductService : IProductService
         if (string.IsNullOrWhiteSpace(acronym)) return false;
         return await _productRepository.UnitAlreadyExistsAsync(acronym);
     }
+
     public async Task<bool> UnitAlreadyExistsAsync(UpdateProductRequest productRequest)
     {
         if (string.IsNullOrWhiteSpace(productRequest.Acronym)) return false;

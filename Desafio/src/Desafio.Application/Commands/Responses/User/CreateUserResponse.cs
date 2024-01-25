@@ -1,7 +1,6 @@
 ﻿namespace Desafio.Application;
 
-public class CreateUserResponse
+public class CreateUserResponse : CreateResponseBase
 {
-    public string Id { get; set; }
-    public string ShortId { get; set; }
+
 }

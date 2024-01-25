@@ -6,5 +6,5 @@ public class LoginUserResponse
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string Token { get; set; }
-    public double Expiration { get; set; }
+    public string Expiration { get; set; }
 }

@@ -23,29 +23,19 @@ public class PersonRepository : IPersonRepository
         return await _appDbContext.People.AsNoTracking().Where(x => x.CanBuy).ToListAsync();
     }
 
-    public async Task<Person> GetByIdAsync(Guid id)
-    {
-        return await _appDbContext.People.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
-    }
-
-    public async Task<Person> GetClientByIdAsync(Guid id)
-    {
-        return await _appDbContext.People.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id && x.CanBuy);
-    }
-
     public async Task InsertAsync(Person person)
     {
         await _appDbContext.People.AddAsync(person);
         await SaveChangesAsync();
     }
 
-    public async Task RemoveAsync(Guid id)
+    public async Task RemoveAsync(string shortId)
     {
-        Person person = await GetByIdAsync(id);
+        Person person = await GetByShortIdAsync(shortId);
 
         if (person == null)
         {
-            throw new CustomException($"Person {id} doesn't exists.");
+            throw new CustomException("The person was found.");
         }
         _appDbContext.People.Remove(person);
         await SaveChangesAsync();
@@ -88,7 +78,7 @@ public class PersonRepository : IPersonRepository
     }
     public async Task<bool> AlternativeCodeAlreadyExistsAsync(UpdatePersonRequest request)
     {
-        return await _appDbContext.People.AsNoTracking().AnyAsync(x => x.AlternativeCode == request.AlternativeCode && x.Id != request.Id);
+        return await _appDbContext.People.AsNoTracking().AnyAsync(x => x.AlternativeCode == request.AlternativeCode && x.ShortId != request.ShortId);
     }
 
     public async Task<bool> DocumentAlreadyExistsAsync(string document)
@@ -97,12 +87,12 @@ public class PersonRepository : IPersonRepository
     }
     public async Task<bool> DocumentAlreadyExistsAsync(UpdatePersonRequest request)
     {
-        return await _appDbContext.People.AsNoTracking().AnyAsync(x => x.Document == request.Document && x.Id != request.Id);
+        return await _appDbContext.People.AsNoTracking().AnyAsync(x => x.Document == request.Document && x.ShortId != request.ShortId);
     }
 
-    public async Task<bool> PersonCanBuyAsync(Guid id)
+    public async Task<bool> PersonCanBuyAsync(string shortId)
     {
-        Person person = await GetByIdAsync(id);
+        Person person = await GetByShortIdAsync(shortId);
         return person.CanBuy;
     }
 }

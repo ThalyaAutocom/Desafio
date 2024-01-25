@@ -13,6 +13,6 @@ public class DeleteProductHandle : IRequestHandler<DeleteProductRequest, bool>
 
     public async Task<bool> Handle(DeleteProductRequest request, CancellationToken cancellationToken)
     {
-        return await _productService.RemoveAsync(request.Id);
+        return await _productService.RemoveAsync(request.ShortId);
     }
 }

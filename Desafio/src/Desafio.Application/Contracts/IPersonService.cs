@@ -6,9 +6,7 @@ public interface IPersonService
 {
     Task<CreatePersonResponse> InsertAsync(CreatePersonRequest personRequest);
     Task<bool> UpdateAsync(UpdatePersonRequest person);
-    Task<bool> RemoveAsync(Guid id);
-    Task<PersonResponse> GetByIdAsync(Guid id);
-    Task<PersonResponse> GetClientByIdAsync(Guid id);
+    Task<bool> RemoveAsync(string shortId);
     Task<IEnumerable<PersonResponse>> GetAllAsync();
     Task<IEnumerable<PersonResponse>> GetAllClientAsync();
     Task<PersonResponse> GetByShortIdAsync(string shortId);
@@ -17,5 +15,5 @@ public interface IPersonService
     Task<bool> DocumentAlreadyExistsAsync(string document);
     Task<bool> DocumentAlreadyExistsAsync(UpdatePersonRequest userRequest);
 
-    Task<bool> PersonCanBuyAsync(Guid id);
+    Task<bool> PersonCanBuyAsync(string shortId);
 }

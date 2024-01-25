@@ -19,7 +19,7 @@ public class UnitService : IUnitService
     {
         var result = _mapper.Map<IEnumerable<UnitResponse>>(await _unitRepository.GetAllAsync());
         
-        if (result == null)
+        if (result == null || result.Count() == 0)
         {
             throw new CustomException("No units were found.");
         }
@@ -29,6 +29,8 @@ public class UnitService : IUnitService
 
     public async Task<UnitResponse> GetByAcronymAsync(string acronym)
     {
+        if (acronym == null) throw new CustomException("The acronym was not provided.");
+        
         var unit = await _unitRepository.GetByAcronymAsync(acronym.ToUpper());
 
         if (unit == null)
@@ -41,6 +43,8 @@ public class UnitService : IUnitService
 
     public async Task<UnitResponse> GetByShortIdAsync(string shortId)
     {
+        if (shortId == null) throw new CustomException("The short id was not provided.");
+
         var unit = await _unitRepository.GetByShortIdAsync(shortId);
 
         if (unit == null)
@@ -53,6 +57,8 @@ public class UnitService : IUnitService
 
     public async Task<CreateUnitResponse> InsertAsync(CreateUnitRequest unitRequest)
     {
+        if (unitRequest == null) throw new CustomException("The request was not provided.");
+
         var unit = _mapper.Map<Unit>(unitRequest);
 
         await _unitRepository.InsertAsync(unit);
@@ -61,21 +67,19 @@ public class UnitService : IUnitService
 
     }
 
-    public async Task<bool> RemoveAsync(string acronym)
+    public async Task<bool> RemoveAsync(string shortId)
     {
-        var unit = await _unitRepository.GetByAcronymAsync(acronym);
-        if (unit == null)
-        {
-            throw new CustomException("The unit was not found");
-        }
+        if (shortId == null) throw new CustomException("The short id was not provided.");
 
-        await _unitRepository.RemoveAsync(acronym);
+        await _unitRepository.RemoveAsync(shortId);
 
         return true;
     }
 
     public async Task<bool> UpdateAsync(UpdateUnitRequest unitRequest)
     {
+        if (unitRequest == null) throw new CustomException("The request was not provided.");
+
         var existingUnit = await _unitRepository.GetByAcronymAsync(unitRequest.Acronym.ToUpper());
 
         if (existingUnit == null)
@@ -97,9 +101,9 @@ public class UnitService : IUnitService
     {
         return await _unitRepository.GetByAcronymAsync(acronym) != null;
     }
-    public async Task<bool> HasBeenUsedBeforeAsync(string acronym)
+    public async Task<bool> HasBeenUsedBeforeAsync(string shortId)
     {
-        return await _unitRepository.HasBeenUsedBeforeAsync(acronym);
+        return await _unitRepository.HasBeenUsedBeforeAsync(shortId);
     }
     #endregion
 }

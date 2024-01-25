@@ -6,7 +6,7 @@ public interface IUnitRepository
 {
     Task InsertAsync(Unit product);
     Task<Unit> UpdateAsync(Unit product);
-    Task RemoveAsync(string acronym);
+    Task RemoveAsync(string shortId);
     Task<Unit> GetByAcronymAsync(string acronym);
     Task<Unit> GetByShortIdAsync(string shortId);
     Task<List<Unit>> GetAllAsync();

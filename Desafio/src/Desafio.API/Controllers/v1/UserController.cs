@@ -29,22 +29,6 @@ public class UserController : DesafioControllerBase
         return await mediator.Send(new GetByShortIdUserRequest(shortId), cancellationToken);
 
     }
-
-    /// <summary>
-    /// Select User by Id
-    /// </summary>
-    /// <param name="mediator"></param>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
-    [HttpGet("get-by-id")]
-    public async Task<ActionResult<UserResponse>> GetUserByIdAsync(ISender mediator,
-        string id,
-        CancellationToken cancellationToken = default)
-    {
-        return await mediator.Send(new GetByIdUserRequest(id), cancellationToken);
-    }
     #endregion
 
     #region Put
@@ -56,7 +40,7 @@ public class UserController : DesafioControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
-    [HttpPut("update-user-informations")]
+    [HttpPut("update-user")]
     public async Task<bool> UpdateUserAsync(ISender mediator,
         UpdateUserRequest userRequest,
         CancellationToken cancellationToken = default)

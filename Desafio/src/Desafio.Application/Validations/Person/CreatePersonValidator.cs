@@ -15,7 +15,7 @@ public class CreatePersonValidator : AbstractValidator<CreatePersonRequest>
             .MustAsync(async (alternativeCode, _) => !await _personService.AlternativeCodeAlreadyExistsAsync(alternativeCode)).WithMessage("The field {PropertyName} must be unique.");
         RuleFor(x => x.Document)
             .Must(document => (!string.IsNullOrWhiteSpace(document) && (document.Length == 11 || document.Length == 14)) || string.IsNullOrWhiteSpace(document)).WithMessage("The field {PropertyName} is invalid.")
-            .MustAsync(async (document, _) => await _personService.DocumentAlreadyExistsAsync(document)).WithMessage("The field {PropertyName} must be unique.")
+            .MustAsync(async (document, _) => !await _personService.DocumentAlreadyExistsAsync(document)).WithMessage("The field {PropertyName} must be unique.")
             .DependentRules(() =>
             {
                 RuleFor(x => x.Document).IsValidCNPJ().WithMessage("{PropertyName} is invalid.").When(x => x.Document.Length == 14).Unless(x => string.IsNullOrWhiteSpace(x.Document));

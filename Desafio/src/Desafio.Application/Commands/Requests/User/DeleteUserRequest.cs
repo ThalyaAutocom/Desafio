@@ -2,7 +2,7 @@
 
 namespace Desafio.Application;
 
-public class DeleteUserRequest(string email) : IRequest<bool>
+public class DeleteUserRequest : DeleteRequestBase, IRequest<bool>
 {
-    public string Email { get; set; } = email;
+
 }

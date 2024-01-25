@@ -6,7 +6,7 @@ namespace Desafio.Application;
 
 public class CreatePersonRequest : IRequest<CreatePersonResponse>
 {
-    private string _document;
+    private string _document = string.Empty;
 
     public string Name { get; set; } = string.Empty;
     public string Document

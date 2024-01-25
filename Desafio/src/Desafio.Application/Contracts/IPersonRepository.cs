@@ -6,9 +6,7 @@ public interface IPersonRepository
 {
     Task InsertAsync(Person person);
     Task<Person> UpdateAsync(Person person);
-    Task RemoveAsync(Guid id);
-    Task<Person> GetByIdAsync(Guid id);
-    Task<Person> GetClientByIdAsync(Guid id);
+    Task RemoveAsync(string shortId);
     Task<List<Person>> GetAllAsync();
     Task<List<Person>> GetAllClientAsync();
     Task<int> SaveChangesAsync();
@@ -17,5 +15,5 @@ public interface IPersonRepository
     Task<bool> AlternativeCodeAlreadyExistsAsync(UpdatePersonRequest request);
     Task<bool> DocumentAlreadyExistsAsync(string document);
     Task<bool> DocumentAlreadyExistsAsync(UpdatePersonRequest request);
-    Task<bool> PersonCanBuyAsync(Guid id);
+    Task<bool> PersonCanBuyAsync(string shortId);
 }

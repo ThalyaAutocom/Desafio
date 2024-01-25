@@ -13,6 +13,6 @@ public class DeleteUnitHandle : IRequestHandler<DeleteUnitRequest, bool>
 
     public async Task<bool> Handle(DeleteUnitRequest request, CancellationToken cancellationToken)
     {
-        return await _unitService.RemoveAsync(request.Acronym);
+        return await _unitService.RemoveAsync(request.ShortId);
     }
 }

@@ -13,7 +13,8 @@ public class UpdateUserValidator : AbstractValidator<UpdateUserRequest>
             .MustAsync(async (user, nickName, _) => !await _userService.NickNameAlreadyUsed(user)).WithMessage("The field {PropertyName} must be unique.")
             .When(user => !string.IsNullOrWhiteSpace(user.NickName));
 
-        RuleFor(x => x.Email).NotEmpty().WithMessage("The field {PropertyName} is required.");
+        RuleFor(x => x.Email).NotEmpty().WithMessage("The field {PropertyName} is required.")
+            .MustAsync(async (user, email, _) => !await userService.EmailAlreadyUsed(user)).WithMessage("The Email must be unique."); ;
 
         RuleFor(x => x.Document)
             .Must(document => !string.IsNullOrWhiteSpace(document) && (document.Length == 11 || document.Length == 14)).WithMessage("The field {PropertyName} is invalid.")

@@ -13,6 +13,6 @@ public class DeletePersonHandle : IRequestHandler<DeletePersonRequest, bool>
 
     public async Task<bool> Handle(DeletePersonRequest request, CancellationToken cancellationToken)
     {
-        return await _personService.RemoveAsync(request.Id);
+        return await _personService.RemoveAsync(request.ShortId);
     }
 }

@@ -43,14 +43,14 @@ public class UnitRepository : IUnitRepository
         
     }
 
-    public async Task RemoveAsync(string acronym)
+    public async Task RemoveAsync(string shortId)
     {
         try
         {
-            Unit unit = await GetByAcronymAsync(acronym);
+            Unit unit = await GetByShortIdAsync(shortId);
             if(unit == null)
             {
-                throw new CustomException($"Unit {acronym} doesn't exists.");
+                throw new CustomException($"The unit was not found.");
             }
             _appDbContext.Units.Remove(unit);
             await SaveChangesAsync();
@@ -88,9 +88,9 @@ public class UnitRepository : IUnitRepository
         }
     }
 
-    public async Task<bool> HasBeenUsedBeforeAsync(string acronym)
+    public async Task<bool> HasBeenUsedBeforeAsync(string shortId)
     {
-        return await _appDbContext.Products.AsNoTracking().AnyAsync(x => x.Acronym == acronym);
+        return await _appDbContext.Products.AsNoTracking().AnyAsync(x => x.ShortId == shortId);
     }
 
 }

@@ -2,13 +2,7 @@
 
 namespace Desafio.Application;
 
-public class DeleteUnitRequest : IRequest<bool>
+public class DeleteUnitRequest : DeleteRequestBase, IRequest<bool>
 {
-    private string _acronym;
-    public string Acronym
-    {
-        get => _acronym;
-        set => _acronym = value?.ToUpper();
-    }
 
 }

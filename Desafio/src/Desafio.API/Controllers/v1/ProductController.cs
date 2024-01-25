@@ -14,22 +14,6 @@ public class ProductController : DesafioControllerBase
 
     #region Get
     /// <summary>
-    /// Retornar produto por Id
-    /// </summary>
-    /// <param name="mediator"></param>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
-    [HttpGet("get-by-id")]
-    public async Task<ActionResult<ProductResponse>> GetByIdProductAsync(ISender mediator,
-        Guid id,
-        CancellationToken cancellationToken = default)
-    {
-        return await mediator.Send(new GetByIdProductRequest(id), cancellationToken);
-    }
-
-    /// <summary>
     /// Retornar todos os produtos
     /// </summary>
     /// <returns></returns>
@@ -87,7 +71,7 @@ public class ProductController : DesafioControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [Authorize(Roles = "ADMINISTRATOR, MANAGER")]
-    [HttpPut("update-product-information")]
+    [HttpPut("update-product")]
     public async Task<ActionResult<bool>> UpdateProductAsync(ISender mediator,
         UpdateProductRequest productRequest, 
         CancellationToken cancellationToken)

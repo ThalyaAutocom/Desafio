@@ -15,7 +15,7 @@ public class UpdateProductValidator : AbstractValidator<UpdateProductRequest>
             .Length(1, 13).WithMessage("BarCode must have between {MinLength} and {MaxLength} caracteres.").Unless(x => string.IsNullOrWhiteSpace(x.BarCode));
         RuleFor(x => x.Acronym)
             .NotEmpty().WithMessage("The field {PropertyName} is required.")
-            .MustAsync(async(acronym, _) => await _productService.UnitAlreadyExistsAsync(acronym)).WithMessage("The unit is not registered. It is necessary to register before using in product registration.");
+            .MustAsync(async(product, acronym, _) => await _productService.UnitAlreadyExistsAsync(product)).WithMessage("The unit is not registered. It is necessary to register before using in product registration.");
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("The field {PropertyName} is required.");
         RuleFor(x => x.ShortDescription)

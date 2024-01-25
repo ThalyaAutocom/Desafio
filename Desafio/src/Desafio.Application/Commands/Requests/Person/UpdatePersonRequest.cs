@@ -8,7 +8,7 @@ public class UpdatePersonRequest : IRequest<bool>
 {
     private string _document;
 
-    public Guid Id { get; set; } = Guid.Empty;
+    public string ShortId { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Document
     {

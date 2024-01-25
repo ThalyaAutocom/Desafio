@@ -10,7 +10,7 @@ public class RemovePersonValidator : AbstractValidator<DeletePersonRequest>
     {
         _personService = personService;
 
-        RuleFor(x => x.Id)
-                .MustAsync(async (id, _) => !await _personService.PersonCanBuyAsync(id)).WithMessage("Cannot remove a client.");
+        RuleFor(x => x.ShortId)
+                .MustAsync(async (shortId, _) => !await _personService.PersonCanBuyAsync(shortId)).WithMessage("Cannot remove a client.");
     }
 }

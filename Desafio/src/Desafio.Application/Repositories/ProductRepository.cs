@@ -27,9 +27,9 @@ public class ProductRepository : IProductRepository
         return await _appDbContext.Products.AsNoTracking().SingleOrDefaultAsync(x => x.BarCode == barCode);
     }
 
-    public async Task<Product> GetByIdAsync(Guid id)
+    public async Task<Product> GetByBarCodeAsync(UpdateProductRequest request)
     {
-        return await _appDbContext.Products.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+        return await _appDbContext.Products.AsNoTracking().SingleOrDefaultAsync(x => x.BarCode == request.BarCode && x.ShortId != request.ShortId);
     }
 
     public async Task InsertAsync(Product product)
@@ -45,14 +45,14 @@ public class ProductRepository : IProductRepository
         }
     }
 
-    public async Task RemoveAsync(Guid id)
+    public async Task RemoveAsync(string shortId)
     {
         try
         {
-            Product product = await GetByIdAsync(id);
+            Product product = await GetByShortIdAsync(shortId);
             if (product == null)
             {
-                throw new CustomException($"Product {id} doesn't exists.");
+                throw new CustomException("The product was not found.");
             }
             _appDbContext.Products.Remove(product);
             await SaveChangesAsync();

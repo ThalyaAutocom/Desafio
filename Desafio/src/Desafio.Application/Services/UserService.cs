@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -33,6 +32,8 @@ public class UserService : IUserService
     #region Controller Methods
     public async Task<LoginUserResponse> LoginAsync(LoginUserRequest loginUserRequest)
     {
+        if (loginUserRequest == null) throw new CustomException("The request was not provided.");
+
         var email = _userManager.Users.FirstOrDefaultAsync(x => x.NickName == loginUserRequest.NickName).Result?.Email;
         if(email == null) throw new CustomException("The User was not found.", statusCode: System.Net.HttpStatusCode.NotFound);
 
@@ -44,6 +45,8 @@ public class UserService : IUserService
 
     public async Task<CreateUserResponse> InsertUserAsync(CreateUserRequest registerUserRequest)
     {
+        if (registerUserRequest == null) throw new CustomException("The request was not provided.");
+
         var identityUser = _mapper.Map<User>(registerUserRequest);
 
         identityUser.EmailConfirmed = true;
@@ -73,25 +76,21 @@ public class UserService : IUserService
     public async Task<IEnumerable<UserResponse>> GetAllAsync()
     {
         var result = await _userManager.Users.ToListAsync();
+        
+        if (result == null || result.Count() == 0)
+        {
+            throw new CustomException("No users were found.");
+        }
+
         var response = _mapper.Map<List<UserResponse>>(result);
         return response;
     }
 
     public async Task<UserResponse> GetByShortIdAsync(string shortId)
     {
+        if (shortId == null) throw new CustomException("The short id was not provided.");
+
         var user = await _userManager.Users.FirstOrDefaultAsync(x => x.ShortId == shortId);
-
-        if (user == null)
-        {
-            throw new CustomException("No user was found.");
-        }
-
-        return _mapper.Map<UserResponse>(user);
-    }
-
-    public async Task<UserResponse> GetByIdAsync(string id)
-    {
-        var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
 
         if (user == null)
         {
@@ -103,11 +102,18 @@ public class UserService : IUserService
 
     public async Task<bool> UpdateAsync(UpdateUserRequest userRequest)
     {
+        if (userRequest == null) throw new CustomException("The request was not provided.");
+
         var existingUser = await _userManager.FindByEmailAsync(userRequest.Email);
 
         if (existingUser == null)
         {
             throw new CustomException("User was not found");
+        }
+
+        if (existingUser.Email == "admin@admin.com")
+        {
+            throw new CustomException("Initial e-mail cannot be updated.");
         }
 
         var existingRole = await _userManager.GetRolesAsync(existingUser);
@@ -126,11 +132,18 @@ public class UserService : IUserService
 
     public async Task<bool> UpdateAsync(UpdateLoginUserRequest userRequest)
     {
+        if (userRequest == null) throw new CustomException("The request was not provided.");
+
         var existingUser = _userManager.Users.FirstOrDefaultAsync(x => x.NickName == userRequest.NickName).Result;
 
         if (existingUser == null)
         {
             throw new CustomException("The user was not found.");
+        }
+
+        if (existingUser.Email == "admin@admin.com")
+        {
+            throw new CustomException("Initial e-mail cannot be updated.");
         }
 
         var result = await _userManager.ChangePasswordAsync(existingUser, userRequest.CurrentPassword, userRequest.NewPassword);
@@ -139,14 +152,23 @@ public class UserService : IUserService
         return true;
     }
 
-    public async Task<bool> RemoveAsync(string email)
+    public async Task<bool> RemoveAsync(string shortId)
     {
-        var existingUser = await _userManager.FindByEmailAsync(email);
-        if (existingUser == null)
+        if (shortId == null) throw new CustomException("The short id was not provided.");
+
+        var user = _userManager.Users.FirstOrDefault(x => x.ShortId == shortId);
+
+        if (user == null)
         {
             throw new CustomException("Email was not found.");
         }
-        await _userManager.DeleteAsync(existingUser);
+
+        if (user.Email == "admin@admin.com")
+        {
+            throw new CustomException("Initial e-mail cannot be removed.");
+        }
+
+        await _userManager.DeleteAsync(user);
 
         return true;
     }
@@ -189,7 +211,7 @@ public class UserService : IUserService
         return new LoginUserResponse
         {
             Token = encodedToken,
-            Expiration = TimeSpan.FromHours(_jwtOptions.ExpirationHour).TotalMinutes,
+            Expiration = $"{TimeSpan.FromHours(_jwtOptions.ExpirationHour).TotalMinutes} minutes." ,
         };
     }
 
@@ -207,10 +229,16 @@ public class UserService : IUserService
         return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email) != null;
     }
 
+    public async Task<bool> EmailAlreadyUsed(UpdateUserRequest userRequest)
+    {
+        return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == userRequest.Email && x.Id != userRequest.Id) != null;
+    }
+
     public async Task<bool> DocumentAlreadyUsed(string document)
     {
         return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == document) != null;
     }
+
     public async Task<bool> DocumentAlreadyUsed(UpdateUserRequest userRequest)
     {
         return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Document == userRequest.Document && x.Id != userRequest.Id) != null;
@@ -220,6 +248,7 @@ public class UserService : IUserService
     {
         return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.NickName == nickName) != null;
     }
+
     public async Task<bool> NickNameAlreadyUsed(UpdateUserRequest userRequest)
     {
         return await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(x => x.NickName == userRequest.NickName && x.Id != userRequest.Id) != null;

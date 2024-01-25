@@ -1,9 +1,5 @@
 ﻿using AutoMapper;
 using Desafio.Domain;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
 
 namespace Desafio.Application;
 
@@ -42,32 +38,10 @@ public class PersonService : IPersonService
         return result;
     }
 
-    public async Task<PersonResponse> GetByIdAsync(Guid id)
-    {
-        var person = await _personRepository.GetByIdAsync(id);
-
-        if (person == null)
-        {
-            throw new CustomException("No person was found.");
-        }
-
-        return _mapper.Map<PersonResponse>(person);
-    }
-
-    public async Task<PersonResponse> GetClientByIdAsync(Guid id)
-    {
-        var person = await _personRepository.GetClientByIdAsync(id);
-
-        if (person == null)
-        {
-            throw new CustomException("No client was found.");
-        }
-
-        return _mapper.Map<PersonResponse>(person);
-    }
-
     public async Task<PersonResponse> GetByShortIdAsync(string shortId)
     {
+        if (shortId == null) throw new CustomException("The short id was not provided.");
+
         var person = await _personRepository.GetByShortIdAsync(shortId);
 
         if (person == null)
@@ -80,6 +54,8 @@ public class PersonService : IPersonService
 
     public async Task<CreatePersonResponse> InsertAsync(CreatePersonRequest personRequest)
     {
+        if (personRequest == null) throw new CustomException("The request was not provided.");
+
         var person = _mapper.Map<Person>(personRequest);
 
         await _personRepository.InsertAsync(person);
@@ -87,30 +63,25 @@ public class PersonService : IPersonService
         return newperson;
     }
 
-    public async Task<bool> RemoveAsync(Guid id)
+    public async Task<bool> RemoveAsync(string shortId)
     {
-        var person = await _personRepository.GetByIdAsync(id);
+        if (shortId == null) throw new CustomException("The short id was not provided.");
 
-        if (person == null)
-        {
-            throw new CustomException("No person was found.");
-        }
-
-        await _personRepository.RemoveAsync(id);
+        await _personRepository.RemoveAsync(shortId);
 
         return true;
     }
 
     public async Task<bool> UpdateAsync(UpdatePersonRequest personRequest)
     {
-        var existingperson = await _personRepository.GetByIdAsync(personRequest.Id);
+        if (personRequest == null) throw new CustomException("The request was not provided.");
+
+        var existingperson = await _personRepository.GetByShortIdAsync(personRequest.ShortId);
 
         if (existingperson == null)
         {
             throw new CustomException("No person was found.");
         }
-
-        _mapper.Map<Person>(personRequest);
 
         _mapper.Map(personRequest, existingperson);
         await _personRepository.UpdateAsync(existingperson);
@@ -147,9 +118,9 @@ public class PersonService : IPersonService
 
         return await _personRepository.AlternativeCodeAlreadyExistsAsync(userRequest);
     }
-    public async Task<bool> PersonCanBuyAsync(Guid id)
+    public async Task<bool> PersonCanBuyAsync(string shortId)
     {
-        return await _personRepository.PersonCanBuyAsync(id);
+        return await _personRepository.PersonCanBuyAsync(shortId);
     }
     #endregion
 }
