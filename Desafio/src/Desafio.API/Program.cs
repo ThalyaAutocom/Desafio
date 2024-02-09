@@ -16,17 +16,18 @@ try
         builder.Services.AddApplicationConfigurations(builder.Configuration);
         builder.Services.AddInfrastructure(builder.Configuration);
         builder.Services.AddApiConfigurations();
+        builder.Services.AddCorsAPI();
     }
 
     var app = builder.Build();
     {
         app.UseExceptionMiddleware();
+        app.UseCors();
         app.AddBuilderConfiguration();
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-
         app.Run();
     }
 }
