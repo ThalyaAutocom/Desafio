@@ -20,7 +20,7 @@ public class UserController : DesafioControllerBase
     /// <param name="shortId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
+    //[Authorize(Roles = "ADMINISTRATOR, MANAGER, SELLER")]
     [HttpGet("get-by-short-id")]
     public async Task<ActionResult<UserResponse>> GetUserByShortIdAsync(ISender mediator,
         string shortId,

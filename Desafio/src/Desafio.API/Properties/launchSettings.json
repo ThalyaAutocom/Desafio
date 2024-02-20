@@ -29,6 +29,16 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    "Desafio-Dev": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://0.0.0.0:7141;http://0.0.0.0:5284"
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
