@@ -211,7 +211,8 @@ public class UserService : IUserService
         return new LoginUserResponse
         {
             Token = encodedToken,
-            Expiration = $"{TimeSpan.FromHours(_jwtOptions.ExpirationHour).TotalMinutes} minutes." ,
+            Expiration = $"{TimeSpan.FromHours(_jwtOptions.ExpirationHour).TotalMilliseconds}",
+            Name = user.Name
         };
     }
 
