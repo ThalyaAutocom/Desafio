@@ -16,6 +16,9 @@ public class ExceptionMiddleware : IMiddleware
         }
         catch (Exception exception)
         {
+            HttpResponse response = context.Response;
+            response.ContentType = "application/json";
+
             var errorId = Guid.NewGuid().ToString();
             ErrorResult errorResult = new()
             {
@@ -33,9 +36,7 @@ public class ExceptionMiddleware : IMiddleware
             }
 
             errorResult.StatusCode = (int)ReturnStatusCode(exception);
-
-            HttpResponse response = context.Response;
-            response.ContentType = "application/json";
+            response.StatusCode = errorResult.StatusCode;
 
             await response.WriteAsync(JsonSerializer.Serialize(errorResult));
         }

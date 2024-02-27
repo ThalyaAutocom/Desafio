@@ -40,7 +40,7 @@ public class UserService : IUserService
         var result = await _signInManager.PasswordSignInAsync(email, loginUserRequest.Password, false, true);
         if (result.Succeeded) return await GenerateToken(email);
 
-        throw new CustomException("Incorrect e-mail ou password", statusCode: System.Net.HttpStatusCode.Unauthorized);
+        throw new CustomException("Incorrect e-mail or password", statusCode: System.Net.HttpStatusCode.Unauthorized);
     }
 
     public async Task<CreateUserResponse> InsertUserAsync(CreateUserRequest registerUserRequest)
