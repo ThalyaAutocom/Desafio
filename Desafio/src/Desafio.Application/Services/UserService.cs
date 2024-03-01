@@ -73,7 +73,7 @@ public class UserService : IUserService
         return userRegisterResponse;
     }
 
-    public async Task<IEnumerable<UserResponse>> GetAllAsync()
+    public async Task<IEnumerable<GetAllUserResponse>> GetAllAsync()
     {
         var result = await _userManager.Users.ToListAsync();
         
@@ -82,7 +82,7 @@ public class UserService : IUserService
             throw new CustomException("No users were found.");
         }
 
-        var response = _mapper.Map<List<UserResponse>>(result);
+        var response = _mapper.Map<List<GetAllUserResponse>>(result);
         return response;
     }
 

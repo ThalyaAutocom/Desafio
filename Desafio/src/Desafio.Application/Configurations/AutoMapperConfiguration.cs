@@ -20,6 +20,7 @@ public class AutoMapperConfiguration : Profile
         CreateMap<User, CreateUserRequest>().ReverseMap();
         CreateMap<User, CreateUserResponse>().ReverseMap();
         CreateMap<User, UserResponse>().ReverseMap();
+        CreateMap<User, GetAllUserResponse>().ReverseMap();
 
         #endregion
 

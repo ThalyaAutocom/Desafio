@@ -2,5 +2,5 @@
 
 public class GetUserResponse
 {
-    public IEnumerable<UserResponse> UserResponses { get; set; } = default!;
+    public IEnumerable<GetAllUserResponse> UserResponses { get; set; } = default!;
 }
